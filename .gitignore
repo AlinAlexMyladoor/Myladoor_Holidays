@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+
+# next.js build files
+.next/
+out/
+
+# production
+build/
+dist/
+
+# environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# cache
+.cache/
+
+# turbopack cache
+.next/cache/
+
+# optional
+coverage/
