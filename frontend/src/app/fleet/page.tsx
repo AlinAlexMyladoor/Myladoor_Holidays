@@ -301,7 +301,7 @@ export default function FleetPage() {
 
                       {/* Feature Tags */}
                       <div className="flex flex-wrap gap-1.5 mb-5">
-                        {v.features.map((feat, fi) => (
+                        {v.features.map((feat: string, fi: number) => (
                           <span
                             key={fi}
                             className="text-[9px] font-bold tracking-wide text-gray-400 border border-white/8 px-2 py-1 uppercase flex items-center gap-1"

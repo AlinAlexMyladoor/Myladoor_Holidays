@@ -40,9 +40,9 @@ const vehicles = [
 ];
 
 const inquiries = [
-  { name: 'Mathew George', phone: '+91 94473 09988', message: 'Need a bus for 45 people, Mysore trip on May 10.', time: '2 hours ago', read: false },
-  { name: 'Kavitha R', phone: '+91 97774 12311', message: 'Airport transfer from Kochi to Munnar - Apr 28.', time: '5 hours ago', read: false },
-  { name: 'Santhosh KV', phone: '+91 98761 44529', message: 'Wedding guest transport, need 3 Innovas on May 5.', time: '1 day ago', read: true },
+  { id: '1', name: 'Mathew George', phone: '+91 94473 09988', message: 'Need a bus for 45 people, Mysore trip on May 10.', time: '2 hours ago', read: false },
+  { id: '2', name: 'Kavitha R', phone: '+91 97774 12311', message: 'Airport transfer from Kochi to Munnar - Apr 28.', time: '5 hours ago', read: false },
+  { id: '3', name: 'Santhosh KV', phone: '+91 98761 44529', message: 'Wedding guest transport, need 3 Innovas on May 5.', time: '1 day ago', read: true },
 ];
 
 const customers = [
