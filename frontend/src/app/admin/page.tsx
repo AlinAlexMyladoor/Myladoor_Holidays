@@ -77,6 +77,8 @@ export default function AdminPage() {
   const [inquiryList, setInquiryList] = useState(inquiries);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const [notifications, setNotifications] = useState<any[]>([]);
+
   const sidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
     { icon: Calendar, label: 'Bookings', id: 'bookings', badge: bookingList.filter(b => b.status === 'pending').length || undefined },
@@ -87,8 +89,6 @@ export default function AdminPage() {
     { icon: Bell, label: 'Notifications', id: 'notifications', badge: notifications.length || undefined },
     { icon: Settings, label: 'Settings', id: 'settings' },
   ];
-
-  const [notifications, setNotifications] = useState<any[]>([]);
 
   const fetchAllData = async () => {
     try {
