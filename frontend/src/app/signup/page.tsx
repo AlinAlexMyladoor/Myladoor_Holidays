@@ -30,6 +30,7 @@ export default function SignUpPage() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
+          phone: form.phone,
           password: form.password
         }),
       });

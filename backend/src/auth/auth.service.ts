@@ -32,7 +32,7 @@ export class AuthService {
     };
   }
 
-  async register(name: string, email: string, pass: string) {
+  async register(name: string, email: string, phone: string, pass: string) {
     const existingUser = await this.userService.findOne(email);
     if (existingUser) {
       throw new ConflictException('Email already exists');
@@ -42,6 +42,7 @@ export class AuthService {
     const user = await this.userService.create({
       name,
       email,
+      phone,
       password: hashedPassword,
     });
 

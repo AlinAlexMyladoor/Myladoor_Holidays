@@ -128,7 +128,7 @@ export default function AdminPage() {
           id: u.id.substring(0, 8).toUpperCase(),
           name: u.name || 'Web User',
           email: u.email,
-          phone: 'N/A',
+          phone: u.phone || 'N/A',
           totalTrips: 0,
           joined: new Date(u.createdAt).toLocaleDateString()
         })));
@@ -290,10 +290,6 @@ export default function AdminPage() {
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </button>
             <div className="w-8 h-8 sm:w-9 sm:h-9 bg-emerald-700 flex items-center justify-center text-white font-bold text-sm">A</div>
-            <button onClick={handleLogout} className="ml-1 sm:ml-2 text-[10px] sm:text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1 border-l border-white/10 pl-2 sm:pl-3">
-              <LogOut size={14} />
-              <span className="hidden sm:inline">Logout</span>
-            </button>
           </div>
         </header>
 

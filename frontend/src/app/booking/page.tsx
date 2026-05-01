@@ -337,7 +337,7 @@ export default function BookingPage() {
                           onChange={e => set(f.key, e.target.value)}
                           onFocus={() => setFocusedField(f.key)}
                           onBlur={() => setFocusedField(null)}
-                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all"
                         />
                       </div>
                     ))}
@@ -361,7 +361,7 @@ export default function BookingPage() {
                           onFocus={() => setFocusedField(f.key)}
                           onBlur={() => setFocusedField(null)}
                           min={f.type === 'date' ? new Date().toISOString().split('T')[0] : undefined}
-                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all [color-scheme:dark]"
+                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all [color-scheme:dark]"
                         />
                       </div>
                     ))}
@@ -475,7 +475,7 @@ export default function BookingPage() {
                           onChange={e => set(f.key, e.target.value)}
                           onFocus={() => setFocusedField(f.key)}
                           onBlur={() => setFocusedField(null)}
-                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all"
                         />
                       </div>
                     ))}
@@ -491,7 +491,7 @@ export default function BookingPage() {
                         onChange={e => set('notes', e.target.value)}
                         onFocus={() => setFocusedField('notes')}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all resize-none"
+                        className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all resize-none"
                       />
                     </div>
                   </div>
