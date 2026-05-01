@@ -6,6 +6,7 @@ import { RevealOnScroll } from '@/components/ui/RevealOnScroll';
 import { ParticleField } from '@/components/ui/ParticleField';
 import Image from 'next/image';
 import { MapPin, Phone, Mail, MessageCircle, Send, Check, Clock, Navigation } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
 const contactInfoItems = [
   {
@@ -46,12 +47,26 @@ export default function ContactPage() {
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    try {
+      await fetch(`${API_URL}/inquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          message: `Subject: ${form.subject}\n\n${form.message}`,
+        }),
+      });
+    } catch (err) {}
+
     const msg = encodeURIComponent(
       `*Enquiry — Myladoor Holidays*\n\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nSubject: ${form.subject}\n\nMessage:\n${form.message}`
     );
+    
     setTimeout(() => {
       setLoading(false);
       setSent(true);

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { API_URL } from '@/lib/api';
 
 // ─── Mock Data ───────────────────────────────────────────
 const stats = [
@@ -84,24 +85,60 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [bookingList, setBookingList] = useState(bookings);
   const [customerList, setCustomerList] = useState(customers);
+  const [vehicleList, setVehicleList] = useState(vehicles);
+  const [inquiryList, setInquiryList] = useState(inquiries);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('myladoor_user');
-    if (saved) {
+    const fetchUsers = async () => {
       try {
-        const u = JSON.parse(saved);
-        setCustomerList(prev => [{
-          id: 'CUST-NEW',
-          name: u.name || 'Web User',
-          email: u.email,
-          phone: 'N/A',
-          totalTrips: 0,
-          joined: 'Today'
-        }, ...prev]);
+        const res = await fetch(`${API_URL}/users`);
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setCustomerList(data.map((u: any) => ({
+            id: u.id.substring(0, 8).toUpperCase(),
+            name: u.name || 'Web User',
+            email: u.email,
+            phone: 'N/A',
+            totalTrips: 0,
+            joined: new Date(u.createdAt).toLocaleDateString()
+          })));
+        }
       } catch (e) {}
-    }
-  }, []);
+    };
+
+    const fetchVehicles = async () => {
+      try {
+        const res = await fetch(`${API_URL}/vehicles`);
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setVehicleList(data.map((v: any) => ({
+            ...v,
+            type: v.category.toUpperCase(),
+            reg: 'KL-ADMIN-DB'
+          })));
+        }
+      } catch (e) {}
+    };
+
+    const fetchInquiries = async () => {
+      try {
+        const res = await fetch(`${API_URL}/inquiries`);
+        const data = await res.json();
+        if (data && data.length > 0) setInquiryList(data);
+      } catch (e) {}
+    };
+
+    if (activeTab === 'customers') fetchUsers();
+    if (activeTab === 'fleet') fetchVehicles();
+    if (activeTab === 'inquiries') fetchInquiries();
+  }, [activeTab]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('myladoor_user');
+    localStorage.removeItem('myladoor_token');
+    window.location.href = '/signin';
+  };
 
   const updateBookingStatus = (id: string, status: string) => {
     setBookingList(b => b.map(bk => bk.id === id ? { ...bk, status } : bk));
@@ -147,10 +184,10 @@ export default function AdminPage() {
 
         {/* Logout */}
         <div className="p-4 border-t border-yellow-400/10 mt-auto">
-          <Link href="/signin" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-500 hover:text-red-400 transition-colors">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-500 hover:text-red-400 transition-colors">
             <LogOut size={17} />
             Logout
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -177,10 +214,10 @@ export default function AdminPage() {
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </button>
             <div className="w-8 h-8 sm:w-9 sm:h-9 bg-emerald-700 flex items-center justify-center text-white font-bold text-sm">A</div>
-            <Link href="/signin" className="ml-1 sm:ml-2 text-[10px] sm:text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1 border-l border-white/10 pl-2 sm:pl-3">
+            <button onClick={handleLogout} className="ml-1 sm:ml-2 text-[10px] sm:text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1 border-l border-white/10 pl-2 sm:pl-3">
               <LogOut size={14} />
               <span className="hidden sm:inline">Logout</span>
-            </Link>
+            </button>
           </div>
         </header>
 
@@ -297,7 +334,7 @@ export default function AdminPage() {
             {activeTab === 'fleet' && (
               <motion.div key="fleet" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {vehicles.map((v, i) => (
+                  {vehicleList.map((v, i) => (
                     <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
                       className="bg-[#161b22] border border-yellow-400/10 p-6 hover:border-yellow-400/30 transition-all"
                     >
@@ -326,7 +363,7 @@ export default function AdminPage() {
             {/* ─── INQUIRIES ─── */}
             {activeTab === 'inquiries' && (
               <motion.div key="inq" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
-                {inquiries.map((inq, i) => (
+                {inquiryList.map((inq, i) => (
                   <div key={i} className={`bg-[#161b22] border p-6 flex flex-col sm:flex-row gap-6 items-start ${inq.read ? 'border-white/5' : 'border-yellow-400/30'}`}>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">

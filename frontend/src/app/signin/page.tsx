@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Mail, Lock, Eye, EyeOff, LogIn, ArrowRight, MessageCircle } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
 export default function SignInPage() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -14,21 +15,33 @@ export default function SignInPage() {
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      // Admin bypass for demo
-      if (form.email === 'admin@myladoor.com' && form.password === 'Myladoor@Admin2026') {
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      
+      if (!res.ok) throw new Error('Login failed');
+      
+      const data = await res.json();
+      localStorage.setItem('myladoor_user', JSON.stringify(data.user));
+      localStorage.setItem('myladoor_token', data.access_token);
+      
+      if (data.user.role === 'ADMIN') {
         window.location.href = '/admin';
       } else {
-        localStorage.setItem('myladoor_user', JSON.stringify({ email: form.email, name: form.email.split('@')[0] }));
         window.location.href = '/';
       }
-    }, 1500);
+    } catch (err) {
+      alert('Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

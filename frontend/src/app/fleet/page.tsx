@@ -8,6 +8,8 @@ import { ParticleField } from '@/components/ui/ParticleField';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MessageCircle, Users, Filter, Star, Fuel, Shield, Check } from 'lucide-react';
+import { API_URL } from '@/lib/api';
+import { useEffect } from 'react';
 
 const allVehicles = [
   {
@@ -150,10 +152,39 @@ const tagColors: Record<string, string> = {
 
 export default function FleetPage() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const res = await fetch(`${API_URL}/vehicles`);
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setVehicles(data.map((v: any) => ({
+            ...v,
+            id: v.id,
+            price: `From ₹${v.pricePerDay.toLocaleString()}/day`,
+            capacityLabel: `${v.capacity} Seater`,
+            tag: v.category.toUpperCase(),
+            desc: v.description || 'Delivering premium vehicle rental experiences since 1994.',
+            rating: 4.9,
+          })));
+        } else {
+          setVehicles(allVehicles);
+        }
+      } catch (err) {
+        setVehicles(allVehicles);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVehicles();
+  }, []);
 
   const filtered = activeFilter === 'all'
-    ? allVehicles
-    : allVehicles.filter(v => v.category === activeFilter);
+    ? vehicles
+    : vehicles.filter(v => v.category === activeFilter);
 
   return (
     <div className="min-h-screen bg-[#0d1117]">

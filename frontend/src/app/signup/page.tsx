@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Mail, Lock, Eye, EyeOff, Phone, User, Check, UserPlus, MessageCircle } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
 export default function SignUpPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirm: '' });
@@ -15,18 +16,30 @@ export default function SignUpPage() {
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) {
       alert('Passwords do not match!');
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      localStorage.setItem('myladoor_user', JSON.stringify({ name: form.name, email: form.email }));
+    try {
+      const res = await fetch(`${API_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password
+        }),
+      });
+      if (!res.ok) throw new Error('Registration failed');
       setSubmitted(true);
-    }, 1500);
+    } catch (err) {
+      alert('Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const passwordStrength = () => {

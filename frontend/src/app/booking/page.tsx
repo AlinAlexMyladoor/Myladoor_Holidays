@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { ParticleField } from '@/components/ui/ParticleField';
 import { FireworksBurst } from '@/components/ui/FireworksBurst';
+import { API_URL } from '@/lib/api';
 
 const vehicles = [
   { id: 'sedan', name: 'Compact Sedan', capacity: 4, price: '₹1,800', tag: 'Economy', img: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=600', features: ['AC', 'GPS', 'Music'] },
@@ -89,7 +90,29 @@ export default function BookingPage() {
 
   const selectedVehicle = vehicles.find(v => v.id === form.vehicle);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Save to database first
+    try {
+      const userStr = localStorage.getItem('myladoor_user');
+      const user = userStr ? JSON.parse(userStr) : null;
+      
+      const response = await fetch(`${API_URL}/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          vehicleId: form.vehicle,
+          userId: user?.id || null,
+        }),
+      });
+      
+      if (!response.ok) {
+        console.warn('Booking saved to WhatsApp only (DB save failed)');
+      }
+    } catch (err) {
+      console.error('DB Error:', err);
+    }
+
     const msg = encodeURIComponent(
       `*🚐 New Booking Request — Myladoor Holidays*\n\n` +
       `*Trip Type:* ${form.tripType}\n` +

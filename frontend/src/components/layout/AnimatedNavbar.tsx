@@ -34,6 +34,7 @@ export const AnimatedNavbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('myladoor_user');
+    localStorage.removeItem('myladoor_token');
     setUser(null);
     window.location.href = '/';
   };
