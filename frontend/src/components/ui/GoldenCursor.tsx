@@ -11,8 +11,13 @@ export const GoldenCursor: React.FC = () => {
     Array(8).fill({ x: 0, y: 0 })
   );
   const animFrameRef = useRef<number>(0);
+  const [showCursor, setShowCursor] = React.useState(false);
 
   useEffect(() => {
+    // Only show custom cursor on desktop devices with a mouse
+    const canShow = window.matchMedia('(pointer: fine)').matches;
+    setShowCursor(canShow);
+    if (!canShow) return;
     const onMove = (e: MouseEvent) => {
       posRef.current = { x: e.clientX, y: e.clientY };
 
@@ -69,6 +74,8 @@ export const GoldenCursor: React.FC = () => {
       cancelAnimationFrame(animFrameRef.current);
     };
   }, []);
+
+  if (!showCursor) return null;
 
   return (
     <>

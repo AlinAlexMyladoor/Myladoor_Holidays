@@ -265,7 +265,7 @@ export const HeroSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.7 }}
-                className="block text-white text-5xl md:text-7xl font-light tracking-tight"
+                className="block text-white text-4xl sm:text-5xl md:text-7xl font-light tracking-tight"
               >
                 {slide.headline}
               </motion.span>
@@ -273,7 +273,7 @@ export const HeroSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.7 }}
-                className="block font-black text-6xl md:text-8xl xl:text-9xl leading-none text-gold-gradient neon-gold"
+                className="block font-black text-5xl sm:text-6xl md:text-8xl xl:text-9xl leading-none text-gold-gradient neon-gold"
                 style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 {slide.accent}
@@ -282,7 +282,7 @@ export const HeroSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.7 }}
-                className="block text-white/80 text-5xl md:text-7xl font-light tracking-tight"
+                className="block text-white/80 text-4xl sm:text-5xl md:text-7xl font-light tracking-tight"
               >
                 {slide.subHead}
               </motion.span>
@@ -307,7 +307,7 @@ export const HeroSection = () => {
             >
               <Link
                 href="/booking"
-                className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:shadow-[0_0_80px_rgba(212,175,55,0.7)] transition-shadow duration-500 neon-border-gold"
+                className="group relative inline-flex items-center justify-center gap-3 px-6 py-4 sm:px-10 sm:py-5 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:shadow-[0_0_80px_rgba(212,175,55,0.7)] transition-shadow duration-500 neon-border-gold"
               >
                 <span className="absolute inset-0 bg-white translate-x-[-110%] group-hover:translate-x-[110%] transition-transform duration-700 opacity-30 skew-x-12" />
                 <span className="relative">Book Your Ride</span>
@@ -316,14 +316,14 @@ export const HeroSection = () => {
               <a
                 href="https://wa.me/918848392990?text=Hi! I want to enquire about a vehicle booking with Myladoor Holidays."
                 target="_blank" rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-green-600/80 hover:bg-green-600 text-white font-bold text-sm transition-all duration-400 backdrop-blur-sm"
+                className="group inline-flex items-center justify-center gap-3 px-6 py-4 sm:px-10 sm:py-5 bg-green-600/80 hover:bg-green-600 text-white font-bold text-sm transition-all duration-400 backdrop-blur-sm"
               >
                 <MessageCircle size={18} />
                 WhatsApp Now
               </a>
               <Link
                 href="/fleet"
-                className="group inline-flex items-center justify-center gap-3 px-10 py-5 border border-white/25 text-white font-medium text-sm hover:bg-white/8 hover:border-white/40 transition-all duration-400 backdrop-blur-sm"
+                className="group inline-flex items-center justify-center gap-3 px-6 py-4 sm:px-10 sm:py-5 border border-white/25 text-white font-medium text-sm hover:bg-white/8 hover:border-white/40 transition-all duration-400 backdrop-blur-sm"
               >
                 <Play size={16} className="text-yellow-400 group-hover:scale-125 transition-transform" />
                 View Fleet
@@ -378,7 +378,7 @@ export const HeroSection = () => {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
         >
           <span className="text-white/30 text-[9px] font-bold tracking-[0.5em] uppercase">Scroll to Explore</span>
           <ChevronDown size={16} className="text-white/30" />

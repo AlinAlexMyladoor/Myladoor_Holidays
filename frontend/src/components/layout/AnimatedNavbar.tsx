@@ -114,7 +114,7 @@ export const AnimatedNavbar = () => {
                   <div className="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center text-white font-bold text-xs uppercase shadow-lg">
                     {user.name ? user.name.charAt(0) : user.email?.charAt(0) || 'U'}
                   </div>
-                  <span className="text-white text-sm font-medium hidden xl:block">{user.name || user.email?.split('@')[0]}</span>
+                  <span className="text-white text-sm font-medium hidden md:block">{user.name || user.email?.split('@')[0]}</span>
                 </div>
                 <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-red-400 transition-colors">
                   Logout

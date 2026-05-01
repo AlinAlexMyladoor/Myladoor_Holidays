@@ -146,7 +146,7 @@ export default function AdminPage() {
         </nav>
 
         {/* Logout */}
-        <div className="p-4 border-t border-yellow-400/10">
+        <div className="p-4 border-t border-yellow-400/10 mt-auto">
           <Link href="/signin" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-500 hover:text-red-400 transition-colors">
             <LogOut size={17} />
             Logout
@@ -167,8 +167,8 @@ export default function AdminPage() {
               <Menu size={22} />
             </button>
             <div>
-              <h1 className="text-white font-bold capitalize">{activeTab}</h1>
-              <p className="text-gray-500 text-xs">Myladoor Holidays Admin</p>
+              <h1 className="text-white font-bold capitalize text-sm sm:text-base">{activeTab}</h1>
+              <p className="text-gray-500 text-[10px] hidden sm:block">Myladoor Holidays Admin</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -176,10 +176,10 @@ export default function AdminPage() {
               <Bell size={20} />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </button>
-            <div className="w-9 h-9 bg-emerald-700 flex items-center justify-center text-white font-bold text-sm">A</div>
-            <Link href="/signin" className="ml-2 text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1 border-l border-white/10 pl-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-emerald-700 flex items-center justify-center text-white font-bold text-sm">A</div>
+            <Link href="/signin" className="ml-1 sm:ml-2 text-[10px] sm:text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1 border-l border-white/10 pl-2 sm:pl-3">
               <LogOut size={14} />
-              Logout
+              <span className="hidden sm:inline">Logout</span>
             </Link>
           </div>
         </header>
@@ -192,7 +192,7 @@ export default function AdminPage() {
             {activeTab === 'dashboard' && (
               <motion.div key="dash" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 {/* Stats */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                   {stats.map((s, i) => (
                     <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                       className="bg-[#161b22] border border-yellow-400/10 p-5 hover:border-yellow-400/30 transition-colors"
