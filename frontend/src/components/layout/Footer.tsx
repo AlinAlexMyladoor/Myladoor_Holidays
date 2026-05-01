@@ -121,14 +121,14 @@ export const Footer = () => {
                   <h2 className="text-white font-black tracking-[0.12em] uppercase text-lg leading-none">
                     Myladoor <span className="text-yellow-400">Holidays</span>
                   </h2>
-                  <span className="text-[9px] text-gray-500 tracking-[0.25em] uppercase">Est. 2010</span>
+                  <span className="text-[9px] text-gray-500 tracking-[0.25em] uppercase">Est. 1994</span>
                 </div>
               </div>
               <div className="w-8 h-[1px] bg-yellow-400" />
             </div>
 
             <p className="text-sm text-gray-500 leading-relaxed max-w-sm">
-              Delivering premium vehicle rental experiences since 2010. From intimate city drives to grand Kerala tours — your journey, perfected by professionals who care.
+              Delivering premium vehicle rental experiences since 1994. From intimate city drives to grand Kerala tours — your journey, perfected by professionals who care.
             </p>
 
             {/* Social Icons — 3D flip on hover */}
@@ -217,9 +217,11 @@ export const Footer = () => {
             <ul className="space-y-5">
               <li className="flex gap-3 items-start">
                 <MapPin size={15} className="text-yellow-400 mt-0.5 shrink-0" />
-                <span className="text-sm text-gray-500 leading-relaxed">
-                  Mulayam P.O, Thrissur<br />
-                  Kerala — 680751
+                <span className="text-sm text-gray-500 leading-relaxed hover:text-white transition-colors">
+                  <a href="https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala" target="_blank" rel="noopener noreferrer">
+                    Valakkavu, Thrissur<br />
+                    Kerala
+                  </a>
                 </span>
               </li>
               <li className="flex gap-3 items-center">

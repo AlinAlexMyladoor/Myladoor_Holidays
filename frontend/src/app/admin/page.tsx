@@ -43,6 +43,18 @@ const inquiries = [
   { name: 'Kavitha R', phone: '+91 97774 12311', message: 'Airport transfer from Kochi to Munnar - Apr 28.', time: '5 hours ago', read: false },
   { name: 'Santhosh KV', phone: '+91 98761 44529', message: 'Wedding guest transport, need 3 Innovas on May 5.', time: '1 day ago', read: true },
 ];
+
+const customers = [
+  { id: 'CUST-001', name: 'Rajan Menon', email: 'rajan.menon@example.com', phone: '+91 99870 12344', totalTrips: 12, joined: '2022-01-15' },
+  { id: 'CUST-002', name: 'Priya Nair', email: 'priya.nair@example.com', phone: '+91 99123 84321', totalTrips: 4, joined: '2024-03-10' },
+  { id: 'CUST-003', name: 'Sreejith KP', email: 'sreejith.kp@example.com', phone: '+91 88483 92990', totalTrips: 28, joined: '2020-05-22' },
+];
+
+const notifications = [
+  { id: 1, title: 'New Booking Request', desc: 'Rajan Menon requested Innova Premium for tomorrow.', time: '10 mins ago', type: 'booking' },
+  { id: 2, title: 'Payment Received', desc: '₹12,500 received from Sreejith KP.', time: '2 hours ago', type: 'payment' },
+  { id: 3, title: 'Fleet Maintenance Alert', desc: 'Traveller 17 requires routine oil change.', time: '1 day ago', type: 'alert' },
+];
 // ──────────────────────────────────────────────────────────
 
 const statusBadge = (s: string) => {
@@ -64,6 +76,7 @@ const sidebarItems = [
   { icon: MessageSquare, label: 'Inquiries', id: 'inquiries', badge: 2 },
   { icon: Users, label: 'Customers', id: 'customers' },
   { icon: TrendingUp, label: 'Analytics', id: 'analytics' },
+  { icon: Bell, label: 'Notifications', id: 'notifications', badge: 3 },
   { icon: Settings, label: 'Settings', id: 'settings' },
 ];
 
@@ -141,7 +154,7 @@ export default function AdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => setActiveTab('notifications')} className="relative p-2 text-gray-400 hover:text-white transition-colors">
               <Bell size={20} />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </button>
@@ -321,16 +334,158 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* ─── OTHER TABS: placeholder ─── */}
-            {['customers', 'analytics', 'settings'].includes(activeTab) && (
-              <motion.div key="other" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                className="flex flex-col items-center justify-center py-32 text-center"
-              >
-                <div className="w-20 h-20 bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center mb-6 text-yellow-400">
-                  <AlertCircle size={36} />
+            {/* ─── CUSTOMERS ─── */}
+            {activeTab === 'customers' && (
+              <motion.div key="customers" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                <div className="bg-[#161b22] border border-yellow-400/10">
+                  <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
+                    <h3 className="text-white font-semibold">Customer Directory</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-gray-500 text-xs uppercase tracking-widest border-b border-white/5">
+                          {['ID', 'Name', 'Contact', 'Total Trips', 'Joined', 'Actions'].map(h => (
+                            <th key={h} className="px-6 py-3 text-left font-medium">{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {customers.map(c => (
+                          <tr key={c.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td className="px-6 py-4 text-yellow-400 font-mono font-bold text-xs">{c.id}</td>
+                            <td className="px-6 py-4 text-white font-medium">{c.name}</td>
+                            <td className="px-6 py-4 text-gray-400">
+                              <div className="flex flex-col gap-1 text-xs">
+                                <span>{c.email}</span>
+                                <span>{c.phone}</span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-gray-400">{c.totalTrips}</td>
+                            <td className="px-6 py-4 text-gray-400">{c.joined}</td>
+                            <td className="px-6 py-4">
+                              <button className="px-3 py-1 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-xs">View</button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <h3 className="text-white text-xl font-semibold mb-2 capitalize">{activeTab}</h3>
-                <p className="text-gray-500 text-sm">This module is coming soon. Backend integration required.</p>
+              </motion.div>
+            )}
+
+            {/* ─── ANALYTICS ─── */}
+            {activeTab === 'analytics' && (
+              <motion.div key="analytics" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-[#161b22] border border-yellow-400/10 p-6">
+                    <h3 className="text-white font-semibold mb-6">Revenue Overview</h3>
+                    <div className="h-48 flex items-end justify-between gap-2 border-b border-white/10 pb-2">
+                      {[40, 70, 45, 90, 65, 80, 100].map((h, i) => (
+                        <div key={i} className="w-full bg-yellow-400/20 hover:bg-yellow-400/50 transition-colors relative group rounded-t-sm" style={{ height: `${h}%` }}>
+                          <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity">₹{h}k</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-between mt-2 text-xs text-gray-500">
+                      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#161b22] border border-yellow-400/10 p-6">
+                    <h3 className="text-white font-semibold mb-6">Popular Vehicles</h3>
+                    <div className="space-y-4">
+                      {[
+                        { name: 'Innova Premium', percent: 85 },
+                        { name: 'Traveller 17', percent: 60 },
+                        { name: 'Grand Coach 49', percent: 45 },
+                        { name: 'Urbania Luxury', percent: 30 },
+                      ].map((v, i) => (
+                        <div key={i}>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="text-gray-300">{v.name}</span>
+                            <span className="text-yellow-400">{v.percent}%</span>
+                          </div>
+                          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-emerald-600 to-yellow-400" style={{ width: `${v.percent}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ─── NOTIFICATIONS ─── */}
+            {activeTab === 'notifications' && (
+              <motion.div key="notifications" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-white font-semibold">Recent Notifications</h3>
+                  <button className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">Mark all as read</button>
+                </div>
+                {notifications.map((n, i) => (
+                  <div key={i} className="bg-[#161b22] border border-white/5 p-4 flex gap-4 items-start hover:bg-white/5 transition-colors">
+                    <div className={`w-10 h-10 shrink-0 flex items-center justify-center ${n.type === 'booking' ? 'bg-blue-500/10 text-blue-400' : n.type === 'payment' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                      <Bell size={18} />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-white text-sm font-semibold mb-1">{n.title}</h4>
+                      <p className="text-gray-400 text-xs leading-relaxed">{n.desc}</p>
+                      <span className="text-gray-600 text-[10px] mt-2 block">{n.time}</span>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+
+            {/* ─── SETTINGS ─── */}
+            {activeTab === 'settings' && (
+              <motion.div key="settings" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-3xl">
+                <div className="bg-[#161b22] border border-yellow-400/10 p-6 mb-6">
+                  <h3 className="text-white font-semibold mb-6">Profile Settings</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-2 block">Company Name</label>
+                      <input type="text" defaultValue="Myladoor Holidays" className="w-full bg-white/5 border border-white/10 text-white p-3 focus:outline-none focus:border-yellow-400 text-sm" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-2 block">Contact Email</label>
+                      <input type="email" defaultValue="admin@myladoor.com" className="w-full bg-white/5 border border-white/10 text-white p-3 focus:outline-none focus:border-yellow-400 text-sm" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-2 block">Phone Number</label>
+                      <input type="tel" defaultValue="+91 88483 92990" className="w-full bg-white/5 border border-white/10 text-white p-3 focus:outline-none focus:border-yellow-400 text-sm" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-2 block">Currency</label>
+                      <select className="w-full bg-[#161b22] border border-white/10 text-white p-3 focus:outline-none focus:border-yellow-400 text-sm">
+                        <option value="INR">INR (₹)</option>
+                        <option value="USD">USD ($)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button className="mt-6 px-6 py-2.5 bg-yellow-400 text-black text-sm font-bold uppercase tracking-wider hover:bg-yellow-300 transition-colors">Save Changes</button>
+                </div>
+
+                <div className="bg-[#161b22] border border-yellow-400/10 p-6">
+                  <h3 className="text-white font-semibold mb-6">Notification Preferences</h3>
+                  <div className="space-y-4">
+                    {[
+                      { title: 'Email Alerts for New Bookings', enabled: true },
+                      { title: 'SMS Notifications to Customers', enabled: true },
+                      { title: 'Weekly Analytics Report', enabled: false },
+                      { title: 'Fleet Maintenance Reminders', enabled: true },
+                    ].map((pref, i) => (
+                      <div key={i} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                        <span className="text-gray-300 text-sm">{pref.title}</span>
+                        <div className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${pref.enabled ? 'bg-emerald-500' : 'bg-white/10'}`}>
+                          <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full transition-transform ${pref.enabled ? 'translate-x-5' : 'translate-x-0'}`} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </motion.div>
             )}
 

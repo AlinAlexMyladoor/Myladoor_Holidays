@@ -11,7 +11,7 @@ import { Trophy, Heart, Star, Users, Globe, Zap, ArrowRight, MessageCircle, Awar
 
 const milestones = [
   {
-    year: '2010',
+    year: '1994',
     title: 'The Beginning',
     desc: "Myladoor Holidays started with a single Innova Crysta and a bold vision: to transform Kerala's vehicle rental landscape with professionalism and passion.",
     image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=600',
@@ -72,7 +72,7 @@ export default function AboutPage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 pb-16 w-full">
           <div>
-            <span className="text-yellow-400 text-[10px] font-black tracking-[0.45em] uppercase">Since 2010</span>
+            <span className="text-yellow-400 text-[10px] font-black tracking-[0.45em] uppercase">Since 1994</span>
             <h1 className="text-5xl md:text-7xl font-light text-white mt-3">
               Our <span className="font-black text-gold-gradient">Story</span>
             </h1>
@@ -95,7 +95,7 @@ export default function AboutPage() {
                   More Than Just a <span className="font-bold">Vehicle Rental</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed font-light mb-6">
-                  Myladoor Holidays isn't just a transport company — we're your travel partners. For over 15 years, we've been crafting seamless, comfortable, and memorable journeys for thousands of families, corporates, and event groups across Kerala and South India.
+                  Myladoor Holidays isn't just a transport company — we're your travel partners. For over 30 years, we've been crafting seamless, comfortable, and memorable journeys for thousands of families, corporates, and event groups across Kerala and South India.
                 </p>
                 <p className="text-gray-500 leading-relaxed font-light mb-8">
                   Our fleet of 9 vehicle categories, maintained to the highest standards, paired with professional, trained chauffeurs — ensures every trip is an experience worth remembering.
@@ -138,7 +138,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-yellow-400/8">
             {[
-              { val: 15, suffix: '+', label: 'Years in Service', icon: Trophy },
+              { val: 32, suffix: '+', label: 'Years in Service', icon: Trophy },
               { val: 5000, suffix: '+', label: 'Satisfied Clients', icon: Heart },
               { val: 9, suffix: '', label: 'Vehicle Types', icon: Globe },
               { val: 98, suffix: '%', label: 'Satisfaction Rate', icon: Zap },
@@ -164,7 +164,7 @@ export default function AboutPage() {
           <RevealOnScroll direction="up" className="text-center mb-20">
             <span className="text-yellow-400 text-[10px] font-black tracking-[0.4em] uppercase">Our Journey</span>
             <h2 className="text-4xl md:text-5xl font-light text-white mt-4">
-              15 Years of <span className="font-bold">Excellence</span>
+              30+ Years of <span className="font-bold">Excellence</span>
             </h2>
             <div className="divider-gold max-w-24 mx-auto mt-8" />
           </RevealOnScroll>
@@ -277,7 +277,7 @@ export default function AboutPage() {
                       <path id="circle-about" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
                     </defs>
                     <text fontSize="10" fill="#d4af37" fontFamily="Inter, sans-serif" fontWeight="700" letterSpacing="3">
-                      <textPath href="#circle-about">✦ MYLADOOR HOLIDAYS ✦ 2010 ✦</textPath>
+                      <textPath href="#circle-about">✦ MYLADOOR HOLIDAYS ✦ 1994 ✦</textPath>
                     </text>
                   </svg>
                 </motion.div>
@@ -289,7 +289,7 @@ export default function AboutPage() {
                   className="absolute -bottom-6 -left-6 glass-dark p-4 border border-yellow-400/20"
                 >
                   <Award size={20} className="text-yellow-400 mb-1" />
-                  <p className="text-white text-xs font-bold">15+ Years Leading</p>
+                  <p className="text-white text-xs font-bold">30+ Years Leading</p>
                   <p className="text-gray-500 text-[10px]">Kerala&apos;s Premium Fleet</p>
                 </motion.div>
               </div>
@@ -322,7 +322,7 @@ export default function AboutPage() {
                 </div>
 
                 <p className="text-gray-400 leading-relaxed font-light mb-6">
-                  With over 15 years of hands-on experience in Kerala&apos;s transport and tourism industry, Saji Myladoor built this company from a single vehicle and an unwavering vision: to deliver transport that feels like hospitality.
+                  With over 30 years of hands-on experience in Kerala&apos;s transport and tourism industry, Saji Myladoor built this company from a single vehicle and an unwavering vision: to deliver transport that feels like hospitality.
                 </p>
                 <p className="text-gray-500 leading-relaxed font-light mb-8">
                   His philosophy is simple — every passenger deserves a driver who cares, a vehicle that&apos;s immaculate, and an experience that exceeds expectations. This belief has shaped every aspect of Myladoor Holidays.
@@ -331,7 +331,7 @@ export default function AboutPage() {
                 {/* Key achievements */}
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   {[
-                    { icon: Trophy, label: 'Founded', val: '2010' },
+                    { icon: Trophy, label: 'Founded', val: '1994' },
                     { icon: Users, label: 'Lives Touched', val: '5,000+' },
                     { icon: Globe, label: 'Routes Covered', val: '50+ Routes' },
                     { icon: Star, label: 'Avg Rating', val: '4.9 / 5' },

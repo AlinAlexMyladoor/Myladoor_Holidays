@@ -20,7 +20,7 @@ const slides = [
     accent: 'Unmatched',
     subHead: 'Elegance',
     sub: "Experience the difference with Myladoor Holidays — Kerala's finest vehicle rental service, available 24/7 from Thrissur.",
-    badge: '15+ Years of Excellence',
+    badge: '30+ Years of Excellence',
   },
   {
     tag: 'Airport · Corporate · Weddings',
@@ -341,10 +341,10 @@ export const HeroSection = () => {
                 <Phone size={13} className="text-yellow-400" />
                 +91 88483 92990
               </a>
-              <div className="flex items-center gap-2 text-gray-400 text-xs">
+              <a href="https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 text-xs hover:text-white transition-colors">
                 <MapPin size={13} className="text-yellow-400" />
-                Mulayam P.O, Thrissur
-              </div>
+                Valakkavu, Thrissur, Kerala
+              </a>
               <div className="flex items-center gap-2 text-gray-400 text-xs">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                 24/7 Available

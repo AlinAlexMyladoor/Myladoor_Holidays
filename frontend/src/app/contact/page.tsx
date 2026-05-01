@@ -11,8 +11,8 @@ const contactInfoItems = [
   {
     icon: MapPin,
     title: 'Visit Our Office',
-    lines: ['Mulayam P.O, Thrissur', 'Kerala — 680751'],
-    link: 'https://maps.google.com/',
+    lines: ['Valakkavu, Thrissur', 'Kerala'],
+    link: 'https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala',
     linkLabel: 'Get Directions →',
   },
   {
@@ -147,17 +147,18 @@ export default function ContactPage() {
 
             {/* Map Preview */}
             <RevealOnScroll direction="left" delay={0.5}>
-              <div className="relative h-36 bg-[#161b22] border border-yellow-400/8 overflow-hidden group hover:border-yellow-400/25 transition-colors">
-                <Image
-                  src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=600"
-                  alt="map location"
-                  fill
-                  className="object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-400"
+              <div className="relative h-48 bg-[#161b22] border border-yellow-400/8 overflow-hidden group hover:border-yellow-400/25 transition-colors">
+                <iframe 
+                  src="https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                  className="w-full h-full opacity-60 group-hover:opacity-90 transition-opacity duration-400 grayscale contrast-125" 
+                  style={{ border: 0 }} 
+                  allowFullScreen={false} 
+                  loading="lazy" 
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-100 group-hover:opacity-0 transition-opacity duration-400">
                   <div className="flex items-center gap-2 glass-dark px-5 py-3">
                     <Navigation size={16} className="text-yellow-400" />
-                    <span className="text-white text-sm font-semibold">Find Us on Map</span>
+                    <span className="text-white text-sm font-semibold">Interactive Map</span>
                   </div>
                 </div>
               </div>
