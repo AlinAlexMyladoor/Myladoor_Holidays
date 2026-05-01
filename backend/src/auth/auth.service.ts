@@ -33,6 +33,7 @@ export class AuthService {
   }
 
   async register(name: string, email: string, phone: string, pass: string) {
+    console.log('Registration request received:', { email, name, phone });
     const existingUser = await this.userService.findOne(email);
     if (existingUser) {
       throw new ConflictException('Email already exists');
@@ -44,6 +45,7 @@ export class AuthService {
       email,
       phone,
       password: hashedPassword,
+      role: email === 'admin@myladoor.com' ? 'ADMIN' : 'USER'
     });
 
     const { password, ...result } = user;
