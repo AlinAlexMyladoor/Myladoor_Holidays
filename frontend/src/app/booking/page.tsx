@@ -178,53 +178,114 @@ export default function BookingPage() {
         {submitted ? (
           /* ── SUCCESS ── */
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-20 glass-dark p-10 relative overflow-hidden"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative"
           >
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent" />
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.2 }}
-              className="w-28 h-28 bg-emerald-500/15 border-2 border-emerald-400/40 flex items-center justify-center mx-auto mb-8"
-            >
-              <Check size={56} className="text-emerald-400" />
-            </motion.div>
-            <h2 className="text-4xl font-bold text-white mb-3">Booking Sent!</h2>
-            <p className="text-gray-400 mb-2 max-w-md mx-auto">Your booking request has been sent to Myladoor Holidays via WhatsApp. We'll confirm within 30 minutes.</p>
-            <p className="text-yellow-400 text-sm font-semibold mb-10">Reference: MH-{Math.floor(Math.random() * 90000) + 10000}</p>
-
-            {/* Summary */}
-            <div className="glass-dark border border-yellow-400/10 p-6 mb-10 text-left max-w-md mx-auto">
-              <h3 className="text-white font-bold mb-4 text-sm uppercase tracking-widest">Booking Summary</h3>
-              {[
-                { label: 'Trip Type', val: form.tripType },
-                { label: 'Route', val: `${form.from} → ${form.to}` },
-                { label: 'Pickup Date', val: form.pickupDate },
-                { label: 'Vehicle', val: selectedVehicle?.name || form.vehicle },
-                { label: 'Passengers', val: form.pax },
-                { label: 'Contact', val: form.phone },
-              ].map((row, i) => (
-                <div key={i} className="flex justify-between py-2 border-b border-white/5 last:border-0">
-                  <span className="text-gray-500 text-sm">{row.label}</span>
-                  <span className="text-white text-sm font-medium">{row.val}</span>
+            {/* The Confirmation Sheet */}
+            <div id="confirmation-sheet" className="bg-white text-[#0d1117] p-8 md:p-12 shadow-[0_30px_60px_rgba(0,0,0,0.5)] max-w-2xl mx-auto relative overflow-hidden booking-receipt">
+              {/* Receipt Header */}
+              <div className="flex justify-between items-start border-b-2 border-[#0d1117]/10 pb-8 mb-8">
+                <div>
+                  <Image src="/images/logo.png" alt="Logo" width={50} height={50} className="mb-4 grayscale" />
+                  <h2 className="text-2xl font-black uppercase tracking-tighter">Booking Confirmation</h2>
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500">Myladoor Holidays · Thrissur, Kerala</p>
                 </div>
-              ))}
+                <div className="text-right">
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1">Reference Number</p>
+                  <p className="text-xl font-mono font-black">MH-{Math.floor(Math.random() * 90000) + 10000}</p>
+                  <p className="text-[10px] text-gray-400 mt-1">{new Date().toLocaleDateString()} · {new Date().toLocaleTimeString()}</p>
+                </div>
+              </div>
+
+              {/* Status Badge */}
+              <div className="mb-8 flex justify-center">
+                <div className="border-2 border-[#0d1117] px-6 py-2 rotate-[-2deg] font-black uppercase tracking-[0.2em] text-sm">
+                  Request Received
+                </div>
+              </div>
+
+              {/* Summary Grid */}
+              <div className="grid grid-cols-2 gap-y-6 gap-x-12 mb-10">
+                {[
+                  { label: 'Customer Name', val: form.name },
+                  { label: 'Phone Number', val: form.phone },
+                  { label: 'Trip Type', val: form.tripType },
+                  { label: 'Vehicle', val: selectedVehicle?.name || form.vehicle },
+                  { label: 'From', val: form.from },
+                  { label: 'To', val: form.to },
+                  { label: 'Pickup Date', val: form.pickupDate },
+                  { label: 'Return Date', val: form.returnDate || 'One Way' },
+                  { label: 'Passengers', val: `${form.pax} Person(s)` },
+                ].map((item, i) => (
+                  <div key={i} className="border-b border-gray-100 pb-2">
+                    <p className="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1">{item.label}</p>
+                    <p className="text-sm font-bold">{item.val}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Notes */}
+              {form.notes && (
+                <div className="mb-10 bg-gray-50 p-4 border-l-4 border-yellow-400">
+                  <p className="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1">Special Notes</p>
+                  <p className="text-xs italic">"{form.notes}"</p>
+                </div>
+              )}
+
+              {/* Footer / Instructions */}
+              <div className="border-t-2 border-dashed border-gray-200 pt-8 text-center">
+                <p className="text-[10px] text-gray-500 leading-relaxed max-w-sm mx-auto">
+                  Thank you for choosing Myladoor Holidays. Our team will contact you via WhatsApp or phone within 30 minutes to confirm availability and final pricing.
+                </p>
+                <div className="mt-6 flex justify-center gap-2">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Processing Order</span>
+                </div>
+              </div>
+
+              {/* Watermark */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none rotate-[-45deg]">
+                <h2 className="text-[120px] font-black">MYLADOOR</h2>
+              </div>
             </div>
 
-            <div className="flex justify-center gap-4 flex-wrap">
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 mt-12 flex-wrap no-print">
+              <button
+                onClick={() => window.print()}
+                className="px-8 py-4 bg-white text-black font-black uppercase tracking-wider text-sm hover:bg-gray-100 transition-all flex items-center gap-2 shadow-xl"
+              >
+                Print Sheet
+              </button>
               <a
                 href="https://wa.me/918848392990"
                 target="_blank" rel="noopener noreferrer"
-                className="px-8 py-4 bg-green-600 text-white font-bold text-sm hover:bg-green-500 transition-all flex items-center gap-2"
+                className="px-8 py-4 bg-green-600 text-white font-black uppercase tracking-wider text-sm hover:bg-green-500 transition-all flex items-center gap-2 shadow-xl"
               >
-                <MessageCircle size={18} /> Chat on WhatsApp
+                <MessageCircle size={18} /> WhatsApp Support
               </a>
-              <Link href="/" className="px-8 py-4 border border-white/20 text-white text-sm hover:border-yellow-400/50 hover:text-yellow-400 transition-all">
+              <Link href="/" className="px-8 py-4 border border-white/20 text-white text-sm hover:border-yellow-400 transition-all">
                 Back to Home
               </Link>
             </div>
+
+            <style jsx global>{`
+              @media print {
+                body * { visibility: hidden; }
+                #confirmation-sheet, #confirmation-sheet * { visibility: visible; }
+                #confirmation-sheet {
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  margin: 0;
+                  padding: 2rem;
+                  box-shadow: none;
+                }
+                .no-print { display: none !important; }
+              }
+            `}</style>
           </motion.div>
         ) : (
           <AnimatePresence mode="wait">

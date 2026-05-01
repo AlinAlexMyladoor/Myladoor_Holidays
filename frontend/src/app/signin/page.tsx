@@ -114,6 +114,7 @@ export default function SignInPage() {
                 onChange={e => set('email', e.target.value)}
                 onFocus={() => setFocusedField('email')}
                 onBlur={() => setFocusedField(null)}
+                autoComplete="off"
                 className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
               />
             </div>
@@ -132,6 +133,7 @@ export default function SignInPage() {
                   onChange={e => set('password', e.target.value)}
                   onFocus={() => setFocusedField('password')}
                   onBlur={() => setFocusedField(null)}
+                  autoComplete="off"
                   className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
                 />
                 <button

@@ -51,11 +51,8 @@ const customers = [
   { id: 'CUST-003', name: 'Sreejith KP', email: 'sreejith.kp@example.com', phone: '+91 88483 92990', totalTrips: 28, joined: '2020-05-22' },
 ];
 
-const notifications = [
-  { id: 1, title: 'New Booking Request', desc: 'Rajan Menon requested Innova Premium for tomorrow.', time: '10 mins ago', type: 'booking' },
-  { id: 2, title: 'Payment Received', desc: '₹12,500 received from Sreejith KP.', time: '2 hours ago', type: 'payment' },
-  { id: 3, title: 'Fleet Maintenance Alert', desc: 'Traveller 17 requires routine oil change.', time: '1 day ago', type: 'alert' },
-];
+// Mock notifications removed, now using dynamic state.
+
 // ──────────────────────────────────────────────────────────
 
 const statusBadge = (s: string) => {
@@ -70,16 +67,7 @@ const statusBadge = (s: string) => {
   return <span className={`px-3 py-1 text-xs font-semibold rounded-sm capitalize ${classes[s] || ''}`}>{s}</span>;
 };
 
-const sidebarItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
-  { icon: Calendar, label: 'Bookings', id: 'bookings' },
-  { icon: Car, label: 'Fleet', id: 'fleet' },
-  { icon: MessageSquare, label: 'Inquiries', id: 'inquiries', badge: 2 },
-  { icon: Users, label: 'Customers', id: 'customers' },
-  { icon: TrendingUp, label: 'Analytics', id: 'analytics' },
-  { icon: Bell, label: 'Notifications', id: 'notifications', badge: 3 },
-  { icon: Settings, label: 'Settings', id: 'settings' },
-];
+
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -89,49 +77,117 @@ export default function AdminPage() {
   const [inquiryList, setInquiryList] = useState(inquiries);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const sidebarItems = [
+    { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
+    { icon: Calendar, label: 'Bookings', id: 'bookings', badge: bookingList.filter(b => b.status === 'pending').length || undefined },
+    { icon: Car, label: 'Fleet', id: 'fleet' },
+    { icon: MessageSquare, label: 'Inquiries', id: 'inquiries', badge: inquiryList.filter(i => !i.read).length || undefined },
+    { icon: Users, label: 'Customers', id: 'customers' },
+    { icon: TrendingUp, label: 'Analytics', id: 'analytics' },
+    { icon: Bell, label: 'Notifications', id: 'notifications', badge: notifications.length || undefined },
+    { icon: Settings, label: 'Settings', id: 'settings' },
+  ];
+
+  const [notifications, setNotifications] = useState<any[]>([]);
+
+  const fetchAllData = async () => {
+    try {
+      // Fetch Bookings
+      const bRes = await fetch(`${API_URL}/bookings`);
+      const bData = await bRes.json();
+      if (Array.isArray(bData)) {
+        setBookingList(bData.map((b: any) => ({
+          id: b.id.substring(0, 8).toUpperCase(),
+          name: b.user?.name || 'Guest User',
+          vehicle: b.vehicle?.name || 'Unknown',
+          from: b.from,
+          to: b.to,
+          date: new Date(b.pickupDate).toLocaleDateString(),
+          pax: b.pax,
+          status: b.status.toLowerCase(),
+          phone: b.user?.email || 'No Phone', // Assuming user has phone or email
+          realId: b.id
+        })));
+      }
+
+      // Fetch Inquiries
+      const iRes = await fetch(`${API_URL}/inquiries`);
+      const iData = await iRes.json();
+      if (Array.isArray(iData)) {
+        setInquiryList(iData.map((inq: any) => ({
+          ...inq,
+          time: new Date(inq.createdAt).toLocaleString(),
+        })));
+      }
+
+      // Fetch Users
+      const uRes = await fetch(`${API_URL}/users`);
+      const uData = await uRes.json();
+      if (Array.isArray(uData)) {
+        setCustomerList(uData.map((u: any) => ({
+          id: u.id.substring(0, 8).toUpperCase(),
+          name: u.name || 'Web User',
+          email: u.email,
+          phone: 'N/A',
+          totalTrips: 0,
+          joined: new Date(u.createdAt).toLocaleDateString()
+        })));
+      }
+
+      // Fetch Vehicles
+      const vRes = await fetch(`${API_URL}/vehicles`);
+      const vData = await vRes.json();
+      if (Array.isArray(vData)) {
+        setVehicleList(vData.map((v: any) => ({
+          ...v,
+          type: v.category.toUpperCase(),
+          reg: 'KL-ADMIN-DB'
+        })));
+      }
+
+      // Create Notifications from bookings and inquiries
+      const newNotifications: any[] = [];
+      if (Array.isArray(bData)) {
+        bData.filter((b: any) => b.status === 'PENDING').forEach((b: any) => {
+          newNotifications.push({
+            id: `b-${b.id}`,
+            title: 'New Booking Request',
+            desc: `${b.user?.name || 'A guest'} requested ${b.vehicle?.name} for ${new Date(b.pickupDate).toLocaleDateString()}.`,
+            time: new Date(b.createdAt).toLocaleString(),
+            type: 'booking'
+          });
+        });
+      }
+      if (Array.isArray(iData)) {
+        iData.filter((i: any) => !i.read).forEach((i: any) => {
+          newNotifications.push({
+            id: `i-${i.id}`,
+            title: 'New Inquiry',
+            desc: `Inquiry from ${i.name}: ${i.message.substring(0, 50)}...`,
+            time: new Date(i.createdAt).toLocaleString(),
+            type: 'alert'
+          });
+        });
+      }
+      setNotifications(newNotifications.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()));
+
+    } catch (e) {
+      console.error('Error fetching admin data:', e);
+    }
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(`${API_URL}/users`);
-        const data = await res.json();
-        if (data && data.length > 0) {
-          setCustomerList(data.map((u: any) => ({
-            id: u.id.substring(0, 8).toUpperCase(),
-            name: u.name || 'Web User',
-            email: u.email,
-            phone: 'N/A',
-            totalTrips: 0,
-            joined: new Date(u.createdAt).toLocaleDateString()
-          })));
-        }
-      } catch (e) {}
-    };
+    fetchAllData();
+    // Refresh every minute
+    const interval = setInterval(fetchAllData, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const fetchVehicles = async () => {
-      try {
-        const res = await fetch(`${API_URL}/vehicles`);
-        const data = await res.json();
-        if (data && data.length > 0) {
-          setVehicleList(data.map((v: any) => ({
-            ...v,
-            type: v.category.toUpperCase(),
-            reg: 'KL-ADMIN-DB'
-          })));
-        }
-      } catch (e) {}
-    };
-
-    const fetchInquiries = async () => {
-      try {
-        const res = await fetch(`${API_URL}/inquiries`);
-        const data = await res.json();
-        if (data && data.length > 0) setInquiryList(data);
-      } catch (e) {}
-    };
-
-    if (activeTab === 'customers') fetchUsers();
-    if (activeTab === 'fleet') fetchVehicles();
-    if (activeTab === 'inquiries') fetchInquiries();
+  useEffect(() => {
+    // Re-fetch when certain tabs are clicked to ensure fresh data
+    if (['bookings', 'inquiries', 'customers', 'fleet', 'notifications', 'dashboard'].includes(activeTab)) {
+      fetchAllData();
+    }
   }, [activeTab]);
 
   const handleLogout = () => {
@@ -140,8 +196,28 @@ export default function AdminPage() {
     window.location.href = '/signin';
   };
 
-  const updateBookingStatus = (id: string, status: string) => {
-    setBookingList(b => b.map(bk => bk.id === id ? { ...bk, status } : bk));
+  const updateBookingStatus = async (id: string, status: string) => {
+    try {
+      const res = await fetch(`${API_URL}/bookings/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: status.toUpperCase() }),
+      });
+      if (res.ok) {
+        fetchAllData();
+      }
+    } catch (e) {
+      console.error('Error updating status:', e);
+    }
+  };
+
+  const markInquiryRead = async (id: string) => {
+    try {
+      await fetch(`${API_URL}/inquiries/${id}/read`, { method: 'PATCH' });
+      fetchAllData();
+    } catch (e) {
+      console.error('Error marking inquiry as read:', e);
+    }
   };
 
   return (
@@ -308,10 +384,10 @@ export default function AdminPage() {
                               <div className="flex gap-2">
                                 {b.status === 'pending' && (
                                   <>
-                                    <button onClick={() => updateBookingStatus(b.id, 'confirmed')} className="p-1.5 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40 transition-colors rounded-sm" title="Confirm">
+                                    <button onClick={() => updateBookingStatus(b.realId, 'confirmed')} className="p-1.5 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40 transition-colors rounded-sm" title="Confirm">
                                       <Check size={15} />
                                     </button>
-                                    <button onClick={() => updateBookingStatus(b.id, 'cancelled')} className="p-1.5 bg-red-500/20 text-red-400 hover:bg-red-500/40 transition-colors rounded-sm" title="Cancel">
+                                    <button onClick={() => updateBookingStatus(b.realId, 'cancelled')} className="p-1.5 bg-red-500/20 text-red-400 hover:bg-red-500/40 transition-colors rounded-sm" title="Cancel">
                                       <X size={15} />
                                     </button>
                                   </>
@@ -387,6 +463,11 @@ export default function AdminPage() {
                       <a href={`tel:${inq.phone}`} className="px-4 py-2 bg-white/5 text-gray-300 text-xs font-semibold hover:bg-white/10 hover:text-white transition-colors flex items-center gap-2">
                         Call
                       </a>
+                      {!inq.read && (
+                        <button onClick={() => markInquiryRead(inq.id)} className="px-4 py-2 bg-yellow-400/10 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors">
+                          Mark as Read
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
