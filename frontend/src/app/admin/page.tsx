@@ -20,11 +20,11 @@ const stats = [
 ];
 
 const bookings = [
-  { id: 'MH-12091', name: 'Rajan Menon', vehicle: 'Innova Premium', from: 'Kochi', to: 'Munnar', date: '2026-04-22', pax: 6, status: 'confirmed', phone: '+91 99870 12344' },
-  { id: 'MH-12090', name: 'Priya Nair', vehicle: 'Executive Van 14', from: 'Trivandrum', to: 'Kanyakumari', date: '2026-04-23', pax: 12, status: 'pending', phone: '+91 99123 84321' },
-  { id: 'MH-12089', name: 'Sreejith KP', vehicle: 'Grand Coach 49', from: 'Thrissur', to: 'Guruvayur', date: '2026-04-24', pax: 44, status: 'pending', phone: '+91 88483 92990' },
-  { id: 'MH-12088', name: 'Arun Thomas', vehicle: 'Compact Sedan', from: 'Kochi Airport', to: 'Fort Kochi', date: '2026-04-20', pax: 3, status: 'confirmed', phone: '+91 94470 22341' },
-  { id: 'MH-12087', name: 'Deepa Varma', vehicle: 'Urbania Luxury', from: 'Calicut', to: 'Ooty', date: '2026-04-19', pax: 10, status: 'cancelled', phone: '+91 98450 11203' },
+  { id: 'MH-12091', realId: 'MH-12091', name: 'Rajan Menon', vehicle: 'Innova Premium', from: 'Kochi', to: 'Munnar', date: '2026-04-22', pax: 6, status: 'confirmed', phone: '+91 99870 12344' },
+  { id: 'MH-12090', realId: 'MH-12090', name: 'Priya Nair', vehicle: 'Executive Van 14', from: 'Trivandrum', to: 'Kanyakumari', date: '2026-04-23', pax: 12, status: 'pending', phone: '+91 99123 84321' },
+  { id: 'MH-12089', realId: 'MH-12089', name: 'Sreejith KP', vehicle: 'Grand Coach 49', from: 'Thrissur', to: 'Guruvayur', date: '2026-04-24', pax: 44, status: 'pending', phone: '+91 88483 92990' },
+  { id: 'MH-12088', realId: 'MH-12088', name: 'Arun Thomas', vehicle: 'Compact Sedan', from: 'Kochi Airport', to: 'Fort Kochi', date: '2026-04-20', pax: 3, status: 'confirmed', phone: '+91 94470 22341' },
+  { id: 'MH-12087', realId: 'MH-12087', name: 'Deepa Varma', vehicle: 'Urbania Luxury', from: 'Calicut', to: 'Ooty', date: '2026-04-19', pax: 10, status: 'cancelled', phone: '+91 98450 11203' },
 ];
 
 const vehicles = [
