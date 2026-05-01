@@ -283,12 +283,12 @@ const FleetBanner = () => (
   <section className="bg-[#080c0a] relative overflow-hidden">
     <div className="absolute inset-0 grid-pattern opacity-30" />
 
-    <RevealOnScroll direction="up" className="text-center pt-20 pb-10 px-4 relative z-10">
-      <span className="text-yellow-400 text-[10px] font-black tracking-[0.4em] uppercase">Our Complete Fleet</span>
-      <h2 className="text-4xl md:text-5xl font-light text-white mt-4">
+    <RevealOnScroll direction="up" className="text-center pt-12 md:pt-20 pb-8 md:pb-10 px-4 relative z-10">
+      <span className="text-yellow-400 text-[9px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase">Our Complete Fleet</span>
+      <h2 className="text-3xl md:text-5xl font-light text-white mt-4">
         The Myladoor <span className="font-bold text-gold-gradient">Fleet</span>
       </h2>
-      <p className="text-gray-500 mt-3 font-light max-w-2xl mx-auto">
+      <p className="text-gray-500 mt-3 font-light max-w-2xl mx-auto text-xs md:text-sm">
         From compact sedans to 49-seater luxury coaches — all immaculately maintained, GPS-tracked, and available across Kerala.
       </p>
     </RevealOnScroll>
@@ -399,30 +399,30 @@ const WhyUsSection = () => (
     <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-400/3 rounded-full blur-[100px] pointer-events-none" />
 
     <div className="max-w-7xl mx-auto px-4 relative z-10">
-      <RevealOnScroll direction="up" className="text-center mb-24">
-        <span className="text-yellow-400 text-[10px] font-black tracking-[0.4em] uppercase">Our Promise</span>
-        <h2 className="text-4xl md:text-6xl font-light text-white mt-4 mb-4">
+      <RevealOnScroll direction="up" className="text-center mb-16 md:mb-24 px-4">
+        <span className="text-yellow-400 text-[9px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase">Our Promise</span>
+        <h2 className="text-3xl md:text-6xl font-light text-white mt-4 mb-4">
           Why Choose <span className="font-bold text-gold-gradient">Myladoor?</span>
         </h2>
-        <p className="text-gray-500 max-w-xl mx-auto font-light">
+        <p className="text-gray-500 max-w-xl mx-auto font-light text-xs md:text-sm">
           Every detail, every route, every booking — handled with meticulous precision and genuine care.
         </p>
-        <div className="divider-gold max-w-32 mx-auto mt-8" />
+        <div className="divider-gold max-w-24 md:max-w-32 mx-auto mt-6 md:mt-8" />
       </RevealOnScroll>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-yellow-400/8">
         {whyUs.map((f, i) => (
           <RevealOnScroll key={i} direction="up" delay={i * 0.15}>
-            <div className={`relative p-10 bg-[#0d1117] group hover:bg-gradient-to-br ${f.color} hover:to-[#0d1117] transition-all duration-700 overflow-hidden h-full`}>
+            <div className={`relative p-8 md:p-10 bg-[#0d1117] group hover:bg-gradient-to-br ${f.color} hover:to-[#0d1117] transition-all duration-700 overflow-hidden h-full border-b md:border-b-0 border-white/5`}>
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="relative w-16 h-16 border border-yellow-400/20 flex items-center justify-center mb-8 group-hover:border-yellow-400/60 transition-all duration-500">
-                <f.icon className="text-yellow-400 group-hover:scale-110 transition-transform duration-400" size={28} />
+              <div className="relative w-12 h-12 md:w-16 md:h-16 border border-yellow-400/20 flex items-center justify-center mb-6 md:mb-8 group-hover:border-yellow-400/60 transition-all duration-500">
+                <f.icon className="text-yellow-400 group-hover:scale-110 transition-transform duration-400" size={24} />
               </div>
-              <div className="absolute top-6 right-6 text-xs font-black text-yellow-400/20 group-hover:text-yellow-400/60 tracking-wider transition-colors">
+              <div className="absolute top-6 right-6 text-[10px] md:text-xs font-black text-yellow-400/20 group-hover:text-yellow-400/60 tracking-wider transition-colors">
                 {f.stat}
               </div>
-              <h3 className="text-xl font-bold text-white mb-4 group-hover:text-yellow-50 transition-colors">{f.title}</h3>
-              <p className="text-gray-500 leading-relaxed text-sm font-light">{f.desc}</p>
+              <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4 group-hover:text-yellow-50 transition-colors">{f.title}</h3>
+              <p className="text-gray-500 leading-relaxed text-[11px] md:text-sm font-light">{f.desc}</p>
               <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-yellow-400 to-yellow-400/0 group-hover:w-full transition-all duration-700" />
             </div>
           </RevealOnScroll>
@@ -532,25 +532,25 @@ const CTABanner = () => {
         />
 
         <div className="max-w-7xl mx-auto px-4 relative z-20 flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="max-w-xl">
-            <span className="text-yellow-400/80 text-[10px] font-black tracking-[0.4em] uppercase">Start Your Journey</span>
-            <h2 className="text-5xl md:text-6xl font-light text-white mt-4 mb-4">
+          <div className="max-w-xl text-center lg:text-left mx-auto lg:mx-0">
+            <span className="text-yellow-400/80 text-[9px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase">Start Your Journey</span>
+            <h2 className="text-4xl md:text-6xl font-light text-white mt-4 mb-4">
               Ready to <span className="font-bold text-gold-gradient">Book?</span>
             </h2>
-            <p className="text-gray-400 leading-relaxed mb-6">
+            <p className="text-gray-400 leading-relaxed mb-6 text-sm md:text-base">
               Contact us via WhatsApp for instant quotes, or use our seamless online booking form. No hidden charges, no surprises — just premium service.
             </p>
-            <div className="flex flex-wrap gap-4 mb-6">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-8">
               {['GST Billing', '24/7 Support', 'Free Cancellation', 'GPS Tracking'].map((b, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs text-gray-400">
-                  <CheckCircle2 size={13} className="text-emerald-400" />
+                <div key={i} className="flex items-center gap-2 text-[10px] md:text-xs text-gray-400">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
                   {b}
                 </div>
               ))}
             </div>
 
             {/* Urgency + Countdown row */}
-            <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-center justify-center lg:justify-start mb-10 lg:mb-0">
               {/* Viewers badge */}
               <div className="flex items-center gap-2 glass-dark px-4 py-2 border border-red-500/20">
                 <motion.div

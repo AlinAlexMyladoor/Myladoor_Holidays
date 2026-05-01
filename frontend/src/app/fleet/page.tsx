@@ -220,23 +220,25 @@ export default function FleetPage() {
 
       <div className="max-w-7xl mx-auto px-4 py-16">
         {/* ── FILTER TABS ─────────────────────── */}
-        <RevealOnScroll direction="up" className="flex flex-wrap gap-3 mb-14">
-          <span className="flex items-center gap-2 text-gray-500 text-xs font-semibold uppercase tracking-widest mr-2">
-            <Filter size={14} /> Filter:
-          </span>
-          {filters.map(f => (
-            <button
-              key={f.value}
-              onClick={() => setActiveFilter(f.value)}
-              className={`px-5 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                activeFilter === f.value
-                  ? 'bg-yellow-400 text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]'
-                  : 'border border-white/10 text-gray-400 hover:border-yellow-400/40 hover:text-yellow-400'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        <RevealOnScroll direction="up" className="mb-14">
+          <div className="flex items-center gap-2 text-gray-500 text-[10px] font-semibold uppercase tracking-widest mb-4">
+            <Filter size={14} /> Filter Vehicles
+          </div>
+          <div className="flex overflow-x-auto pb-4 gap-3 no-scrollbar scroll-smooth">
+            {filters.map(f => (
+              <button
+                key={f.value}
+                onClick={() => setActiveFilter(f.value)}
+                className={`px-6 py-3 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+                  activeFilter === f.value
+                    ? 'bg-yellow-400 text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]'
+                    : 'border border-white/10 text-gray-400 hover:border-yellow-400/40 hover:text-yellow-400 bg-white/5'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
         </RevealOnScroll>
 
         {/* ── VEHICLE GRID ─────────────────────── */}

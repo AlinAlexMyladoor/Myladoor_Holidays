@@ -238,34 +238,34 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: -30, filter: 'blur(4px)' }}
             transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="max-w-3xl"
+            className="max-w-3xl text-center md:text-left mx-auto md:mx-0"
           >
             {/* Tag + Ticker row */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="flex flex-wrap items-center gap-3 mb-8"
+              className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 mb-6 md:mb-8"
             >
-              <span className="inline-block text-yellow-400 text-[10px] font-black tracking-[0.45em] uppercase px-4 py-2 border border-yellow-400/40 glass-dark">
+              <span className="inline-block text-yellow-400 text-[9px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.45em] uppercase px-4 py-2 border border-yellow-400/40 glass-dark">
                 {slide.tag}
               </span>
-              <div className="hidden sm:flex items-center gap-2 text-[10px] text-gray-400 tracking-widest uppercase">
-                <div className="w-6 h-[1px] bg-yellow-400/40" />
+              <div className="flex items-center gap-2 text-[9px] md:text-[10px] text-gray-400 tracking-widest uppercase">
+                <div className="hidden sm:block w-6 h-[1px] bg-yellow-400/40" />
                 {slide.badge}
               </div>
-              <div className="hidden md:block">
+              <div className="block">
                 <BookingTicker />
               </div>
             </motion.div>
 
             {/* Headline */}
-            <h1 className="mb-8 leading-none">
+            <h1 className="mb-6 md:mb-8 leading-tight md:leading-none">
               <motion.span
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.7 }}
-                className="block text-white text-4xl sm:text-5xl md:text-7xl font-light tracking-tight"
+                className="block text-white text-3xl sm:text-5xl md:text-7xl font-light tracking-tight"
               >
                 {slide.headline}
               </motion.span>
@@ -273,7 +273,7 @@ export const HeroSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.7 }}
-                className="block font-black text-5xl sm:text-6xl md:text-8xl xl:text-9xl leading-none text-gold-gradient neon-gold"
+                className="block font-black text-4xl sm:text-6xl md:text-8xl xl:text-9xl leading-none text-gold-gradient neon-gold my-2 md:my-0"
                 style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 {slide.accent}
@@ -282,7 +282,7 @@ export const HeroSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.7 }}
-                className="block text-white/80 text-4xl sm:text-5xl md:text-7xl font-light tracking-tight"
+                className="block text-white/80 text-3xl sm:text-5xl md:text-7xl font-light tracking-tight"
               >
                 {slide.subHead}
               </motion.span>
@@ -293,7 +293,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55, duration: 0.7 }}
-              className="text-gray-300/80 text-base md:text-lg max-w-lg leading-relaxed mb-10 font-light"
+              className="text-gray-300/80 text-sm md:text-base lg:text-lg max-w-lg leading-relaxed mb-10 font-light mx-auto md:mx-0"
             >
               {slide.sub}
             </motion.p>
@@ -335,18 +335,18 @@ export const HeroSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="flex flex-wrap gap-6"
+              className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-3"
             >
-              <a href="tel:+918848392990" className="flex items-center gap-2 text-gray-400 text-xs hover:text-white transition-colors">
-                <Phone size={13} className="text-yellow-400" />
+              <a href="tel:+918848392990" className="flex items-center gap-2 text-gray-400 text-[10px] md:text-xs hover:text-white transition-colors">
+                <Phone size={12} className="text-yellow-400" />
                 +91 88483 92990
               </a>
-              <a href="https://maps.google.com/maps?q=Myladoor+Holidays,Valakkavu,Thrissur" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 text-xs hover:text-white transition-colors">
-                <MapPin size={13} className="text-yellow-400" />
-                Myladoor Holidays, Valakkavu, Thrissur
+              <a href="https://maps.google.com/maps?q=Myladoor+Holidays,Valakkavu,Thrissur" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 text-[10px] md:text-xs hover:text-white transition-colors">
+                <MapPin size={12} className="text-yellow-400" />
+                Valakkavu, Thrissur
               </a>
-              <div className="flex items-center gap-2 text-gray-400 text-xs">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <div className="flex items-center gap-2 text-gray-400 text-[10px] md:text-xs">
+                <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
                 24/7 Available
               </div>
             </motion.div>

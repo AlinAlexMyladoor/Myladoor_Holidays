@@ -174,23 +174,24 @@ export const AnimatedNavbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-40 bg-[#0d1117] flex flex-col pt-24 px-8 lg:hidden overflow-y-auto"
+            className="fixed inset-0 z-40 glass-dark flex flex-col pt-28 px-6 lg:hidden overflow-y-auto"
           >
             {/* Mobile Nav Links */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col items-center text-center gap-1">
               {navItems.map((item, idx) => (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + idx * 0.07, ease: 'easeOut' }}
+                  className="w-full"
                 >
                   <Link
                     href={item.link}
                     onClick={() => setMobileMenuOpen(false)}
                     className={cn(
-                      'block py-4 text-3xl font-light border-b border-white/10 transition-colors',
-                      pathname === item.link ? 'text-yellow-400' : 'text-white/70 hover:text-white'
+                      'block py-4 text-2xl font-light border-b border-white/5 transition-colors',
+                      pathname === item.link ? 'text-yellow-400' : 'text-white/60 hover:text-white'
                     )}
                   >
                     {item.name}
@@ -228,21 +229,23 @@ export const AnimatedNavbar = () => {
               </div>
             </motion.div>
 
-            {/* Contact quick info */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="mt-auto pb-6 text-gray-500 text-sm"
+              className="mt-auto pb-10 text-center text-gray-500 text-xs"
             >
-              <p>+91 88483 92990</p>
-              <p className="mt-1">info@myladoorholidays.com</p>
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <a href="tel:+918848392990" className="hover:text-yellow-400 transition-colors">+91 88483 92990</a>
+                <div className="w-1 h-1 bg-yellow-400/30 rounded-full" />
+                <a href="mailto:info@myladoorholidays.com" className="hover:text-yellow-400 transition-colors">info@myladoorholidays.com</a>
+              </div>
               {/* Owner signature */}
-              <div className="mt-6 pt-4 border-t border-white/8">
-                <p className="text-[9px] tracking-[0.3em] uppercase text-gray-600 mb-1">Founded &amp; Managed By</p>
+              <div className="pt-6 border-t border-white/5">
+                <p className="text-[8px] tracking-[0.3em] uppercase text-gray-600 mb-2">Founded &amp; Managed By</p>
                 <p
-                  className="text-yellow-400/70 text-base font-light"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic' }}
+                  className="text-yellow-400/80 text-lg font-light italic"
+                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   Saji Myladoor
                 </p>

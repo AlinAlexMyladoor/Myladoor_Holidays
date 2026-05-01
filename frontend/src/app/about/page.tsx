@@ -242,7 +242,7 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Portrait side */}
-            <RevealOnScroll direction="left">
+            <RevealOnScroll direction="up">
               <div className="relative max-w-sm mx-auto">
                 {/* Main portrait frame */}
                 <div className="relative aspect-[3/4] overflow-hidden border border-yellow-400/20 holographic">
@@ -296,14 +296,14 @@ export default function AboutPage() {
             </RevealOnScroll>
 
             {/* Content side */}
-            <RevealOnScroll direction="right" delay={0.2}>
-              <div>
-                <span className="text-yellow-400 text-[10px] font-black tracking-[0.4em] uppercase">The Man Behind the Mission</span>
+            <RevealOnScroll direction="up" delay={0.2}>
+              <div className="text-center lg:text-left">
+                <span className="text-yellow-400 text-[9px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase">The Man Behind the Mission</span>
 
                 {/* Animated gold signature */}
-                <div className="my-6">
+                <div className="my-6 flex flex-col items-center lg:items-start">
                   <motion.p
-                    className="text-5xl md:text-6xl font-light text-gold-gradient"
+                    className="text-4xl md:text-6xl font-light text-gold-gradient"
                     style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic' }}
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -346,17 +346,17 @@ export default function AboutPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                   <a
                     href="https://wa.me/918848392990?text=Hello Saji! I'd like to enquire about Myladoor Holidays."
                     target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-7 py-4 bg-green-600 hover:bg-green-500 text-white font-bold text-sm transition-all"
+                    className="inline-flex items-center gap-3 px-6 py-4 bg-green-600 hover:bg-green-500 text-white font-bold text-sm transition-all flex-1 sm:flex-none justify-center"
                   >
                     <MessageCircle size={18} /> Chat with Saji
                   </a>
                   <a
                     href="tel:+918848392990"
-                    className="inline-flex items-center gap-3 px-7 py-4 border border-yellow-400/30 text-yellow-400 font-bold text-sm hover:bg-yellow-400/5 transition-all"
+                    className="inline-flex items-center gap-3 px-6 py-4 border border-yellow-400/30 text-yellow-400 font-bold text-sm hover:bg-yellow-400/5 transition-all flex-1 sm:flex-none justify-center"
                   >
                     <Phone size={18} /> Direct Line
                   </a>

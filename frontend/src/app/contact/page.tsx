@@ -96,16 +96,20 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d1117]/80 to-transparent" />
         <ParticleField count={20} />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 pb-16 w-full">
-          <div>
-            <span className="text-yellow-400 text-[10px] font-black tracking-[0.45em] uppercase">Reach Out</span>
-            <h1 className="text-5xl md:text-7xl font-light text-white mt-3">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 pb-16 w-full text-center md:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <span className="text-yellow-400 text-[9px] md:text-[10px] font-black tracking-[0.45em] uppercase px-4 py-2 border border-yellow-400/30 inline-block mb-4">Reach Out</span>
+            <h1 className="text-4xl md:text-7xl font-light text-white leading-tight">
               Get in <span className="font-black text-gold-gradient">Touch</span>
             </h1>
-            <p className="text-gray-400 font-light max-w-xl mt-3">
+            <p className="text-gray-400 font-light max-w-xl mt-4 text-sm md:text-lg mx-auto md:mx-0">
               We're here to help 7 days a week. Fastest response via WhatsApp.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 

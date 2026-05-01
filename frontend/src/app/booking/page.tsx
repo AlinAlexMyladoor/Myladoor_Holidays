@@ -165,10 +165,10 @@ export default function BookingPage() {
           />
           {steps.map(s => (
             <div key={s.id} className="flex flex-col items-center gap-2 z-10">
-              <div className={`w-10 h-10 flex items-center justify-center transition-all duration-500 ${step > s.id ? 'bg-yellow-400 text-black' : step === s.id ? 'bg-yellow-400 text-black shadow-[0_0_20px_rgba(212,175,55,0.5)]' : 'bg-[#161b22] border border-white/10 text-gray-600'}`}>
-                {step > s.id ? <Check size={18} /> : <s.icon size={18} />}
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-500 ${step > s.id ? 'bg-yellow-400 text-black' : step === s.id ? 'bg-yellow-400 text-black shadow-[0_0_20px_rgba(212,175,55,0.5)]' : 'bg-[#161b22] border border-white/10 text-gray-600'}`}>
+                {step > s.id ? <Check size={16} /> : <s.icon size={16} />}
               </div>
-              <span className={`text-[10px] font-bold uppercase tracking-wider hidden sm:block transition-colors ${step >= s.id ? 'text-yellow-400' : 'text-gray-600'}`}>
+              <span className={`text-[8px] sm:text-[10px] font-bold uppercase tracking-wider hidden sm:block transition-colors ${step >= s.id ? 'text-yellow-400' : 'text-gray-600'}`}>
                 {s.label}
               </span>
             </div>
