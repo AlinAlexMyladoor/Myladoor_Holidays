@@ -218,9 +218,9 @@ export const Footer = () => {
               <li className="flex gap-3 items-start">
                 <MapPin size={15} className="text-yellow-400 mt-0.5 shrink-0" />
                 <span className="text-sm text-gray-500 leading-relaxed hover:text-white transition-colors">
-                  <a href="https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala" target="_blank" rel="noopener noreferrer">
-                    Valakkavu, Thrissur<br />
-                    Kerala
+                  <a href="https://maps.google.com/maps?q=Myladoor+Holidays,Valakkavu,Thrissur" target="_blank" rel="noopener noreferrer">
+                    Myladoor Holidays, Valakkavu<br />
+                    Thrissur, Kerala
                   </a>
                 </span>
               </li>

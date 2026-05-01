@@ -83,7 +83,25 @@ const sidebarItems = [
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [bookingList, setBookingList] = useState(bookings);
+  const [customerList, setCustomerList] = useState(customers);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('myladoor_user');
+    if (saved) {
+      try {
+        const u = JSON.parse(saved);
+        setCustomerList(prev => [{
+          id: 'CUST-NEW',
+          name: u.name || 'Web User',
+          email: u.email,
+          phone: 'N/A',
+          totalTrips: 0,
+          joined: 'Today'
+        }, ...prev]);
+      } catch (e) {}
+    }
+  }, []);
 
   const updateBookingStatus = (id: string, status: string) => {
     setBookingList(b => b.map(bk => bk.id === id ? { ...bk, status } : bk));
@@ -159,6 +177,10 @@ export default function AdminPage() {
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </button>
             <div className="w-9 h-9 bg-emerald-700 flex items-center justify-center text-white font-bold text-sm">A</div>
+            <Link href="/signin" className="ml-2 text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1 border-l border-white/10 pl-3">
+              <LogOut size={14} />
+              Logout
+            </Link>
           </div>
         </header>
 
@@ -351,8 +373,8 @@ export default function AdminPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {customers.map(c => (
-                          <tr key={c.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                        {customerList.map((c, i) => (
+                          <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                             <td className="px-6 py-4 text-yellow-400 font-mono font-bold text-xs">{c.id}</td>
                             <td className="px-6 py-4 text-white font-medium">{c.name}</td>
                             <td className="px-6 py-4 text-gray-400">

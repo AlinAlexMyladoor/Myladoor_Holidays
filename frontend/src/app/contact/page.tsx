@@ -11,8 +11,8 @@ const contactInfoItems = [
   {
     icon: MapPin,
     title: 'Visit Our Office',
-    lines: ['Valakkavu, Thrissur', 'Kerala'],
-    link: 'https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala',
+    lines: ['Myladoor Holidays, Valakkavu', 'Thrissur, Kerala'],
+    link: 'https://maps.google.com/maps?q=Myladoor+Holidays,Valakkavu,Thrissur',
     linkLabel: 'Get Directions →',
   },
   {
@@ -149,7 +149,7 @@ export default function ContactPage() {
             <RevealOnScroll direction="left" delay={0.5}>
               <div className="relative h-48 bg-[#161b22] border border-yellow-400/8 overflow-hidden group hover:border-yellow-400/25 transition-colors">
                 <iframe 
-                  src="https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                  src="https://maps.google.com/maps?q=Myladoor+Holidays,Valakkavu,Thrissur&t=&z=14&ie=UTF8&iwloc=&output=embed" 
                   className="w-full h-full opacity-60 group-hover:opacity-90 transition-opacity duration-400 grayscale contrast-125" 
                   style={{ border: 0 }} 
                   allowFullScreen={false} 

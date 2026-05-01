@@ -341,9 +341,9 @@ export const HeroSection = () => {
                 <Phone size={13} className="text-yellow-400" />
                 +91 88483 92990
               </a>
-              <a href="https://maps.google.com/maps?q=Valakkavu,Thrissur,Kerala" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 text-xs hover:text-white transition-colors">
+              <a href="https://maps.google.com/maps?q=Myladoor+Holidays,Valakkavu,Thrissur" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 text-xs hover:text-white transition-colors">
                 <MapPin size={13} className="text-yellow-400" />
-                Valakkavu, Thrissur, Kerala
+                Myladoor Holidays, Valakkavu, Thrissur
               </a>
               <div className="flex items-center gap-2 text-gray-400 text-xs">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />

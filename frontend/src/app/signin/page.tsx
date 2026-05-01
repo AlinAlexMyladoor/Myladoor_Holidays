@@ -25,7 +25,8 @@ export default function SignInPage() {
       if (form.email === 'admin@myladoor.com' && form.password === 'Myladoor@Admin2026') {
         window.location.href = '/admin';
       } else {
-        alert('Invalid credentials. Use admin@myladoor.com / Myladoor@Admin2026 for admin access.');
+        localStorage.setItem('myladoor_user', JSON.stringify({ email: form.email, name: form.email.split('@')[0] }));
+        window.location.href = '/';
       }
     }, 1500);
   };
@@ -100,7 +101,7 @@ export default function SignInPage() {
                 onChange={e => set('email', e.target.value)}
                 onFocus={() => setFocusedField('email')}
                 onBlur={() => setFocusedField(null)}
-                className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
               />
             </div>
 
@@ -118,7 +119,7 @@ export default function SignInPage() {
                   onChange={e => set('password', e.target.value)}
                   onFocus={() => setFocusedField('password')}
                   onBlur={() => setFocusedField(null)}
-                  className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
                 />
                 <button
                   type="button"

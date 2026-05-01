@@ -54,8 +54,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Call button */}
         <a
-          href="tel:+918848392990"
-          aria-label="Call Myladoor Holidays"
+          href="/contact"
+          aria-label="Contact Myladoor Holidays"
           className="fixed bottom-24 right-6 z-50 w-12 h-12 bg-emerald-700 hover:bg-emerald-600 text-white flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 rounded-full border border-emerald-400/30"
         >
           <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">

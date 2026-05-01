@@ -24,6 +24,7 @@ export default function SignUpPage() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      localStorage.setItem('myladoor_user', JSON.stringify({ name: form.name, email: form.email }));
       setSubmitted(true);
     }, 1500);
   };
@@ -133,7 +134,7 @@ export default function SignUpPage() {
                     onChange={e => set(f.key, e.target.value)}
                     onFocus={() => setFocusedField(f.key)}
                     onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
                   />
                 </div>
               ))}
@@ -152,7 +153,7 @@ export default function SignUpPage() {
                     onChange={e => set('password', e.target.value)}
                     onFocus={() => setFocusedField('password')}
                     onBlur={() => setFocusedField(null)}
-                    className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
                   />
                   <button
                     type="button"
@@ -190,10 +191,10 @@ export default function SignUpPage() {
                   onChange={e => set('confirm', e.target.value)}
                   onFocus={() => setFocusedField('confirm')}
                   onBlur={() => setFocusedField(null)}
-                  className={`w-full bg-white/4 border text-white px-4 py-3.5 focus:outline-none placeholder:text-gray-700 transition-all ${
+                  className={`w-full bg-white/5 border text-white px-4 py-3.5 focus:outline-none placeholder:text-gray-700 transition-all ${
                     form.confirm && form.password !== form.confirm
                       ? 'border-red-500/50 focus:border-red-400'
-                      : 'border-white/8 focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)]'
+                      : 'border-white/10 focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)]'
                   }`}
                 />
                 {form.confirm && form.password !== form.confirm && (

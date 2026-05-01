@@ -22,7 +22,21 @@ export const AnimatedNavbar = () => {
   const [visible, setVisible] = useState(true);
   const [prevScrollY, setPrevScrollY] = useState(0);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<{name?: string; email?: string} | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const saved = localStorage.getItem('myladoor_user');
+    if (saved) {
+      try { setUser(JSON.parse(saved)); } catch (e) {}
+    }
+  }, [pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('myladoor_user');
+    setUser(null);
+    window.location.href = '/';
+  };
 
   useMotionValueEvent(scrollY, 'change', (current) => {
     const diff = current - prevScrollY;
@@ -94,18 +108,34 @@ export const AnimatedNavbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/signin">
-              <button className="flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 border border-white/20 hover:border-white/40 transition-all duration-200">
-                <LogIn size={15} />
-                Sign In
-              </button>
-            </Link>
-            <Link href="/signup">
-              <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]">
-                <User size={14} />
-                Sign Up
-              </button>
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-4 border-r border-white/20 pr-4 mr-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center text-white font-bold text-xs uppercase shadow-lg">
+                    {user.name ? user.name.charAt(0) : user.email?.charAt(0) || 'U'}
+                  </div>
+                  <span className="text-white text-sm font-medium hidden xl:block">{user.name || user.email?.split('@')[0]}</span>
+                </div>
+                <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-red-400 transition-colors">
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link href="/signin">
+                  <button className="flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 border border-white/20 hover:border-white/40 transition-all duration-200">
+                    <LogIn size={15} />
+                    Sign In
+                  </button>
+                </Link>
+                <Link href="/signup">
+                  <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]">
+                    <User size={14} />
+                    Sign Up
+                  </button>
+                </Link>
+              </>
+            )}
             <Link href="/booking">
               <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg">
                 Book Now
@@ -180,12 +210,20 @@ export const AnimatedNavbar = () => {
                 </button>
               </Link>
               <div className="flex gap-3">
-                <Link href="/signin" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                  <button className="w-full py-3 border border-white/30 text-white font-medium">Sign In</button>
-                </Link>
-                <Link href="/signup" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                  <button className="w-full py-3 bg-emerald-700 text-white font-medium">Sign Up</button>
-                </Link>
+                {user ? (
+                  <button onClick={handleLogout} className="w-full py-3 bg-red-500/20 text-red-400 font-medium border border-red-500/30">
+                    Logout
+                  </button>
+                ) : (
+                  <>
+                    <Link href="/signin" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                      <button className="w-full py-3 border border-white/30 text-white font-medium">Sign In</button>
+                    </Link>
+                    <Link href="/signup" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                      <button className="w-full py-3 bg-emerald-700 text-white font-medium">Sign Up</button>
+                    </Link>
+                  </>
+                )}
               </div>
             </motion.div>
 
