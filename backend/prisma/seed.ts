@@ -8,7 +8,7 @@ async function main() {
   console.log('Seeding admin...');
   
   const adminEmail = 'admin@myladoor.com';
-  const adminPassword = 'AdminPassword2026!';
+  const adminPassword = 'Myladoor@Admin2026.';
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
   
   await prisma.user.upsert({

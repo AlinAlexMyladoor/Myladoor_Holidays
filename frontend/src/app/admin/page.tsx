@@ -177,6 +177,26 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    // Auth protection for admin
+    const userData = localStorage.getItem('myladoor_user');
+    const token = localStorage.getItem('myladoor_token');
+    
+    if (!userData || !token) {
+      window.location.href = '/signin';
+      return;
+    }
+
+    try {
+      const user = JSON.parse(userData);
+      if (user.email !== 'admin@myladoor.com' || user.role !== 'ADMIN') {
+        window.location.href = '/signin';
+        return;
+      }
+    } catch (e) {
+      window.location.href = '/signin';
+      return;
+    }
+
     fetchAllData();
     // Refresh every minute
     const interval = setInterval(fetchAllData, 60000);

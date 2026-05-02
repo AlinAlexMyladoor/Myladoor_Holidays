@@ -26,9 +26,12 @@ export default function SignInPage() {
         body: JSON.stringify(form),
       });
       
-      if (!res.ok) throw new Error('Login failed');
-      
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+      
       localStorage.setItem('myladoor_user', JSON.stringify(data.user));
       localStorage.setItem('myladoor_token', data.access_token);
       
@@ -37,8 +40,8 @@ export default function SignInPage() {
       } else {
         window.location.href = '/';
       }
-    } catch (err) {
-      alert('Invalid email or password');
+    } catch (err: any) {
+      alert(err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }

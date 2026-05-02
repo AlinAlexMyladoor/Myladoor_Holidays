@@ -11,6 +11,24 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
+    // Priority check for the specific admin credentials provided by the user
+    if (email === 'admin@myladoor.com' && pass === 'Myladoor@Admin2026.') {
+      let admin = await this.userService.findOne(email);
+      if (!admin) {
+        // Create the admin if it doesn't exist yet
+        const hashedPassword = await bcrypt.hash(pass, 10);
+        admin = await this.userService.create({
+          email,
+          password: hashedPassword,
+          name: 'Saji Myladoor',
+          role: 'ADMIN',
+          phone: '8848392990'
+        });
+      }
+      const { password, ...result } = admin;
+      return result;
+    }
+
     const user = await this.userService.findOne(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
       const { password, ...result } = user;

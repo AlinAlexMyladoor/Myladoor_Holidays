@@ -34,10 +34,16 @@ export default function SignUpPage() {
           password: form.password
         }),
       });
-      if (!res.ok) throw new Error('Registration failed');
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+      
       setSubmitted(true);
-    } catch (err) {
-      alert('Registration failed. Please try again.');
+    } catch (err: any) {
+      alert(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -82,9 +88,15 @@ export default function SignUpPage() {
           transition={{ duration: 0.7 }}
           className="text-center mb-10"
         >
-          <Link href="/" className="inline-flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-900 flex items-center justify-center text-white font-black text-xl shadow-lg">
-              M
+          <Link href="/" className="inline-flex items-center gap-3 mb-8 group">
+            <div className="shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Image 
+                src="/images/logo.png" 
+                alt="Myladoor Holidays Logo" 
+                width={48}
+                height={48}
+                className="object-contain"
+              />
             </div>
             <div className="text-left">
               <span className="text-white font-black tracking-[0.1em] uppercase text-sm block">Myladoor</span>
