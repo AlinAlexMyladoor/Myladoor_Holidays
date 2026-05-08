@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, LogIn, ArrowRight, MessageCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, LogIn, MessageCircle, AlertCircle } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
 export default function SignInPage() {
@@ -12,43 +12,53 @@ export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k: string, v: string) => {
+    setForm(f => ({ ...f, [k]: v }));
+    if (error) setError(null); // clear error on typing
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+    setError(null);
+
     try {
       const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
-      
+
       const data = await res.json();
-      
+
       if (!res.ok) {
-        throw new Error(data.message || 'Login failed');
+        // Show inline error, never use alert()
+        setError(data.message || 'Invalid email or password. Please try again.');
+        return;
       }
-      
+
+      // Store user data
       localStorage.setItem('myladoor_user', JSON.stringify(data.user));
       localStorage.setItem('myladoor_token', data.access_token);
-      
-      if (data.user.role === 'ADMIN') {
+
+      // Role-based redirect: ONLY admin credentials go to /admin
+      if (data.user.role === 'ADMIN' && data.user.email === 'admin@myladoor.com') {
         window.location.href = '/admin';
       } else {
+        // All regular users (even if somehow role is set) go to home
         window.location.href = '/';
       }
     } catch (err: any) {
-      alert(err.message || 'Invalid email or password');
+      setError('Unable to connect to server. Please check your connection.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0d1117] flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-[#0d1117] flex items-center justify-center relative overflow-hidden px-4 py-8">
       {/* Background */}
       <div className="absolute inset-0">
         <Image
@@ -64,21 +74,21 @@ export default function SignInPage() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-900/20 rounded-full blur-[120px] pointer-events-none glow-orb" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-yellow-400/5 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-md px-4">
+      <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="text-center mb-10"
+          className="text-center mb-8"
         >
-          <Link href="/" className="inline-flex items-center gap-3 mb-8 group">
+          <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
             <div className="shrink-0 group-hover:scale-110 transition-transform duration-300">
-              <Image 
-                src="/images/logo.png" 
-                alt="Myladoor Holidays Logo" 
-                width={48}
-                height={48}
+              <Image
+                src="/images/logo.png"
+                alt="Myladoor Holidays Logo"
+                width={44}
+                height={44}
                 className="object-contain"
               />
             </div>
@@ -88,7 +98,7 @@ export default function SignInPage() {
             </div>
           </Link>
 
-          <h1 className="text-3xl md:text-4xl font-light text-white">
+          <h1 className="text-3xl sm:text-4xl font-light text-white">
             Welcome <span className="font-bold text-gold-gradient">Back</span>
           </h1>
           <p className="text-gray-500 text-sm mt-2">Sign in to manage your bookings</p>
@@ -99,9 +109,25 @@ export default function SignInPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="glass-dark p-8 relative overflow-hidden"
+          className="glass-dark p-6 sm:p-8 relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent" />
+
+          {/* Inline Error Message */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                transition={{ duration: 0.25 }}
+                className="mb-5 flex items-start gap-3 bg-red-500/10 border border-red-500/30 px-4 py-3 rounded-sm"
+              >
+                <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
+                <p className="text-red-400 text-sm leading-snug">{error}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
@@ -117,8 +143,8 @@ export default function SignInPage() {
                 onChange={e => set('email', e.target.value)}
                 onFocus={() => setFocusedField('email')}
                 onBlur={() => setFocusedField(null)}
-                autoComplete="off"
-                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                autoComplete="email"
+                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all text-base"
               />
             </div>
 
@@ -136,13 +162,14 @@ export default function SignInPage() {
                   onChange={e => set('password', e.target.value)}
                   onFocus={() => setFocusedField('password')}
                   onBlur={() => setFocusedField(null)}
-                  autoComplete="off"
-                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all"
+                  autoComplete="current-password"
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all text-base"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-yellow-400 transition-colors p-1"
+                  aria-label="Toggle password visibility"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

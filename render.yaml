@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: myladoor-holidays-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false   # Set this in Render dashboard
+      - key: DIRECT_URL
+        sync: false   # Set this in Render dashboard (same value as DATABASE_URL for Neon)
+      - key: JWT_SECRET
+        sync: false   # Set this in Render dashboard
+      - key: FRONTEND_URL
+        sync: false   # Your Vercel frontend URL e.g. https://myladoor-holidays.vercel.app
+    plan: free
+    healthCheckPath: /

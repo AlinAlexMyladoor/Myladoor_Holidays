@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Car, Calendar, MessageSquare, Settings,
-  Users, TrendingUp, Bell, LogOut, ChevronRight, ChevronDown,
-  Check, X, Eye, Phone, Mail, Clock, AlertCircle, Menu
+  Users, TrendingUp, Bell, LogOut, UserCheck,
+  Check, X, Phone, Clock, Menu
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -73,10 +73,10 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [bookingList, setBookingList] = useState(bookings);
   const [customerList, setCustomerList] = useState(customers);
+  const [signedUpUsers, setSignedUpUsers] = useState<any[]>([]);
   const [vehicleList, setVehicleList] = useState(vehicles);
   const [inquiryList, setInquiryList] = useState(inquiries);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const [notifications, setNotifications] = useState<any[]>([]);
 
   const sidebarItems = [
@@ -84,6 +84,7 @@ export default function AdminPage() {
     { icon: Calendar, label: 'Bookings', id: 'bookings', badge: bookingList.filter(b => b.status === 'pending').length || undefined },
     { icon: Car, label: 'Fleet', id: 'fleet' },
     { icon: MessageSquare, label: 'Inquiries', id: 'inquiries', badge: inquiryList.filter(i => !i.read).length || undefined },
+    { icon: UserCheck, label: 'Signed Up Users', id: 'signedupusers', badge: signedUpUsers.length || undefined },
     { icon: Users, label: 'Customers', id: 'customers' },
     { icon: TrendingUp, label: 'Analytics', id: 'analytics' },
     { icon: Bell, label: 'Notifications', id: 'notifications', badge: notifications.length || undefined },
@@ -124,14 +125,18 @@ export default function AdminPage() {
       const uRes = await fetch(`${API_URL}/users`);
       const uData = await uRes.json();
       if (Array.isArray(uData)) {
-        setCustomerList(uData.map((u: any) => ({
+        const mapped = uData.map((u: any) => ({
           id: u.id.substring(0, 8).toUpperCase(),
           name: u.name || 'Web User',
           email: u.email,
           phone: u.phone || 'N/A',
+          role: u.role,
           totalTrips: 0,
           joined: new Date(u.createdAt).toLocaleDateString()
-        })));
+        }));
+        setCustomerList(mapped);
+        // Only USER role in Signed Up Users (exclude ADMIN)
+        setSignedUpUsers(mapped.filter((u: any) => u.role !== 'ADMIN'));
       }
 
       // Fetch Vehicles
@@ -177,10 +182,10 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    // Auth protection for admin
+    // Auth protection for admin — ONLY admin@myladoor.com with ADMIN role
     const userData = localStorage.getItem('myladoor_user');
     const token = localStorage.getItem('myladoor_token');
-    
+
     if (!userData || !token) {
       window.location.href = '/signin';
       return;
@@ -189,7 +194,8 @@ export default function AdminPage() {
     try {
       const user = JSON.parse(userData);
       if (user.email !== 'admin@myladoor.com' || user.role !== 'ADMIN') {
-        window.location.href = '/signin';
+        // Regular users are NOT allowed — send them home
+        window.location.href = '/';
         return;
       }
     } catch (e) {
@@ -198,16 +204,14 @@ export default function AdminPage() {
     }
 
     fetchAllData();
-    // Refresh every minute
-    const interval = setInterval(fetchAllData, 60000);
+    // Live refresh every 5 seconds
+    const interval = setInterval(fetchAllData, 5000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    // Re-fetch when certain tabs are clicked to ensure fresh data
-    if (['bookings', 'inquiries', 'customers', 'fleet', 'notifications', 'dashboard'].includes(activeTab)) {
-      fetchAllData();
-    }
+    // Re-fetch immediately when tab changes
+    fetchAllData();
   }, [activeTab]);
 
   const handleLogout = () => {
@@ -490,11 +494,54 @@ export default function AdminPage() {
               </motion.div>
             )}
 
+            {/* ─── SIGNED UP USERS ─── */}
+            {activeTab === 'signedupusers' && (
+              <motion.div key="signedupusers" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                <div className="bg-[#161b22] border border-yellow-400/10">
+                  <div className="px-4 sm:px-6 py-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <h2 className="text-white font-bold text-base">Signed Up Users</h2>
+                      <p className="text-gray-500 text-xs mt-0.5">All registered users on the platform</p>
+                    </div>
+                    <span className="bg-emerald-500/15 text-emerald-400 text-xs font-bold px-3 py-1 rounded-sm border border-emerald-500/20">
+                      {signedUpUsers.length} Total
+                    </span>
+                  </div>
+                  {signedUpUsers.length === 0 ? (
+                    <div className="px-6 py-12 text-center text-gray-500 text-sm">No users have signed up yet.</div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-gray-500 text-xs uppercase tracking-widest border-b border-white/5">
+                            {['#', 'Name', 'Email', 'Phone', 'Joined'].map(h => (
+                              <th key={h} className="px-4 sm:px-6 py-3 text-left font-medium">{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {signedUpUsers.map((u, i) => (
+                            <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                              <td className="px-4 sm:px-6 py-4 text-yellow-400 font-mono font-bold text-xs">{i + 1}</td>
+                              <td className="px-4 sm:px-6 py-4 text-white font-medium whitespace-nowrap">{u.name}</td>
+                              <td className="px-4 sm:px-6 py-4 text-gray-400 text-xs">{u.email}</td>
+                              <td className="px-4 sm:px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{u.phone}</td>
+                              <td className="px-4 sm:px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{u.joined}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
             {/* ─── CUSTOMERS ─── */}
             {activeTab === 'customers' && (
               <motion.div key="customers" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <div className="bg-[#161b22] border border-yellow-400/10">
-                  <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
+                  <div className="px-4 sm:px-6 py-4 border-b border-white/5 flex items-center justify-between">
                     <h3 className="text-white font-semibold">Customer Directory</h3>
                   </div>
                   <div className="overflow-x-auto">
@@ -502,24 +549,24 @@ export default function AdminPage() {
                       <thead>
                         <tr className="text-gray-500 text-xs uppercase tracking-widest border-b border-white/5">
                           {['ID', 'Name', 'Contact', 'Total Trips', 'Joined', 'Actions'].map(h => (
-                            <th key={h} className="px-6 py-3 text-left font-medium">{h}</th>
+                            <th key={h} className="px-4 sm:px-6 py-3 text-left font-medium">{h}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
                         {customerList.map((c, i) => (
                           <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <td className="px-6 py-4 text-yellow-400 font-mono font-bold text-xs">{c.id}</td>
-                            <td className="px-6 py-4 text-white font-medium">{c.name}</td>
-                            <td className="px-6 py-4 text-gray-400">
+                            <td className="px-4 sm:px-6 py-4 text-yellow-400 font-mono font-bold text-xs">{c.id}</td>
+                            <td className="px-4 sm:px-6 py-4 text-white font-medium">{c.name}</td>
+                            <td className="px-4 sm:px-6 py-4 text-gray-400">
                               <div className="flex flex-col gap-1 text-xs">
                                 <span>{c.email}</span>
                                 <span>{c.phone}</span>
                               </div>
                             </td>
-                            <td className="px-6 py-4 text-gray-400">{c.totalTrips}</td>
-                            <td className="px-6 py-4 text-gray-400">{c.joined}</td>
-                            <td className="px-6 py-4">
+                            <td className="px-4 sm:px-6 py-4 text-gray-400">{c.totalTrips}</td>
+                            <td className="px-4 sm:px-6 py-4 text-gray-400">{c.joined}</td>
+                            <td className="px-4 sm:px-6 py-4">
                               <button className="px-3 py-1 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-xs">View</button>
                             </td>
                           </tr>
