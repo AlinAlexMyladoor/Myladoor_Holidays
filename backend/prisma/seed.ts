@@ -1,16 +1,15 @@
-require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 
+const prisma = new PrismaClient();
+
 async function main() {
-  console.log('Initializing Prisma...');
-  const prisma = new PrismaClient();
   console.log('Seeding admin...');
-  
+
   const adminEmail = 'admin@myladoor.com';
   const adminPassword = 'Myladoor@Admin2026.';
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
-  
+
   await prisma.user.upsert({
     where: { email: adminEmail },
     update: {},
@@ -30,4 +29,7 @@ main()
   .catch((e) => {
     console.error('ERROR:', e);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
