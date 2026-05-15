@@ -4,14 +4,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Allow requests from Vercel frontend and localhost
   app.enableCors({
-    origin: [
-      'http://localhost:3001',
-      'http://localhost:3000',
-      // Vercel preview and production URLs — update with your actual Vercel domain
-      /https:\/\/.*\.vercel\.app$/,
-      process.env.FRONTEND_URL || '',
-    ].filter(Boolean),
+    origin: true, // Allow all origins — Vercel proxy handles security
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
