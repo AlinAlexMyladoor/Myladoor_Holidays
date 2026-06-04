@@ -557,6 +557,8 @@ const GalleryStrip = () => {
     { src: '/images/kerala-trip.webp', label: 'Kerala Destinations', span: 2 },
     { src: '/images/gallery-vehicle.jpg', label: 'Premium Vehicles' },
     { src: '/images/wedding-vehicle.jpg', label: 'Wedding Transport' },
+    { src: 'https://www.pelago.com/img/products/IN-India/taj-mahal-pilgrimage-and-top-hill-station-10-day-india-tour/d04677ca-c52e-484c-b6ae-36ecf7ece247_taj-mahal-pilgrimage-and-top-hill-station-10-day-india-tour.jpg', label: 'Pilgrimage Tours' },
+    { src: 'https://www.oysterworldwide.com/panel/wp-content/uploads/2018/11/Traveller_Type_Group.jpg', label: 'Group Travel' },
   ];
 
   return (

@@ -25,6 +25,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'c.ndtvimg.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.pelago.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.oysterworldwide.com',
+      },
     ],
   },
   // Proxy all /api/* requests to the Render backend
