@@ -67,11 +67,11 @@ export default function ProfilePage() {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        // Update local storage with new data
         const updatedUser = { ...user, ...formData };
         localStorage.setItem('myladoor_user', JSON.stringify(updatedUser));
         setUser(updatedUser);
+        // Notify navbar to refresh immediately
+        window.dispatchEvent(new Event('myladoor-profile-updated'));
         setSuccess('Profile updated successfully!');
       } else {
         setError('Failed to update profile. Please try again.');
