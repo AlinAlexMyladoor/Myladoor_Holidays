@@ -54,12 +54,12 @@ const metrics = [
 ];
 
 const services = [
-  { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: '/images/airport-service.jpg' },
-  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800' },
+  { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuLuTxrlvdddzAPeIX5yVEUHpcSOB239ZbMw&s' },
+  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://cdn0.weddingwire.in/vendor/4859/3_2/960/jpeg/6b23385f-9432-4f9d-b908-a698ee8333b4_15_364859-166274546756501.jpeg' },
   { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: '/images/corporate-service.jpg' },
   { icon: TreePine, label: 'Outstation Tours', color: 'text-green-400', img: '/images/alleppey.jpg' },
   { icon: Star, label: 'Pilgrimages', color: 'text-yellow-400', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=800' },
-  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800' },
+  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://c.ndtvimg.com/2022-04/f4jrl078_budget-friendly-travel_625x300_13_April_22.jpg' },
 ];
 
 const whyUs = [
