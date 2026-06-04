@@ -23,7 +23,7 @@ const featuredVehicles = [
   {
     name: 'Luxury Innova Crysta',
     capacity: '7 Seater',
-    image: 'https://www.wheelsbingo.com/images/web-img/cars/car_images/toyota-innova-crysta-front-left-side-exterior.webp',
+    image: 'https://www.wheelsbingo.com/cars/toyota/toyota-innova-crysta',
     tag: 'BESTSELLER',
     features: ['GPS Tracked', 'AC', 'Luggage Space'],
     badge: 'Most Booked',
