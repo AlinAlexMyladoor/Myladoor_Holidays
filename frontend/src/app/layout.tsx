@@ -8,12 +8,16 @@ import { GoldenCursor } from '@/components/ui/GoldenCursor';
 import { AmbientSoundPlayer } from '@/components/ui/AmbientSoundPlayer';
 
 export const metadata: Metadata = {
-  title: 'Myladoor Holidays | Premium Vehicle Rentals Kerala — Saji Myladoor',
+  title: 'Myladoor Holidays',
   description: 'Book premium vehicle rentals in Kerala. Cars, Innova, Travellers, Urbania, and Buses from 4 to 49 seater. Airport transfers, corporate travel, weddings, outstation tours. Owner: Saji Myladoor.',
   keywords: 'vehicle rental Kerala, car hire Kerala, bus rental, Innova rental, airport transfer, Myladoor Holidays, tour and travel Kerala, Saji Myladoor',
   authors: [{ name: 'Saji Myladoor — Myladoor Holidays' }],
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
-    title: 'Myladoor Holidays | Premium Vehicle Rentals',
+    title: 'Myladoor Holidays',
     description: 'Premium vehicle rental services — Cars to 49-seater Buses. Serving Kerala and beyond. 15+ years excellence. Founded by Saji Myladoor.',
     type: 'website',
     locale: 'en_IN',
@@ -29,7 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet" />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#065f46" />
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚐</text></svg>" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body className="bg-[#0d1117] font-sans antialiased text-gray-100 flex flex-col min-h-screen overflow-x-hidden">
         <LoadingScreen />
