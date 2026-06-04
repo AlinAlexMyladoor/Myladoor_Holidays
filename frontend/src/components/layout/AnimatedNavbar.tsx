@@ -129,19 +129,30 @@ export const AnimatedNavbar = () => {
 
           {/* ── Right Section ── */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Book Now is always first */}
+            <Link href="/booking">
+              <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg">
+                Book Now
+                <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-4 w-4 bg-yellow-400 items-center justify-center">
+                    <span className="text-black text-[8px] font-black leading-none">!</span>
+                  </span>
+                </span>
+              </button>
+            </Link>
+
             {user ? (
               <>
-                {/* Account chip: avatar + name + Edit Profile */}
+                {/* Account chip: avatar + name + Edit Profile — AFTER Book Now */}
                 <Link
                   href="/profile"
                   className="group flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-400/40 pl-1.5 pr-4 py-1.5 rounded-full transition-all duration-300"
                 >
-                  {/* Avatar */}
                   <div className="relative w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-black text-xs shadow-[0_0_10px_rgba(16,185,129,0.4)] border-2 border-emerald-400/50 shrink-0">
                     {initial}
                     <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full border-2 border-[#0a0f0d] animate-pulse" />
                   </div>
-                  {/* Name + Edit hint */}
                   <div className="flex flex-col items-start leading-none">
                     <span className="text-white text-[13px] font-semibold max-w-[100px] truncate leading-tight">
                       {displayName}
@@ -152,7 +163,7 @@ export const AnimatedNavbar = () => {
                   </div>
                 </Link>
 
-                {/* Logout button */}
+                {/* Logout button — right after account chip */}
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1.5 text-xs font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/25 rounded-full px-3.5 py-1.5 transition-all duration-200 hover:shadow-[0_0_12px_rgba(239,68,68,0.2)]"
@@ -160,19 +171,6 @@ export const AnimatedNavbar = () => {
                   <LogOut size={12} />
                   Logout
                 </button>
-
-                {/* Book Now */}
-                <Link href="/booking">
-                  <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg">
-                    Book Now
-                    <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-yellow-400 items-center justify-center">
-                        <span className="text-black text-[8px] font-black leading-none">!</span>
-                      </span>
-                    </span>
-                  </button>
-                </Link>
               </>
             ) : (
               <>
@@ -184,17 +182,6 @@ export const AnimatedNavbar = () => {
                 <Link href="/signup">
                   <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
                     <User size={14} /> Sign Up
-                  </button>
-                </Link>
-                <Link href="/booking">
-                  <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg">
-                    Book Now
-                    <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-yellow-400 items-center justify-center">
-                        <span className="text-black text-[8px] font-black leading-none">!</span>
-                      </span>
-                    </span>
                   </button>
                 </Link>
               </>

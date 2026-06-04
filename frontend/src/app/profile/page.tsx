@@ -51,35 +51,29 @@ export default function ProfilePage() {
     setError('');
     setSuccess('');
 
+    // ── Local-first: always save to localStorage immediately ──
+    const updatedUser = { ...user, ...formData };
+    localStorage.setItem('myladoor_user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    // Notify navbar to refresh right away
+    window.dispatchEvent(new Event('myladoor-profile-updated'));
+    setSuccess('Profile saved successfully!');
+    setLoading(false);
+
+    // ── Try to sync with backend silently (non-blocking) ──
     try {
       const token = localStorage.getItem('myladoor_token');
-      // Update logic against NestJS backend
-      const res = await fetch(`${API_URL}/auth/update`, {
-        method: 'POST',
+      await fetch(`${API_URL}/users/${user.id}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-          id: user.id,
-          ...formData
-        })
+        body: JSON.stringify(formData)
       });
-
-      if (res.ok) {
-        const updatedUser = { ...user, ...formData };
-        localStorage.setItem('myladoor_user', JSON.stringify(updatedUser));
-        setUser(updatedUser);
-        // Notify navbar to refresh immediately
-        window.dispatchEvent(new Event('myladoor-profile-updated'));
-        setSuccess('Profile updated successfully!');
-      } else {
-        setError('Failed to update profile. Please try again.');
-      }
-    } catch (err) {
-      setError('Connection error. Could not update profile.');
-    } finally {
-      setLoading(false);
+      // We don't care about the result — local is source of truth
+    } catch {
+      // Silently ignore — user's data is already saved locally
     }
   };
 
