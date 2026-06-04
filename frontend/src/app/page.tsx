@@ -15,7 +15,7 @@ import {
   ShieldCheck, CalendarCheck, Clock, Users, ArrowRight,
   MessageCircle, Plane, Building2, Heart, TreePine,
   Trophy, Zap, Globe, HeartHandshake, Phone, Star,
-  Play, ChevronRight, CheckCircle2, MapPin
+  Play, ChevronRight, CheckCircle2, MapPin, X, Eye
 } from 'lucide-react';
 
 /* ─── Data ─────────────────────────────────── */
@@ -85,6 +85,116 @@ const whyUs = [
     color: 'from-yellow-950/40',
   },
 ];
+
+/* ─── Fleet Popup Modal ─────────────────────── */
+const FleetPopup = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      {/* Trigger button — shown near the top of page */}
+      <motion.button
+        onClick={() => setOpen(true)}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.97 }}
+        className="group flex items-center gap-3 px-6 py-3 bg-[#0d1117] border border-yellow-400/40 hover:border-yellow-400 text-yellow-400 text-xs font-black uppercase tracking-[0.25em] transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.25)]"
+      >
+        <Eye size={15} className="group-hover:scale-110 transition-transform" />
+        Our Fleet
+        <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse" />
+      </motion.button>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+            onClick={() => setOpen(false)}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" />
+
+            {/* Modal content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+              className="relative z-10 w-full max-w-4xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Gold top bar */}
+              <div className="h-[3px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
+              <div className="bg-[#0d1117] border border-yellow-400/20 shadow-[0_0_60px_rgba(0,0,0,0.8)] p-4 md:p-6">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <span className="text-yellow-400 text-[9px] font-black tracking-[0.4em] uppercase">Complete Fleet</span>
+                    <h3 className="text-xl md:text-2xl font-bold text-white mt-1">Myladoor Holidays Fleet</h3>
+                  </div>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="w-9 h-9 border border-white/20 hover:border-red-400/60 flex items-center justify-center text-gray-400 hover:text-red-400 transition-all"
+                    aria-label="Close"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* Fleet image */}
+                <div className="relative overflow-hidden border border-yellow-400/10">
+                  <Image
+                    src="/images/fleet-myladoor.png"
+                    alt="Myladoor Holidays Full Fleet — Innova, Bus, Traveller, Urbania"
+                    width={1200}
+                    height={560}
+                    className="w-full object-contain"
+                    priority
+                  />
+                </div>
+
+                {/* Chips */}
+                <div className="flex flex-wrap gap-3 justify-center mt-4">
+                  {[
+                    { label: 'Innova Crysta', cap: '7 Seater' },
+                    { label: 'Tourist Coach', cap: '49 Seater' },
+                    { label: 'Force Traveller', cap: '17 Seater' },
+                    { label: 'Urbania Van', cap: '12 Seater' },
+                  ].map((v, i) => (
+                    <div key={i} className="glass-dark px-4 py-2 text-center border border-yellow-400/20">
+                      <p className="text-white font-bold text-xs">{v.label}</p>
+                      <p className="text-gray-400 text-[10px]">{v.cap}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <div className="flex gap-3 mt-5 justify-center">
+                  <Link
+                    href="/fleet"
+                    onClick={() => setOpen(false)}
+                    className="px-8 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-black text-xs uppercase tracking-widest transition-all"
+                  >
+                    View Full Fleet →
+                  </Link>
+                  <Link
+                    href="/booking"
+                    onClick={() => setOpen(false)}
+                    className="px-8 py-3 border border-white/20 hover:border-yellow-400/50 text-white text-xs font-medium transition-all"
+                  >
+                    Book Now
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
 
 /* ─── Fleet Showcase Cards (3D Flip) ───────── */
 const FleetCard = ({ v, idx }: { v: typeof featuredVehicles[0]; idx: number }) => (
@@ -299,11 +409,11 @@ const FleetBanner = () => (
       </p>
     </RevealOnScroll>
 
-    {/* The actual fleet banner image */}
+    {/* The actual fleet banner image — Myladoor uploaded image */}
     <RevealOnScroll direction="none" className="relative z-10 px-4 max-w-7xl mx-auto pb-10">
       <div className="relative overflow-hidden border border-yellow-400/10 hover:border-yellow-400/25 transition-colors duration-500 group">
         <Image
-          src="/images/fleet-banner.png"
+          src="/images/fleet-myladoor.png"
           alt="Myladoor Holidays Complete Fleet - Innova, Bus, Traveller, Urbania"
           width={1200}
           height={600}
@@ -440,7 +550,7 @@ const WhyUsSection = () => (
 /* ─── PHOTO GALLERY STRIP ───────────────────── */
 const GalleryStrip = () => {
   const galleryImages = [
-    { src: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1200', label: 'Kerala Backwaters', span: 2 },
+    { src: '/images/fleet-banner.png', label: 'Our Full Fleet', span: 2 },
     { src: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=600', label: 'Luxury Coach' },
     { src: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=600', label: 'Airport Transfer' },
     { src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=600', label: 'Wedding Transport' },
@@ -640,6 +750,13 @@ export default function Home() {
 
       {/* Marquee */}
       <MarqueeBanner />
+
+      {/* Our Fleet popup — top of page quick-view */}
+      <div className="py-5 bg-[#080c0a] border-b border-yellow-400/10 flex items-center justify-center gap-4">
+        <div className="h-[1px] flex-1 max-w-xs bg-gradient-to-r from-transparent to-yellow-400/30" />
+        <FleetPopup />
+        <div className="h-[1px] flex-1 max-w-xs bg-gradient-to-l from-transparent to-yellow-400/30" />
+      </div>
 
       {/* Stats */}
       <section className="py-20 bg-[#0a0f0d] relative overflow-hidden">
