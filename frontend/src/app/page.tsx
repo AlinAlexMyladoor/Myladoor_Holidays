@@ -559,6 +559,7 @@ const GalleryStrip = () => {
     { src: '/images/wedding-vehicle.jpg', label: 'Wedding Transport' },
     { src: 'https://www.pelago.com/img/products/IN-India/taj-mahal-pilgrimage-and-top-hill-station-10-day-india-tour/d04677ca-c52e-484c-b6ae-36ecf7ece247_taj-mahal-pilgrimage-and-top-hill-station-10-day-india-tour.jpg', label: 'Pilgrimage Tours' },
     { src: 'https://www.oysterworldwide.com/panel/wp-content/uploads/2018/11/Traveller_Type_Group.jpg', label: 'Group Travel' },
+    { src: 'https://www.fabhotels.com/blog/wp-content/uploads/2020/05/road-trip-hacks-tips-600.jpg', label: 'Road Trips' },
   ];
 
   return (

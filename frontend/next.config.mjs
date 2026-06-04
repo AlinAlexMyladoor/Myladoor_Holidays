@@ -33,6 +33,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.oysterworldwide.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.fabhotels.com',
+      },
     ],
   },
   // Proxy all /api/* requests to the Render backend
