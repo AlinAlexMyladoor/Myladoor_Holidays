@@ -11,7 +11,7 @@ const testimonials = [
     id: 1,
     name: 'Arun Krishnan',
     role: 'CEO, TechVentures Kerala',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&sat=-20',
+    avatar: '/images/reviewer-arun.jpg',
     rating: 5,
     text: 'Myladoor Holidays handled our entire corporate fleet for a week-long offsite. The vehicles were immaculate, drivers professional, and the coordination was flawless. GST invoices were delivered same day. Our go-to partner for all executive travel.',
     trip: 'Corporate Offsite — Munnar',

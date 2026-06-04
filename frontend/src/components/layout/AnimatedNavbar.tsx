@@ -5,8 +5,79 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, User, LogIn } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogIn, LogOut, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+/* ─── Beautiful User Dropdown Menu ─────────── */
+const UserMenu = ({ user, onLogout }: { user: { name?: string; email?: string }; onLogout: () => void }) => {
+  const [open, setOpen] = useState(false);
+  const initial = (user.name ? user.name.charAt(0) : user.email?.charAt(0) || 'U').toUpperCase();
+  const displayName = user.name || user.email?.split('@')[0] || 'User';
+
+  return (
+    <div className="relative" onMouseLeave={() => setOpen(false)}>
+      <button
+        onMouseEnter={() => setOpen(true)}
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2.5 group"
+      >
+        {/* Avatar circle */}
+        <motion.div
+          whileHover={{ scale: 1.08 }}
+          className="relative w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-black text-sm shadow-[0_0_16px_rgba(16,185,129,0.5)] border-2 border-emerald-400/40"
+        >
+          {initial}
+          <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0a0f0d] animate-pulse" />
+        </motion.div>
+        {/* Name */}
+        <span className="text-white text-sm font-semibold hidden md:block max-w-[100px] truncate">{displayName}</span>
+        <ChevronDown size={13} className={`text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {/* Dropdown panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            className="absolute right-0 top-full mt-3 w-56 bg-[#0d1117] border border-yellow-400/20 shadow-[0_20px_60px_rgba(0,0,0,0.7)] z-50 overflow-hidden"
+          >
+            {/* Gold bar top */}
+            <div className="h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
+            {/* User info header */}
+            <div className="px-4 py-3 border-b border-white/8">
+              <p className="text-white font-bold text-sm truncate">{displayName}</p>
+              <p className="text-gray-500 text-xs truncate">{user.email || ''}</p>
+            </div>
+            {/* Menu items */}
+            <div className="py-2">
+              <Link
+                href="/orders"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-yellow-400 hover:bg-yellow-400/5 transition-all group"
+              >
+                <ShoppingBag size={15} className="text-yellow-400/60 group-hover:text-yellow-400" />
+                My Orders
+              </Link>
+            </div>
+            {/* Logout */}
+            <div className="border-t border-white/8 py-2">
+              <button
+                onClick={() => { setOpen(false); onLogout(); }}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/5 transition-all group"
+              >
+                <LogOut size={15} className="group-hover:text-red-400" />
+                Sign Out
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const navItems = [
   { name: 'Home', link: '/' },
@@ -110,17 +181,7 @@ export const AnimatedNavbar = () => {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
             {user ? (
-              <div className="flex items-center gap-4 border-r border-white/20 pr-4 mr-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center text-white font-bold text-xs uppercase shadow-lg">
-                    {user.name ? user.name.charAt(0) : user.email?.charAt(0) || 'U'}
-                  </div>
-                  <span className="text-white text-sm font-medium hidden md:block">{user.name || user.email?.split('@')[0]}</span>
-                </div>
-                <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-red-400 transition-colors">
-                  Logout
-                </button>
-              </div>
+              <UserMenu user={user} onLogout={handleLogout} />
             ) : (
               <>
                 <Link href="/signin">
@@ -213,9 +274,16 @@ export const AnimatedNavbar = () => {
               </Link>
               <div className="flex gap-3">
                 {user ? (
+                <div className="flex flex-col gap-3">
+                  <Link href="/orders" onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 justify-center w-full py-3 border border-yellow-400/30 text-yellow-400 font-bold text-sm"
+                  >
+                    <ShoppingBag size={16} /> My Orders
+                  </Link>
                   <button onClick={handleLogout} className="w-full py-3 bg-red-500/20 text-red-400 font-medium border border-red-500/30">
-                    Logout
+                    Sign Out
                   </button>
+                </div>
                 ) : (
                   <>
                     <Link href="/signin" className="flex-1" onClick={() => setMobileMenuOpen(false)}>

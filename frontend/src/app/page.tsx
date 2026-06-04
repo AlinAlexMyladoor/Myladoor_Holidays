@@ -54,12 +54,12 @@ const metrics = [
 ];
 
 const services = [
-  { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800' },
-  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBTSfy3L9iNU0LvzWpwJ7Dxs27cNBQWD0HvQ&s' },
-  { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: 'https://americancompass.org/wp-content/uploads/2025/02/AdobeStock_52149432-scaled.jpeg' },
-  { icon: TreePine, label: 'Outstation Tours', color: 'text-green-400', img: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800' },
+  { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: '/images/airport-service.jpg' },
+  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800' },
+  { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: '/images/corporate-service.jpg' },
+  { icon: TreePine, label: 'Outstation Tours', color: 'text-green-400', img: '/images/alleppey.jpg' },
   { icon: Star, label: 'Pilgrimages', color: 'text-yellow-400', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=800' },
-  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://c.ndtvimg.com/2022-04/f4jrl078_budget-friendly-travel_625x300_13_April_22.jpg' },
+  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800' },
 ];
 
 const whyUs = [
@@ -551,12 +551,12 @@ const WhyUsSection = () => (
 const GalleryStrip = () => {
   const galleryImages = [
     { src: '/images/fleet-banner.png', label: 'Our Full Fleet', span: 2 },
-    { src: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=600', label: 'Luxury Coach' },
-    { src: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=600', label: 'Airport Transfer' },
-    { src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=600', label: 'Wedding Transport' },
-    { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1200', label: 'Munnar Hills', span: 2 },
-    { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=600', label: 'Pilgrimage Tours' },
-    { src: 'https://images.unsplash.com/photo-1563461660947-507ef49e9c47?auto=format&fit=crop&q=80&w=600', label: 'Kochi Heritage' },
+    { src: '/images/munnar-kerala.jpg', label: 'Munnar Hills' },
+    { src: '/images/alleppey.jpg', label: 'Alleppey Backwaters' },
+    { src: '/images/airport-pickup.jpg', label: 'Airport Pickup' },
+    { src: '/images/kerala-trip.webp', label: 'Kerala Destinations', span: 2 },
+    { src: '/images/gallery-vehicle.jpg', label: 'Premium Vehicles' },
+    { src: '/images/wedding-vehicle.jpg', label: 'Wedding Transport' },
   ];
 
   return (
