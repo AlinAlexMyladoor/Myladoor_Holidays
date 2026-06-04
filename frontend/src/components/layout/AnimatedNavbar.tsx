@@ -127,9 +127,26 @@ export const AnimatedNavbar = () => {
             ))}
           </nav>
 
-          {/* ── Right Section ── */}
-          <div className="hidden lg:flex items-center gap-2">
-            {/* Book Now is always first */}
+          {/* ── Right Section: Book Now + Auth Controls ── */}
+          <div className="hidden lg:flex items-center gap-3">
+
+            {/* Sign In / Sign Up (only when logged out) */}
+            {!user && (
+              <>
+                <Link href="/signin">
+                  <button className="flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 border border-white/20 hover:border-white/40 transition-all duration-200">
+                    <LogIn size={15} /> Sign In
+                  </button>
+                </Link>
+                <Link href="/signup">
+                  <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                    <User size={14} /> Sign Up
+                  </button>
+                </Link>
+              </>
+            )}
+
+            {/* Book Now — always visible */}
             <Link href="/booking">
               <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg">
                 Book Now
@@ -142,9 +159,13 @@ export const AnimatedNavbar = () => {
               </button>
             </Link>
 
-            {user ? (
+            {/* Account chip + Logout — rightmost, only when logged in */}
+            {user && (
               <>
-                {/* Account chip: avatar + name + Edit Profile — AFTER Book Now */}
+                {/* Thin divider */}
+                <div className="w-[1px] h-7 bg-white/10 mx-1" />
+
+                {/* Account chip */}
                 <Link
                   href="/profile"
                   className="group flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-400/40 pl-1.5 pr-4 py-1.5 rounded-full transition-all duration-300"
@@ -163,7 +184,7 @@ export const AnimatedNavbar = () => {
                   </div>
                 </Link>
 
-                {/* Logout button — right after account chip */}
+                {/* Logout — absolute rightmost */}
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1.5 text-xs font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/25 rounded-full px-3.5 py-1.5 transition-all duration-200 hover:shadow-[0_0_12px_rgba(239,68,68,0.2)]"
@@ -171,19 +192,6 @@ export const AnimatedNavbar = () => {
                   <LogOut size={12} />
                   Logout
                 </button>
-              </>
-            ) : (
-              <>
-                <Link href="/signin">
-                  <button className="flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 border border-white/20 hover:border-white/40 transition-all duration-200">
-                    <LogIn size={15} /> Sign In
-                  </button>
-                </Link>
-                <Link href="/signup">
-                  <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
-                    <User size={14} /> Sign Up
-                  </button>
-                </Link>
               </>
             )}
           </div>

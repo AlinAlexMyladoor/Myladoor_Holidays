@@ -7,10 +7,9 @@ import { RevealOnScroll } from '@/components/ui/RevealOnScroll';
 import { ParticleField } from '@/components/ui/ParticleField';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MessageCircle, Users, Filter, Star, Fuel, Shield, Check } from 'lucide-react';
-import { API_URL } from '@/lib/api';
-import { useEffect } from 'react';
+import { MessageCircle, Users, Filter, Star, Check } from 'lucide-react';
 
+/* ─── Vehicle Data ─────────────────────────── */
 const allVehicles = [
   {
     id: 'sedan',
@@ -18,37 +17,34 @@ const allVehicles = [
     capacity: 4,
     capacityLabel: '4 Seater',
     desc: 'Perfect for individuals or small family trips. Economical, reliable, and comfortable for city and short-distance travel.',
-    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=900',
+    image: '/images/car-sedan.jpg',
     tag: 'ECONOMY',
-    category: 'sedan',
-    price: 'From ₹1,800/day',
-    features: ['AC', 'GPS', 'Music'],
+    category: 'car',
+    features: ['AC', 'GPS', 'Music System'],
     rating: 4.8,
   },
   {
     id: 'innova',
-    name: 'SUV Premium (Innova)',
+    name: 'Innova Crysta',
     capacity: 7,
     capacityLabel: '7 Seater',
     desc: 'Spacious, premium, and ideal for long-distance family journeys. The most popular vehicle for Kerala tours.',
-    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=900',
+    image: '/images/innova-crysta.jpg',
     tag: 'BESTSELLER',
-    category: 'suv',
-    price: 'From ₹2,500/day',
-    features: ['AC', 'GPS', '7 Seater', 'Luggage'],
+    category: 'car',
+    features: ['AC', 'GPS', 'Luggage Space', 'Push-back Seats'],
     rating: 4.9,
   },
   {
     id: 'van14',
-    name: 'Executive Van 14',
+    name: 'Traveller 14',
     capacity: 14,
     capacityLabel: '14 Seater',
     desc: 'Comfortable and spacious for small group outings and corporate trips. Deep recliner seats, AC, entertainment system.',
-    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=900',
+    image: '/images/force-traveller.jpg',
     tag: 'GROUP',
-    category: 'van',
-    price: 'From ₹4,500/day',
-    features: ['AC', 'Entertainment', 'USB', 'Curtains'],
+    category: 'traveller',
+    features: ['AC', 'Entertainment', 'USB Charging', 'Curtains'],
     rating: 4.8,
   },
   {
@@ -57,25 +53,35 @@ const allVehicles = [
     capacity: 17,
     capacityLabel: '17 Seater',
     desc: 'Enhanced capacity Traveller with plush seating for medium-sized groups. Perfect for pilgrimages and school excursions.',
-    image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=900',
-    tag: 'GROUP',
-    category: 'van',
-    price: 'From ₹5,500/day',
-    features: ['AC', 'Push Back', 'Luggage Rack'],
+    image: '/images/force-traveller.jpg',
+    tag: 'POPULAR',
+    category: 'traveller',
+    features: ['AC', 'Push-back Seats', 'Luggage Rack'],
     rating: 4.7,
   },
   {
     id: 'van20',
-    name: 'Corporate Van 20',
+    name: 'Traveller 20',
     capacity: 20,
     capacityLabel: '20 Seater',
     desc: 'Extra space for larger corporate trips or extended family gatherings. Executive finish with added comfort features.',
-    image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=900',
+    image: '/images/force-traveller.jpg',
     tag: 'CORPORATE',
-    category: 'van',
-    price: 'From ₹6,500/day',
+    category: 'traveller',
     features: ['AC', 'Conference Setup', 'WiFi Ready'],
     rating: 4.8,
+  },
+  {
+    id: 'urbania',
+    name: 'Urbania Luxury Van',
+    capacity: 12,
+    capacityLabel: '12 Seater',
+    desc: 'The ultimate luxury travel experience — panoramic glass roof, premium leather seats, ambient lighting. For those who demand the best.',
+    image: '/images/urbania-van.jpg',
+    tag: 'LUXURY',
+    category: 'urbania',
+    features: ['Panoramic Roof', 'Leather Seats', 'Ambient Lights', 'WiFi'],
+    rating: 5.0,
   },
   {
     id: 'coach26',
@@ -83,36 +89,21 @@ const allVehicles = [
     capacity: 26,
     capacityLabel: '26 Seater',
     desc: 'Large group travel made easy — ideal for events, weddings, group tours and outstation travel.',
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=900',
+    image: '/images/bus.jpg',
     tag: 'EVENTS',
-    category: 'coach',
-    price: 'From ₹8,000/day',
+    category: 'bus',
     features: ['AC', 'PA System', 'Under-seat Storage'],
     rating: 4.7,
   },
   {
-    id: 'urbania',
-    name: 'Urbania Luxury',
-    capacity: 12,
-    capacityLabel: 'Premium Van',
-    desc: 'The absolute luxury travel experience — panoramic glass roof, premium leather seats, ambient lighting. For those who demand the best.',
-    image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=900',
-    tag: 'LUXURY',
-    category: 'luxury',
-    price: 'From ₹7,500/day',
-    features: ['Panoramic Roof', 'Leather Seats', 'Ambient Lights', 'WiFi'],
-    rating: 5.0,
-  },
-  {
     id: 'sml',
-    name: 'SML Classic',
+    name: 'SML Mini Bus 36',
     capacity: 36,
-    capacityLabel: 'Mini Bus',
+    capacityLabel: '36 Seater',
     desc: 'Comfortable and reliable mini bus — perfect for local city circuits, outstation tours, and school trips.',
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=900',
+    image: '/images/grand-coach.jpg',
     tag: 'TOURS',
-    category: 'coach',
-    price: 'From ₹9,000/day',
+    category: 'bus',
     features: ['AC', 'PA System', 'Movie Screen'],
     rating: 4.6,
   },
@@ -122,85 +113,141 @@ const allVehicles = [
     capacity: 49,
     capacityLabel: '49 Seater',
     desc: 'Full-sized luxury coach for large events, company outings, pilgrimages, and intercity tours. Maximum comfort at scale.',
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=900',
+    image: '/images/grand-coach.jpg',
     tag: 'EVENTS',
-    category: 'coach',
-    price: 'From ₹12,000/day',
+    category: 'bus',
     features: ['Full AC', 'Recliner Seats', 'PA System', 'TV'],
     rating: 4.8,
   },
 ];
 
+/* ─── Filters ──────────────────────────────── */
 const filters = [
-  { label: 'All Vehicles', value: 'all' },
-  { label: 'Sedan / SUV', value: 'sedan' },
-  { label: 'SUV', value: 'suv' },
-  { label: 'Vans', value: 'van' },
-  { label: 'Coaches', value: 'coach' },
-  { label: 'Luxury', value: 'luxury' },
+  { label: 'All Vehicles', value: 'all', emoji: '🚘' },
+  { label: 'Car / Innova', value: 'car', emoji: '🚗' },
+  { label: 'Traveller', value: 'traveller', emoji: '🚐' },
+  { label: 'Bus / Coach', value: 'bus', emoji: '🚌' },
+  { label: 'Urbania', value: 'urbania', emoji: '⭐' },
 ];
 
 const tagColors: Record<string, string> = {
-  ECONOMY: 'tag-economy',
-  BESTSELLER: 'tag-bestseller',
-  GROUP: 'tag-group',
-  CORPORATE: 'tag-corporate',
-  EVENTS: 'tag-events',
-  LUXURY: 'tag-luxury',
-  TOURS: 'tag-tours',
+  ECONOMY: 'bg-gray-700 text-gray-200',
+  BESTSELLER: 'bg-yellow-400 text-black',
+  POPULAR: 'bg-blue-600 text-white',
+  GROUP: 'bg-emerald-700 text-white',
+  CORPORATE: 'bg-purple-700 text-white',
+  EVENTS: 'bg-orange-600 text-white',
+  LUXURY: 'bg-gradient-to-r from-yellow-500 to-yellow-300 text-black',
+  TOURS: 'bg-teal-700 text-white',
 };
 
+/* ─── Vehicle Card ─────────────────────────── */
+const VehicleCard = ({ v, idx }: { v: typeof allVehicles[0]; idx: number }) => (
+  <motion.div
+    layout
+    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+    animate={{ opacity: 1, scale: 1, y: 0 }}
+    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+    transition={{ duration: 0.4, delay: idx * 0.05 }}
+    className="h-full"
+  >
+    <HoverTiltCard>
+      {/* Fixed height card — uniform across all vehicles */}
+      <div className="bg-[#161b22] border border-yellow-400/8 hover:border-yellow-400/30 transition-all duration-500 group card-glow flex flex-col h-full overflow-hidden">
+
+        {/* ── Image — fixed height ── */}
+        <div className="relative h-52 shrink-0 overflow-hidden">
+          <Image
+            src={v.image}
+            alt={v.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-700 grayscale-[20%] group-hover:grayscale-0"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#161b22] via-[#161b22]/20 to-transparent z-10" />
+
+          {/* Tag badge */}
+          <span className={`absolute top-3 left-3 z-20 text-[9px] font-black tracking-[0.25em] uppercase px-3 py-1.5 ${tagColors[v.tag] || 'bg-gray-700 text-white'}`}>
+            {v.tag}
+          </span>
+        </div>
+
+        {/* ── Content ── */}
+        <div className="p-5 flex flex-col flex-grow">
+          {/* Name + Capacity */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h3 className="text-white font-bold text-base leading-snug">{v.name}</h3>
+            <div className="flex flex-col items-end shrink-0 gap-1">
+              <span className="text-gray-400 text-xs flex items-center gap-1">
+                <Users size={11} /> {v.capacityLabel}
+              </span>
+              <span className="text-yellow-400 text-xs flex items-center gap-1">
+                <Star size={10} fill="#d4af37" /> {v.rating}
+              </span>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-gray-500 text-xs font-light leading-relaxed mb-4 flex-grow">{v.desc}</p>
+
+          {/* Feature Tags */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {v.features.map((feat, fi) => (
+              <span
+                key={fi}
+                className="text-[9px] font-bold tracking-wide text-gray-400 border border-white/8 px-2 py-1 uppercase flex items-center gap-1"
+              >
+                <Check size={8} className="text-emerald-400" /> {feat}
+              </span>
+            ))}
+          </div>
+
+          {/* CTAs */}
+          <div className="flex gap-2 mt-auto">
+            <Link
+              href="/booking"
+              className="flex-1 py-3 bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-wider text-center transition-all duration-300 hover:shadow-[0_0_20px_rgba(6,95,70,0.4)]"
+            >
+              Book Now →
+            </Link>
+            <a
+              href={`https://wa.me/918848392990?text=Hi! I'm interested in booking the ${v.name} (${v.capacityLabel}). Can you share availability?`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-green-900/30 border border-green-500/25 hover:bg-green-800/50 hover:border-green-400/50 text-green-400 transition-all"
+              title="WhatsApp Enquiry"
+            >
+              <MessageCircle size={17} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </HoverTiltCard>
+  </motion.div>
+);
+
+/* ─── Page ─────────────────────────────────── */
 export default function FleetPage() {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [vehicles, setVehicles] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        const res = await fetch(`${API_URL}/vehicles`);
-        const data = await res.json();
-        if (data && data.length > 0) {
-          setVehicles(data.map((v: any) => ({
-            ...v,
-            id: v.id,
-            price: `From ₹${v.pricePerDay.toLocaleString()}/day`,
-            capacityLabel: `${v.capacity} Seater`,
-            tag: v.category.toUpperCase(),
-            desc: v.description || 'Delivering premium vehicle rental experiences since 1994.',
-            rating: 4.9,
-          })));
-        } else {
-          setVehicles(allVehicles);
-        }
-      } catch (err) {
-        setVehicles(allVehicles);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchVehicles();
-  }, []);
 
   const filtered = activeFilter === 'all'
-    ? vehicles
-    : vehicles.filter(v => v.category === activeFilter);
+    ? allVehicles
+    : allVehicles.filter(v => v.category === activeFilter);
 
   return (
     <div className="min-h-screen bg-[#0d1117]">
-      {/* ── PAGE HERO ─────────────────────────── */}
+      {/* ── PAGE HERO ── */}
       <section className="relative h-72 md:h-96 flex items-end overflow-hidden bg-[#080c0a]">
         <Image
-          src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=2000"
-          alt="fleet hero"
+          src="/images/fleet-myladoor.png"
+          alt="Myladoor Fleet"
           fill
-          className="object-cover opacity-25"
+          className="object-cover opacity-30"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/60 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d1117]/80 to-transparent" />
         <ParticleField count={20} />
-
         <div className="relative z-10 max-w-7xl mx-auto px-4 pb-16 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -212,127 +259,51 @@ export default function FleetPage() {
               The <span className="font-black text-gold-gradient">Fleet</span>
             </h1>
             <p className="text-gray-400 font-light max-w-xl mt-3">
-              9 immaculately maintained vehicle types — from luxury sedans to 49-seater coaches.
+              9 immaculately maintained vehicle types — from compact cars to 49-seater coaches.
             </p>
           </motion.div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-16">
-        {/* ── FILTER TABS ─────────────────────── */}
+        {/* ── FILTER TABS ── */}
         <RevealOnScroll direction="up" className="mb-14">
           <div className="flex items-center gap-2 text-gray-500 text-[10px] font-semibold uppercase tracking-widest mb-4">
-            <Filter size={14} /> Filter Vehicles
+            <Filter size={14} /> Filter by Vehicle Type
           </div>
-          <div className="flex overflow-x-auto pb-4 gap-3 no-scrollbar scroll-smooth">
+          <div className="flex overflow-x-auto pb-3 gap-3 no-scrollbar">
             {filters.map(f => (
               <button
                 key={f.value}
                 onClick={() => setActiveFilter(f.value)}
-                className={`px-6 py-3 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+                className={`flex items-center gap-2 px-6 py-3 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
                   activeFilter === f.value
                     ? 'bg-yellow-400 text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]'
                     : 'border border-white/10 text-gray-400 hover:border-yellow-400/40 hover:text-yellow-400 bg-white/5'
                 }`}
               >
+                <span>{f.emoji}</span>
                 {f.label}
               </button>
             ))}
           </div>
         </RevealOnScroll>
 
-        {/* ── VEHICLE GRID ─────────────────────── */}
+        {/* ── VEHICLE COUNT ── */}
+        <p className="text-gray-600 text-xs uppercase tracking-widest mb-8">
+          Showing {filtered.length} vehicle{filtered.length !== 1 ? 's' : ''}
+          {activeFilter !== 'all' && ` · ${filters.find(f => f.value === activeFilter)?.label}`}
+        </p>
+
+        {/* ── VEHICLE GRID ── */}
         <AnimatePresence mode="popLayout">
+          {/* grid-rows-1fr forces all cards equal height per row */}
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
           >
             {filtered.map((v, idx) => (
-              <motion.div
-                key={v.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-              >
-                <HoverTiltCard>
-                  <div className="bg-[#161b22] border border-yellow-400/8 hover:border-yellow-400/25 transition-all duration-500 group card-glow h-full flex flex-col overflow-hidden">
-                    {/* Image */}
-                    <div className="relative h-56 overflow-hidden shrink-0">
-                      <Image
-                        src={v.image}
-                        alt={v.name}
-                        fill
-                        className="object-cover group-hover:scale-108 transition-transform duration-700 grayscale-[25%] group-hover:grayscale-0"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#161b22] via-[#161b22]/30 to-transparent z-10" />
-
-                      {/* Tag */}
-                      <div className="absolute top-4 left-4 z-20">
-                        <span className={`text-[9px] font-black tracking-[0.25em] uppercase px-3 py-1.5 ${tagColors[v.tag] || ''}`}>
-                          {v.tag}
-                        </span>
-                      </div>
-
-                      {/* Price */}
-                      <div className="absolute bottom-4 right-4 z-20 glass-dark px-3 py-1">
-                        <span className="text-yellow-400 text-xs font-bold">{v.price}</span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6 flex flex-col flex-grow">
-                      {/* Header */}
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-white font-bold text-lg leading-snug">{v.name}</h3>
-                        <div className="flex flex-col items-end gap-1 ml-2 shrink-0">
-                          <span className="text-gray-500 text-xs flex items-center gap-1">
-                            <Users size={11} /> {v.capacityLabel}
-                          </span>
-                          <span className="text-yellow-400 text-xs flex items-center gap-1">
-                            <Star size={10} fill="#d4af37" /> {v.rating}
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className="text-gray-500 text-sm font-light flex-grow mb-4 leading-relaxed">{v.desc}</p>
-
-                      {/* Feature Tags */}
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {v.features.map((feat: string, fi: number) => (
-                          <span
-                            key={fi}
-                            className="text-[9px] font-bold tracking-wide text-gray-400 border border-white/8 px-2 py-1 uppercase flex items-center gap-1"
-                          >
-                            <Check size={8} className="text-emerald-400" /> {feat}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* CTAs */}
-                      <div className="flex gap-3 mt-auto">
-                        <Link
-                          href="/booking"
-                          className="flex-1 py-3 bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-wider text-center transition-all duration-300 hover:shadow-[0_0_20px_rgba(6,95,70,0.4)]"
-                        >
-                          Book Now →
-                        </Link>
-                        <a
-                          href={`https://wa.me/918848392990?text=Hi! I'm interested in booking the ${v.name} (${v.capacityLabel}). Can you share availability and pricing?`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-3 bg-green-900/30 border border-green-500/25 hover:bg-green-800/50 hover:border-green-400/50 text-green-400 transition-all"
-                          title="WhatsApp Enquiry"
-                        >
-                          <MessageCircle size={18} />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </HoverTiltCard>
-              </motion.div>
+              <VehicleCard key={v.id} v={v} idx={idx} />
             ))}
           </motion.div>
         </AnimatePresence>
@@ -343,7 +314,7 @@ export default function FleetPage() {
           </div>
         )}
 
-        {/* ── BOTTOM CTA ─────────────────────── */}
+        {/* ── BOTTOM CTA ── */}
         <RevealOnScroll direction="up" className="mt-24 p-10 md:p-16 glass-dark text-center relative overflow-hidden">
           <div className="absolute inset-0 grid-pattern opacity-30" />
           <div className="relative z-10">
@@ -361,8 +332,7 @@ export default function FleetPage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)]"
               >
-                <MessageCircle size={18} />
-                Get Custom Quote
+                <MessageCircle size={18} /> Get Custom Quote
               </a>
               <Link
                 href="/booking"
