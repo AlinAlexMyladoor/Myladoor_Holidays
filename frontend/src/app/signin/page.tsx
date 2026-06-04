@@ -82,26 +82,10 @@ export default function SignInPage() {
           transition={{ duration: 0.7 }}
           className="text-center mb-8"
         >
-          <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-            <div className="shrink-0 group-hover:scale-110 transition-transform duration-300">
-              <Image
-                src="/images/logo.png"
-                alt="Myladoor Holidays Logo"
-                width={44}
-                height={44}
-                className="object-contain"
-              />
-            </div>
-            <div className="text-left">
-              <span className="text-white font-black tracking-[0.1em] uppercase text-sm block">Myladoor</span>
-              <span className="text-[9px] text-yellow-400 uppercase tracking-[0.3em] font-bold">HOLIDAYS</span>
-            </div>
-          </Link>
-
           <h1 className="text-3xl sm:text-4xl font-light text-white">
             Welcome <span className="font-bold text-gold-gradient">Back</span>
           </h1>
-          <p className="text-gray-500 text-sm mt-2">Sign in to manage your bookings</p>
+          <p className="text-gray-400 text-sm mt-2">Sign in to manage your bookings</p>
         </motion.div>
 
         {/* Form Card */}

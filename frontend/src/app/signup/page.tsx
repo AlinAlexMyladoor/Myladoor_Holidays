@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, Phone, User, Check, UserPlus, MessageCircle, AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Mail, Lock, Eye, EyeOff, Phone, User, Check, UserPlus, AlertCircle } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
 export default function SignUpPage() {
+  const router = useRouter();
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirm: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,6 +57,8 @@ export default function SignUpPage() {
       }
 
       setSubmitted(true);
+      // Auto-redirect to sign in after 2 seconds
+      setTimeout(() => router.push('/signin'), 2000);
     } catch (err: any) {
       setError('Unable to connect to server. Please check your connection.');
     } finally {
@@ -101,26 +105,10 @@ export default function SignUpPage() {
           transition={{ duration: 0.7 }}
           className="text-center mb-8"
         >
-          <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-            <div className="shrink-0 group-hover:scale-110 transition-transform duration-300">
-              <Image
-                src="/images/logo.png"
-                alt="Myladoor Holidays Logo"
-                width={44}
-                height={44}
-                className="object-contain"
-              />
-            </div>
-            <div className="text-left">
-              <span className="text-white font-black tracking-[0.1em] uppercase text-sm block">Myladoor</span>
-              <span className="text-[9px] text-yellow-400 uppercase tracking-[0.3em] font-bold">HOLIDAYS</span>
-            </div>
-          </Link>
-
           <h1 className="text-3xl sm:text-4xl font-light text-white">
             Create Your <span className="font-bold text-gold-gradient">Account</span>
           </h1>
-          <p className="text-gray-500 text-sm mt-2">Join thousands of happy travellers</p>
+          <p className="text-gray-400 text-sm mt-2">Join thousands of happy travellers</p>
         </motion.div>
 
         {/* Form Card */}
@@ -147,12 +135,11 @@ export default function SignUpPage() {
                 <Check size={36} className="text-emerald-400" />
               </motion.div>
               <h3 className="text-2xl font-bold text-white mb-2">Account Created!</h3>
-              <p className="text-gray-400 text-sm mb-6">Welcome to Myladoor Holidays. You can now sign in and book premium vehicles.</p>
-              <Link href="/signin">
-                <button className="px-8 py-3 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all">
-                  Sign In Now →
-                </button>
-              </Link>
+              <p className="text-gray-400 text-sm mb-4">Welcome to Myladoor Holidays. Redirecting to sign in…</p>
+              <div className="flex items-center justify-center gap-2 text-yellow-400 text-xs font-bold uppercase tracking-widest">
+                <div className="w-4 h-4 border-2 border-yellow-400/30 border-t-yellow-400 rounded-full animate-spin" />
+                Taking you to sign in
+              </div>
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -190,7 +177,7 @@ export default function SignUpPage() {
                     onFocus={() => setFocusedField(f.key)}
                     onBlur={() => setFocusedField(null)}
                     autoComplete={f.autoComplete}
-                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all text-base"
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-400 transition-all text-base"
                   />
                 </div>
               ))}
@@ -210,7 +197,7 @@ export default function SignUpPage() {
                     onFocus={() => setFocusedField('password')}
                     onBlur={() => setFocusedField(null)}
                     autoComplete="new-password"
-                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-700 transition-all text-base"
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3.5 pr-12 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-400 transition-all text-base"
                   />
                   <button
                     type="button"
@@ -250,7 +237,7 @@ export default function SignUpPage() {
                   onFocus={() => setFocusedField('confirm')}
                   onBlur={() => setFocusedField(null)}
                   autoComplete="new-password"
-                  className={`w-full bg-white/5 border text-white px-4 py-3.5 focus:outline-none placeholder:text-gray-700 transition-all text-base ${
+                  className={`w-full bg-white/5 border text-white px-4 py-3.5 focus:outline-none placeholder:text-gray-400 transition-all text-base ${
                     form.confirm && form.password !== form.confirm
                       ? 'border-red-500/50 focus:border-red-400'
                       : 'border-white/10 focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)]'
