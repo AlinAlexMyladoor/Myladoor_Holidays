@@ -23,7 +23,7 @@ const featuredVehicles = [
   {
     name: 'Luxury Innova Crysta',
     capacity: '7 Seater',
-    image: 'https://www.wheelsbingo.com/cars/toyota/toyota-innova-crysta',
+    image: '/images/innova.jpg',
     tag: 'BESTSELLER',
     features: ['GPS Tracked', 'AC', 'Luggage Space'],
     badge: 'Most Booked',
@@ -31,7 +31,7 @@ const featuredVehicles = [
   {
     name: 'Force Traveller 17',
     capacity: '17 Seater',
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=900',
+    image: '/images/traveller.jpg',
     tag: 'POPULAR',
     features: ['Push-back Seats', 'AC', 'Entertainment'],
     badge: 'Group Favourite',
@@ -39,7 +39,7 @@ const featuredVehicles = [
   {
     name: 'Grand Coach 49',
     capacity: '49 Seater',
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=900',
+    image: '/images/bus.jpg',
     tag: 'EVENTS',
     features: ['Recliner Seats', 'PA System', 'AC Coach'],
     badge: 'Large Groups',
