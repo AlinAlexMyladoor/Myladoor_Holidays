@@ -23,27 +23,24 @@ const featuredVehicles = [
   {
     name: 'Luxury Innova Crysta',
     capacity: '7 Seater',
-    image: '/images/munnar-road.jpg',
+    image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&q=80&w=900',
     tag: 'BESTSELLER',
-    price: 'From ₹2,500/day',
     features: ['GPS Tracked', 'AC', 'Luggage Space'],
     badge: 'Most Booked',
   },
   {
     name: 'Force Traveller 17',
     capacity: '17 Seater',
-    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=900',
+    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=900',
     tag: 'POPULAR',
-    price: 'From ₹5,500/day',
     features: ['Push-back Seats', 'AC', 'Entertainment'],
     badge: 'Group Favourite',
   },
   {
     name: 'Grand Coach 49',
     capacity: '49 Seater',
-    image: '/images/bus-interior.jpg',
+    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=900',
     tag: 'EVENTS',
-    price: 'From ₹12,000/day',
     features: ['Recliner Seats', 'PA System', 'AC Coach'],
     badge: 'Large Groups',
   },
@@ -57,12 +54,12 @@ const metrics = [
 ];
 
 const services = [
-  { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: '/images/airport-service.jpg' },
-  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: '/images/wedding-vehicle.jpg' },
-  { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=400' },
-  { icon: TreePine, label: 'Outstation Tours', color: 'text-green-400', img: '/images/munnar-road.jpg' },
-  { icon: Star, label: 'Pilgrimages', color: 'text-yellow-400', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=400' },
-  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=400' },
+  { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800' },
+  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800' },
+  { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800' },
+  { icon: TreePine, label: 'Outstation Tours', color: 'text-green-400', img: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800' },
+  { icon: Star, label: 'Pilgrimages', color: 'text-yellow-400', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=800' },
+  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://images.unsplash.com/photo-1497375638960-ca368c7231d4?auto=format&fit=crop&q=80&w=800' },
 ];
 
 const whyUs = [
@@ -111,9 +108,6 @@ const FleetCard = ({ v, idx }: { v: typeof featuredVehicles[0]; idx: number }) =
             <div className="absolute top-4 right-4 z-20 glass-dark px-2 py-1">
               <span className="text-[9px] text-emerald-400 font-bold">{v.badge}</span>
             </div>
-            <div className="absolute bottom-4 right-4 z-20 glass-dark px-3 py-1.5">
-              <span className="text-yellow-400 text-xs font-bold">{v.price}</span>
-            </div>
           </div>
           <div className="p-6 flex flex-col flex-grow">
             <div className="flex justify-between items-center mb-3">
@@ -138,7 +132,7 @@ const FleetCard = ({ v, idx }: { v: typeof featuredVehicles[0]; idx: number }) =
           <div className="mb-6">
             <span className="text-yellow-400 text-[9px] font-black tracking-[0.4em] uppercase">Ready to Book?</span>
             <h3 className="text-2xl font-bold text-white mt-2">{v.name}</h3>
-            <p className="text-gray-400 text-sm mt-1">{v.capacity} · {v.price}</p>
+            <p className="text-gray-400 text-sm mt-1">{v.capacity}</p>
           </div>
           <div className="space-y-3 w-full">
             <Link
@@ -175,6 +169,7 @@ const FleetCard = ({ v, idx }: { v: typeof featuredVehicles[0]; idx: number }) =
 /* ─── VIDEO SECTION ────────────────────────── */
 const VideoShowcase = () => {
   const [playing, setPlaying] = useState(false);
+  const YT_ID = 'DGQwd1_dpuc';
 
   return (
     <section className="py-32 bg-[#0a0f0d] relative overflow-hidden">
@@ -211,31 +206,42 @@ const VideoShowcase = () => {
 
           <RevealOnScroll direction="right" delay={0.2}>
             <div className="relative">
-              {/* Main large image */}
-              <div className="relative aspect-video rounded-none overflow-hidden group img-zoom-wrap border border-yellow-400/10 hover:border-yellow-400/30 transition-colors duration-500">
-                <Image
-                  src="/images/kerala-hero.jpg"
-                  alt="Kerala backwaters tour"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                {/* Play overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setPlaying(!playing)}
-                    className="w-20 h-20 bg-yellow-400/90 hover:bg-yellow-400 flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all duration-300"
-                  >
-                    <Play size={30} className="text-black ml-1.5" fill="#000" />
-                  </motion.button>
-                </div>
-                <div className="absolute bottom-4 left-4 glass-dark px-4 py-2">
-                  <p className="text-white text-xs font-semibold">Kerala Backwaters Tour</p>
-                  <p className="text-yellow-400 text-[10px]">Alleppey · Kollam</p>
-                </div>
+              {/* Video player */}
+              <div className="relative aspect-video overflow-hidden border border-yellow-400/10 hover:border-yellow-400/30 transition-colors duration-500 bg-black">
+                {playing ? (
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${YT_ID}?autoplay=1&rel=0&modestbranding=1`}
+                    title="Myladoor Holidays in Action"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <>
+                    <Image
+                      src="https://img.youtube.com/vi/DGQwd1_dpuc/maxresdefault.jpg"
+                      alt="Kerala journey video"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setPlaying(true)}
+                        className="w-20 h-20 bg-yellow-400/90 hover:bg-yellow-400 flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all duration-300"
+                      >
+                        <Play size={30} className="text-black ml-1.5" fill="#000" />
+                      </motion.button>
+                    </div>
+                    <div className="absolute bottom-4 left-4 glass-dark px-4 py-2">
+                      <p className="text-white text-xs font-semibold">Myladoor Holidays Fleet</p>
+                      <p className="text-yellow-400 text-[10px]">Click to play video</p>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Floating overlay cards */}
@@ -245,7 +251,7 @@ const VideoShowcase = () => {
                 className="absolute -bottom-8 -left-6 z-20 glass-dark p-4 border border-yellow-400/20 w-48"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-yellow-400/40 flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-yellow-400/40 flex-shrink-0 relative">
                     <Image src="/images/airport-service.jpg" alt="driver" fill className="object-cover" />
                   </div>
                   <div>
@@ -308,15 +314,14 @@ const FleetBanner = () => (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 md:p-8">
           <div className="flex flex-wrap gap-4 justify-center">
             {[
-              { label: 'Innova Crysta', cap: '7 Seater', price: '₹2,500/day' },
-              { label: 'Tourist Coach', cap: '49 Seater', price: '₹12,000/day' },
-              { label: 'Force Traveller', cap: '17 Seater', price: '₹5,500/day' },
-              { label: 'Urbania Van', cap: 'Luxury 12', price: '₹7,500/day' },
+              { label: 'Innova Crysta', cap: '7 Seater' },
+              { label: 'Tourist Coach', cap: '49 Seater' },
+              { label: 'Force Traveller', cap: '17 Seater' },
+              { label: 'Urbania Van', cap: 'Luxury 12 Seater' },
             ].map((v, i) => (
               <div key={i} className="glass-dark px-4 py-2 text-center border border-yellow-400/20">
                 <p className="text-white font-bold text-xs">{v.label}</p>
                 <p className="text-gray-400 text-[10px]">{v.cap}</p>
-                <p className="text-yellow-400 text-[10px] font-bold">{v.price}</p>
               </div>
             ))}
           </div>
@@ -435,13 +440,13 @@ const WhyUsSection = () => (
 /* ─── PHOTO GALLERY STRIP ───────────────────── */
 const GalleryStrip = () => {
   const galleryImages = [
-    { src: '/images/fleet-banner.png', label: 'Our Full Fleet', span: 2 },
-    { src: '/images/innova-interior.jpg', label: 'Luxury Interior' },
-    { src: '/images/airport-service.jpg', label: 'Airport Service' },
-    { src: '/images/wedding-vehicle.jpg', label: 'Wedding Transport' },
-    { src: '/images/munnar-road.jpg', label: 'Munnar Tours', span: 2 },
-    { src: '/images/bus-interior.jpg', label: 'Coach Comfort' },
-    { src: '/images/kerala-hero.jpg', label: 'Kerala Destinations' },
+    { src: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1200', label: 'Kerala Backwaters', span: 2 },
+    { src: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=600', label: 'Luxury Coach' },
+    { src: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=600', label: 'Airport Transfer' },
+    { src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=600', label: 'Wedding Transport' },
+    { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1200', label: 'Munnar Hills', span: 2 },
+    { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=600', label: 'Pilgrimage Tours' },
+    { src: 'https://images.unsplash.com/photo-1563461660947-507ef49e9c47?auto=format&fit=crop&q=80&w=600', label: 'Kochi Heritage' },
   ];
 
   return (
