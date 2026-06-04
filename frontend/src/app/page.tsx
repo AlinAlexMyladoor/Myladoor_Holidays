@@ -55,11 +55,11 @@ const metrics = [
 
 const services = [
   { icon: Plane, label: 'Airport Transfer', color: 'text-blue-400', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800' },
-  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800' },
-  { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800' },
+  { icon: Heart, label: 'Weddings', color: 'text-pink-400', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBTSfy3L9iNU0LvzWpwJ7Dxs27cNBQWD0HvQ&s' },
+  { icon: Building2, label: 'Corporate', color: 'text-purple-400', img: 'https://americancompass.org/wp-content/uploads/2025/02/AdobeStock_52149432-scaled.jpeg' },
   { icon: TreePine, label: 'Outstation Tours', color: 'text-green-400', img: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800' },
   { icon: Star, label: 'Pilgrimages', color: 'text-yellow-400', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=800' },
-  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://images.unsplash.com/photo-1497375638960-ca368c7231d4?auto=format&fit=crop&q=80&w=800' },
+  { icon: Users, label: 'School Trips', color: 'text-orange-400', img: 'https://c.ndtvimg.com/2022-04/f4jrl078_budget-friendly-travel_625x300_13_April_22.jpg' },
 ];
 
 const whyUs = [

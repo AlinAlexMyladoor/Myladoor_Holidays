@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface FlipCard3DProps {
@@ -21,12 +21,12 @@ export const FlipCard3D: React.FC<FlipCard3DProps> = ({ front, back, className =
       <motion.div
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        style={{ transformStyle: 'preserve-3d', position: 'relative' }}
+        style={{ transformStyle: 'preserve-3d', position: 'relative', pointerEvents: 'none' }}
         className="w-full h-full"
       >
         {/* Front */}
         <div
-          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', pointerEvents: flipped ? 'none' : 'auto' }}
           className="w-full h-full"
         >
           {front}
@@ -42,6 +42,7 @@ export const FlipCard3D: React.FC<FlipCard3DProps> = ({ front, back, className =
             left: 0,
             width: '100%',
             height: '100%',
+            pointerEvents: flipped ? 'auto' : 'none',
           }}
         >
           {back}

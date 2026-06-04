@@ -268,7 +268,6 @@ export const Footer = () => {
             <a href="#" className="hover:text-yellow-400 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-yellow-400 transition-colors">Terms of Service</a>
             <a href="#" className="hover:text-yellow-400 transition-colors">Refund Policy</a>
-            <Link href="/admin" className="hover:text-yellow-400 transition-colors">Admin Portal</Link>
           </div>
         </div>
       </div>
