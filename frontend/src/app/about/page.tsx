@@ -76,8 +76,17 @@ export default function AboutPage() {
             <h1 className="text-5xl md:text-7xl font-light text-white mt-3">
               Our <span className="font-black text-gold-gradient">Story</span>
             </h1>
-            <p className="text-gray-400 font-light max-w-xl mt-3 text-lg">
-              From a single vehicle to Kerala's most trusted premium fleet.
+            <p className="text-white/90 font-light max-w-2xl mt-4 text-lg md:text-xl leading-relaxed"
+              style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}
+            >
+              From a single Innova Crysta in Thrissur to Kerala&apos;s most trusted premium travel fleet — 
+              Myladoor Holidays is a 30-year journey built on passion, professionalism, and a relentless 
+              commitment to making every journey extraordinary.
+            </p>
+            <p className="text-yellow-300/80 font-light max-w-xl mt-3 text-sm md:text-base leading-relaxed"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}
+            >
+              Founded by Saji Myladoor · Thrissur, Kerala · 9 Vehicle Categories · 5,000+ Happy Clients
             </p>
           </div>
         </div>
@@ -94,11 +103,14 @@ export default function AboutPage() {
                 <h2 className="text-4xl md:text-5xl font-light text-white mt-4 mb-6">
                   More Than Just a <span className="font-bold">Vehicle Rental</span>
                 </h2>
-                <p className="text-gray-400 leading-relaxed font-light mb-6">
-                  Myladoor Holidays isn't just a transport company — we're your travel partners. For over 30 years, we've been crafting seamless, comfortable, and memorable journeys for thousands of families, corporates, and event groups across Kerala and South India.
+                <p className="text-gray-200 leading-relaxed font-light mb-6 text-base md:text-lg">
+                  Myladoor Holidays isn&apos;t just a transport company — we&apos;re your travel partners. For over 30 years, we&apos;ve been crafting seamless, comfortable, and memorable journeys for thousands of families, corporates, and event groups across Kerala and South India.
                 </p>
-                <p className="text-gray-500 leading-relaxed font-light mb-8">
+                <p className="text-gray-400 leading-relaxed font-light mb-4">
                   Our fleet of 9 vehicle categories, maintained to the highest standards, paired with professional, trained chauffeurs — ensures every trip is an experience worth remembering.
+                </p>
+                <p className="text-gray-400 leading-relaxed font-light mb-8">
+                  Whether it&apos;s an airport transfer, a grand wedding convoy, a corporate offsite, or a pilgrimage tour across South India — we have the right vehicle, the right driver, and the right attitude to make it perfect.
                 </p>
                 <div className="flex gap-4">
                   <Link href="/booking" className="inline-flex items-center gap-3 px-7 py-4 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all">
