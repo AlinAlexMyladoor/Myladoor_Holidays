@@ -159,11 +159,9 @@ export const AnimatedNavbar = () => {
               </button>
             </Link>
 
-            {/* Account chip + Logout — RIGHTMOST, only when logged in */}
+            {/* Account chip + Logout — absolute rightmost corner */}
             {user && (
-              <>
-                <div className="w-[1px] h-7 bg-white/10 mx-1" />
-
+              <div className="flex items-center gap-2 ml-auto pl-6 border-l border-white/10">
                 <Link
                   href="/profile"
                   className="group flex items-center gap-2 bg-gradient-to-r from-[#0d1117] to-[#111827] hover:from-emerald-950/60 hover:to-[#0d1117] border border-yellow-400/20 hover:border-yellow-400/50 px-3 py-1.5 transition-all duration-300 shadow-[0_0_12px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]"
@@ -191,7 +189,7 @@ export const AnimatedNavbar = () => {
                     Logout
                   </span>
                 </button>
-              </>
+              </div>
             )}
           </div>
 
