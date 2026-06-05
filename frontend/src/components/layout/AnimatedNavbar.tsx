@@ -128,18 +128,18 @@ export const AnimatedNavbar = () => {
           </nav>
 
           {/* ── Right Section: Auth Controls, then Book Now, then Account (rightmost) ── */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3 flex-1 justify-end">
 
             {/* Sign In / Sign Up (only when logged out) */}
             {!user && (
               <>
                 <Link href="/signin">
-                  <button className="flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 border border-white/20 hover:border-white/40 transition-all duration-200">
+                  <button className="flex items-center gap-2 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 border border-white/20 hover:border-white/40 rounded-sm transition-all duration-200">
                     <LogIn size={15} /> Sign In
                   </button>
                 </Link>
                 <Link href="/signup">
-                  <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                  <button className="flex items-center gap-2 text-sm font-bold px-5 py-2 bg-yellow-400 text-black uppercase tracking-wide hover:bg-yellow-300 transition-all duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)] rounded-sm">
                     <User size={14} /> Sign Up
                   </button>
                 </Link>
@@ -148,7 +148,7 @@ export const AnimatedNavbar = () => {
 
             {/* Book Now — always visible */}
             <Link href="/booking">
-              <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg">
+              <button className="relative text-sm font-bold px-5 py-2 bg-emerald-700 text-white uppercase tracking-wide hover:bg-emerald-600 transition-all duration-200 shadow-lg rounded-sm">
                 Book Now
                 <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75" />
@@ -159,33 +159,58 @@ export const AnimatedNavbar = () => {
               </button>
             </Link>
 
-            {/* Account chip + Logout — absolute rightmost corner */}
+            {/* Account + Logout — premium bordered card at the far right */}
             {user && (
-              <div className="flex items-center gap-2 ml-auto pl-6 border-l border-white/10">
+              <div
+                className="flex items-center gap-0 ml-4 overflow-hidden"
+                style={{
+                  border: '1px solid rgba(212,175,55,0.35)',
+                  borderRadius: '8px',
+                  boxShadow: '0 0 18px rgba(212,175,55,0.12), 0 2px 12px rgba(0,0,0,0.5)',
+                  background: 'linear-gradient(135deg, rgba(13,17,23,0.95) 0%, rgba(17,24,39,0.95) 100%)',
+                  backdropFilter: 'blur(16px)',
+                }}
+              >
+                {/* Account button */}
                 <Link
                   href="/profile"
-                  className="group flex items-center gap-2 bg-gradient-to-r from-[#0d1117] to-[#111827] hover:from-emerald-950/60 hover:to-[#0d1117] border border-yellow-400/20 hover:border-yellow-400/50 px-3 py-1.5 transition-all duration-300 shadow-[0_0_12px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]"
+                  className="group flex items-center gap-2.5 px-4 py-2 transition-all duration-300 hover:bg-yellow-400/8"
+                  style={{ borderRight: '1px solid rgba(212,175,55,0.2)' }}
                 >
-                  <div className="relative w-7 h-7 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-black font-black text-xs shadow-[0_0_10px_rgba(212,175,55,0.5)] shrink-0">
+                  {/* Avatar circle */}
+                  <div className="relative w-8 h-8 rounded-full flex items-center justify-center text-black font-black text-sm shrink-0"
+                    style={{
+                      background: 'linear-gradient(135deg, #f6d365 0%, #d4af37 100%)',
+                      boxShadow: '0 0 14px rgba(212,175,55,0.6)',
+                    }}
+                  >
                     {initial}
-                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-400 rounded-full border-2 border-[#0a0f0d] animate-pulse" />
+                    <span
+                      className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0d1117] animate-pulse"
+                    />
                   </div>
+                  {/* Name + label */}
                   <div className="flex flex-col items-start leading-none">
-                    <span className="text-white text-[12px] font-bold max-w-[90px] truncate leading-tight">
+                    <span className="text-white text-[13px] font-bold max-w-[100px] truncate leading-tight group-hover:text-yellow-300 transition-colors duration-200">
                       {displayName}
                     </span>
-                    <span className="text-[9px] text-yellow-400/60 group-hover:text-yellow-400 transition-colors flex items-center gap-1 leading-tight mt-0.5">
-                      <Pencil size={7} /> Edit Profile
+                    <span className="text-[9px] tracking-widest uppercase font-semibold mt-0.5 flex items-center gap-1"
+                      style={{ color: 'rgba(212,175,55,0.55)' }}
+                    >
+                      <User size={8} />
+                      <span className="group-hover:text-yellow-400 transition-colors duration-200">Account</span>
                     </span>
                   </div>
                 </Link>
 
+                {/* Logout button */}
                 <button
                   onClick={handleLogout}
-                  className="group flex items-center gap-1.5 px-3.5 py-1.5 bg-[#0d1117] border border-white/10 hover:border-red-500/40 hover:bg-red-950/30 transition-all duration-300 shadow-sm hover:shadow-[0_0_12px_rgba(239,68,68,0.15)]"
+                  className="group flex items-center gap-2 px-4 py-2 transition-all duration-300 hover:bg-red-500/10"
+                  title="Sign out"
                 >
-                  <LogOut size={13} className="text-gray-500 group-hover:text-red-400 transition-colors" />
-                  <span className="text-xs font-semibold text-gray-500 group-hover:text-red-400 transition-colors tracking-wide">
+                  <LogOut size={14} className="text-gray-500 group-hover:text-red-400 transition-colors duration-200 group-hover:translate-x-0.5 transform" />
+                  <span className="text-[12px] font-semibold tracking-wide text-gray-400 group-hover:text-red-400 transition-colors duration-200">
                     Logout
                   </span>
                 </button>
