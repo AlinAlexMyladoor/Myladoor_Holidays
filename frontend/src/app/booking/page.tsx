@@ -72,6 +72,7 @@ export default function BookingPage() {
   const [submitted, setSubmitted] = useState(false);
   const [showFireworks, setShowFireworks] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [refNum] = useState(`MH-${Math.floor(Math.random() * 90000) + 10000}`);
   const [form, setForm] = useState<FormState>({
     tripType: '',
     from: '',
@@ -90,10 +91,7 @@ export default function BookingPage() {
 
   const selectedVehicle = vehicles.find(v => v.id === form.vehicle);
 
-  const handleSubmit = async () => {
-    // Build receipt reference
-    const refNum = `MH-${Math.floor(Math.random() * 90000) + 10000}`;
-
+  const saveOrder = async () => {
     // Save to database
     try {
       const userStr = localStorage.getItem('myladoor_user');
@@ -106,23 +104,40 @@ export default function BookingPage() {
     } catch (err) {
       console.error('DB Error:', err);
     }
-
     // Save to localStorage orders
     try {
       const existing = JSON.parse(localStorage.getItem('myladoor_orders') || '[]');
-      existing.unshift({
-        ref: refNum,
-        date: new Date().toISOString(),
-        ...form,
-        vehicleName: selectedVehicle?.name || form.vehicle,
-        status: 'Pending',
-      });
-      localStorage.setItem('myladoor_orders', JSON.stringify(existing));
+      const alreadySaved = existing.some((o: any) => o.ref === refNum);
+      if (!alreadySaved) {
+        existing.unshift({
+          ref: refNum,
+          id: refNum,
+          date: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          ...form,
+          vehicleType: selectedVehicle?.name || form.vehicle,
+          vehicleName: selectedVehicle?.name || form.vehicle,
+          pickupLocation: form.from,
+          dropLocation: form.to,
+          passengers: parseInt(form.pax) || 0,
+          status: 'pending',
+        });
+        localStorage.setItem('myladoor_orders', JSON.stringify(existing));
+      }
     } catch (_) {}
+  };
 
-    // Send WhatsApp message
+  const handleConfirm = async () => {
+    await saveOrder();
+    setShowFireworks(true);
+    setTimeout(() => setShowFireworks(false), 5000);
+    setSubmitted(true);
+  };
+
+  const handleWhatsApp = async () => {
+    await saveOrder();
     const msg = encodeURIComponent(
-      `*🚐 New Booking Request — Myladoor Holidays*\n\n` +
+      `*🚐 New Booking Enquiry — Myladoor Holidays*\n\n` +
       `*Ref:* ${refNum}\n*Trip Type:* ${form.tripType}\n` +
       `*From:* ${form.from}\n*To:* ${form.to}\n` +
       `*Pickup Date:* ${form.pickupDate}\n*Return Date:* ${form.returnDate || 'One Way'}\n` +
@@ -134,6 +149,10 @@ export default function BookingPage() {
     setShowFireworks(true);
     setTimeout(() => setShowFireworks(false), 5000);
     setSubmitted(true);
+  };
+
+  const handleCall = () => {
+    window.location.href = 'tel:+918848392990';
   };
 
   const canNext1 = form.tripType && form.from && form.to && form.pickupDate && form.pax;
@@ -196,7 +215,7 @@ export default function BookingPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1">Reference Number</p>
-                  <p className="text-xl font-mono font-black">MH-{Math.floor(Math.random() * 90000) + 10000}</p>
+                  <p className="text-xl font-mono font-black">{refNum}</p>
                   <p className="text-[10px] text-gray-400 mt-1">{new Date().toLocaleDateString()} · {new Date().toLocaleTimeString()}</p>
                 </div>
               </div>
@@ -638,17 +657,33 @@ export default function BookingPage() {
                   })()}
                 </div>
 
-                <div className="flex justify-between gap-4 flex-wrap mt-2">
+                <div className="flex flex-col sm:flex-row justify-between gap-3 mt-2 flex-wrap">
                   <button onClick={() => setStep(3)} className="flex items-center gap-2 px-6 py-4 border border-white/15 text-gray-400 text-sm hover:border-white/30 hover:text-white transition-all">
                     <ArrowLeft size={16} /> Back
                   </button>
-                  <button
-                    onClick={handleSubmit}
-                    className="flex items-center gap-3 px-12 py-4 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all shadow-[0_0_30px_rgba(212,175,55,0.5)] scale-105 hover:scale-110"
-                  >
-                    <Check size={18} />
-                    Confirm Booking &amp; Get Receipt
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    {/* 1. Confirm & Show Receipt */}
+                    <button
+                      onClick={handleConfirm}
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-105"
+                    >
+                      <Check size={16} /> Confirm &amp; Get Receipt
+                    </button>
+                    {/* 2. Send Enquiry on WhatsApp */}
+                    <button
+                      onClick={handleWhatsApp}
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-green-600 text-white font-black uppercase tracking-wider text-sm hover:bg-green-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:scale-105"
+                    >
+                      <MessageCircle size={16} /> Send Enquiry on WhatsApp
+                    </button>
+                    {/* 3. Place a Call */}
+                    <button
+                      onClick={handleCall}
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-blue-700 text-white font-black uppercase tracking-wider text-sm hover:bg-blue-600 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:scale-105"
+                    >
+                      <Phone size={16} /> Place a Call
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             )}

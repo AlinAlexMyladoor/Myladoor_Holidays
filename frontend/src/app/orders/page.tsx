@@ -14,53 +14,68 @@ import { API_URL } from '@/lib/api';
 /* ─── Types ─────────────────────────────────── */
 interface Booking {
   id: string;
+  ref?: string;
   vehicleType: string;
+  vehicleName?: string;
   pickupLocation: string;
   dropLocation?: string;
+  from?: string;
+  to?: string;
   pickupDate: string;
   returnDate?: string;
   passengers?: number;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  pax?: string;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'Pending';
   totalAmount?: number;
   createdAt: string;
+  date?: string;
   notes?: string;
+  name?: string;
+  phone?: string;
+  email?: string;
+  tripType?: string;
 }
 
+const normalizeBooking = (b: any): Booking => ({
+  id: b.id || b.ref || `local-${Math.random().toString(36).slice(2)}`,
+  ref: b.ref || b.id,
+  vehicleType: b.vehicleType || b.vehicleName || b.vehicle || 'Vehicle Booking',
+  pickupLocation: b.pickupLocation || b.from || '—',
+  dropLocation: b.dropLocation || b.to,
+  pickupDate: b.pickupDate || b.date || new Date().toISOString(),
+  returnDate: b.returnDate,
+  passengers: b.passengers || (b.pax ? parseInt(b.pax) : undefined),
+  status: (b.status?.toLowerCase() || 'pending') as Booking['status'],
+  totalAmount: b.totalAmount,
+  createdAt: b.createdAt || b.date || new Date().toISOString(),
+  notes: b.notes,
+  name: b.name,
+  phone: b.phone,
+  email: b.email,
+  tripType: b.tripType,
+});
+
+const loadLocalOrders = (): Booking[] => {
+  try {
+    const raw = localStorage.getItem('myladoor_orders');
+    if (!raw) return [];
+    return (JSON.parse(raw) as any[]).map(normalizeBooking);
+  } catch { return []; }
+};
+
 /* ─── Status Config ──────────────────────────── */
-const statusConfig = {
-  pending: {
-    label: 'Pending',
-    icon: Clock,
-    color: 'text-yellow-400',
-    bg: 'bg-yellow-400/10 border-yellow-400/30',
-    dot: 'bg-yellow-400',
-  },
-  confirmed: {
-    label: 'Confirmed',
-    icon: CheckCircle2,
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-400/10 border-emerald-400/30',
-    dot: 'bg-emerald-400',
-  },
-  completed: {
-    label: 'Completed',
-    icon: CheckCircle2,
-    color: 'text-blue-400',
-    bg: 'bg-blue-400/10 border-blue-400/30',
-    dot: 'bg-blue-400',
-  },
-  cancelled: {
-    label: 'Cancelled',
-    icon: XCircle,
-    color: 'text-red-400',
-    bg: 'bg-red-400/10 border-red-400/30',
-    dot: 'bg-red-400',
-  },
+interface StatusCfg { label: string; icon: React.ElementType; color: string; bg: string; dot: string; }
+const statusConfig: Record<string, StatusCfg> = {
+  pending:   { label: 'Pending',   icon: Clock,         color: 'text-yellow-400',  bg: 'bg-yellow-400/10 border-yellow-400/30',  dot: 'bg-yellow-400' },
+  confirmed: { label: 'Confirmed', icon: CheckCircle2,  color: 'text-emerald-400', bg: 'bg-emerald-400/10 border-emerald-400/30', dot: 'bg-emerald-400' },
+  completed: { label: 'Completed', icon: CheckCircle2,  color: 'text-blue-400',    bg: 'bg-blue-400/10 border-blue-400/30',       dot: 'bg-blue-400' },
+  cancelled: { label: 'Cancelled', icon: XCircle,       color: 'text-red-400',     bg: 'bg-red-400/10 border-red-400/30',         dot: 'bg-red-400' },
 };
 
 /* ─── Booking Card ───────────────────────────── */
 const BookingCard = ({ booking, idx }: { booking: Booking; idx: number }) => {
-  const cfg = statusConfig[booking.status] ?? statusConfig.pending;
+  const statusKey = (booking.status?.toLowerCase() || 'pending') as keyof typeof statusConfig;
+  const cfg = statusConfig[statusKey] ?? statusConfig.pending;
   const StatusIcon = cfg.icon;
   const pickupDate = new Date(booking.pickupDate);
 
@@ -73,7 +88,6 @@ const BookingCard = ({ booking, idx }: { booking: Booking; idx: number }) => {
     >
       {/* Gold left accent */}
       <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-yellow-400/60 via-yellow-400/20 to-transparent" />
-
       {/* Status glow */}
       <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] pointer-events-none opacity-20 rounded-full ${cfg.dot}`} />
 
@@ -86,7 +100,9 @@ const BookingCard = ({ booking, idx }: { booking: Booking; idx: number }) => {
             </div>
             <div>
               <h3 className="text-white font-bold text-base">{booking.vehicleType || 'Vehicle Booking'}</h3>
-              <p className="text-gray-500 text-xs mt-0.5">Booking #{booking.id?.slice(-8).toUpperCase() || '—'}</p>
+              <p className="text-gray-500 text-xs mt-0.5">
+                {(booking as any).ref ? `Ref: ${(booking as any).ref}` : `Booking #${booking.id?.slice(-8).toUpperCase() || '—'}`}
+              </p>
             </div>
           </div>
           {/* Status badge */}
@@ -111,16 +127,22 @@ const BookingCard = ({ booking, idx }: { booking: Booking; idx: number }) => {
             <MapPin size={14} className="text-yellow-400/60 shrink-0" />
             <span className="truncate">{booking.pickupLocation || '—'}</span>
           </div>
-          {booking.dropLocation && (
+          {(booking.dropLocation) && (
             <div className="flex items-center gap-2 text-sm text-gray-400 sm:col-span-2">
               <ChevronRight size={14} className="text-yellow-400/60 shrink-0" />
               <span className="truncate">To: {booking.dropLocation}</span>
             </div>
           )}
-          {booking.passengers && (
+          {booking.passengers ? (
             <div className="flex items-center gap-2 text-sm text-gray-400">
               <User size={14} className="text-yellow-400/60 shrink-0" />
               <span>{booking.passengers} Passengers</span>
+            </div>
+          ) : null}
+          {(booking as any).tripType && (
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <MapPin size={14} className="text-yellow-400/60 shrink-0" />
+              <span>{(booking as any).tripType}</span>
             </div>
           )}
         </div>
@@ -191,26 +213,37 @@ export default function OrdersPage() {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchBookings = async (token: string, userId: string) => {
+    const local = loadLocalOrders();
     try {
       const res = await fetch(`${API_URL}/bookings/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
-        setBookings(Array.isArray(data) ? data : data.bookings || []);
+        const api: Booking[] = (Array.isArray(data) ? data : data.bookings || []).map(normalizeBooking);
+        // Merge: local first, then API ones not already in local
+        const apiIds = new Set(api.map(b => b.id));
+        const merged = [...local.filter(b => !apiIds.has(b.id)), ...api];
+        setBookings(merged);
       } else {
-        // Fallback: fetch all bookings and filter by userId
         const res2 = await fetch(`${API_URL}/bookings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res2.ok) {
           const all = await res2.json();
-          const arr = Array.isArray(all) ? all : all.bookings || [];
-          setBookings(arr.filter((b: any) => b.userId === userId || b.user?.id === userId));
+          const arr = (Array.isArray(all) ? all : all.bookings || [])
+            .filter((b: any) => b.userId === userId || b.user?.id === userId)
+            .map(normalizeBooking);
+          const apiIds2 = new Set(arr.map((b: Booking) => b.id));
+          setBookings([...local.filter(b => !apiIds2.has(b.id)), ...arr]);
+        } else {
+          setBookings(local);
         }
       }
     } catch {
-      setError('Could not load bookings. Please check your connection.');
+      // No network — show localStorage orders
+      setBookings(local);
+      if (local.length === 0) setError('Could not load bookings. Please check your connection.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -220,8 +253,11 @@ export default function OrdersPage() {
   useEffect(() => {
     const saved = localStorage.getItem('myladoor_user');
     const token = localStorage.getItem('myladoor_token');
+    const local = loadLocalOrders();
     if (!saved || !token) {
-      router.push('/signin');
+      // Not logged in — still show localStorage orders
+      setBookings(local);
+      setLoading(false);
       return;
     }
     try {
@@ -229,7 +265,8 @@ export default function OrdersPage() {
       setUser(u);
       fetchBookings(token, u.id);
     } catch {
-      router.push('/signin');
+      setBookings(local);
+      setLoading(false);
     }
   }, []);
 
