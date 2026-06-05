@@ -70,7 +70,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d1117]/80 to-transparent" />
         <ParticleField count={25} />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 pb-16 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 pb-10 w-full">
           <div>
             <span className="text-yellow-400 text-[10px] font-black tracking-[0.45em] uppercase">Since 1994</span>
             <h1 className="text-5xl md:text-7xl font-light text-white mt-3">
@@ -93,7 +93,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── INTRO SECTION ─────────────────────────── */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-900/20 blur-[120px] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

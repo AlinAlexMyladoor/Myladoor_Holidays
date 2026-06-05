@@ -51,19 +51,22 @@ export default function ProfilePage() {
     setError('');
     setSuccess('');
 
-    // ── Local-first: always save to localStorage immediately ──
+    // ── Build the merged updated user ──
     const updatedUser = { ...user, ...formData };
+
+    // ── Persist to localStorage immediately (source of truth) ──
     localStorage.setItem('myladoor_user', JSON.stringify(updatedUser));
     setUser(updatedUser);
     // Notify navbar to refresh right away
     window.dispatchEvent(new Event('myladoor-profile-updated'));
-    setSuccess('Profile saved successfully!');
+    window.dispatchEvent(new StorageEvent('storage', { key: 'myladoor_user' }));
+    setSuccess('Profile updated! Changes will appear on next login too.');
     setLoading(false);
 
-    // ── Try to sync with backend silently (non-blocking) ──
+    // ── Try to sync with backend (non-blocking) ──
     try {
       const token = localStorage.getItem('myladoor_token');
-      await fetch(`${API_URL}/users/${user.id}`, {
+      const res = await fetch(`${API_URL}/users/${user.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -71,9 +74,16 @@ export default function ProfilePage() {
         },
         body: JSON.stringify(formData)
       });
-      // We don't care about the result — local is source of truth
+      if (res.ok) {
+        const serverUser = await res.json();
+        // Merge server response back so next login fetch gets fresh data
+        const merged = { ...updatedUser, ...serverUser };
+        localStorage.setItem('myladoor_user', JSON.stringify(merged));
+        setUser(merged);
+        window.dispatchEvent(new Event('myladoor-profile-updated'));
+      }
     } catch {
-      // Silently ignore — user's data is already saved locally
+      // Silently ignore — local is already saved
     }
   };
 

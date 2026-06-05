@@ -55,11 +55,21 @@ const normalizeBooking = (b: any): Booking => ({
   tripType: b.tripType,
 });
 
-const loadLocalOrders = (): Booking[] => {
+const loadLocalOrders = (userEmail?: string, userId?: string): Booking[] => {
   try {
     const raw = localStorage.getItem('myladoor_orders');
     if (!raw) return [];
-    return (JSON.parse(raw) as any[]).map(normalizeBooking);
+    const parsed: any[] = JSON.parse(raw);
+    if (userEmail || userId) {
+      // Only return orders where the booking email matches the logged-in user
+      const filtered = parsed.filter((r: any) => {
+        if (userId && r.userId === userId) return true;
+        if (userEmail && r.email === userEmail) return true;
+        return false;
+      });
+      return filtered.map(normalizeBooking);
+    }
+    return parsed.map(normalizeBooking);
   } catch { return []; }
 };
 
@@ -212,8 +222,8 @@ export default function OrdersPage() {
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchBookings = async (token: string, userId: string) => {
-    const local = loadLocalOrders();
+  const fetchBookings = async (token: string, userId: string, userEmail: string) => {
+    const local = loadLocalOrders(userEmail, userId);
     try {
       const res = await fetch(`${API_URL}/bookings/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -253,20 +263,16 @@ export default function OrdersPage() {
   useEffect(() => {
     const saved = localStorage.getItem('myladoor_user');
     const token = localStorage.getItem('myladoor_token');
-    const local = loadLocalOrders();
     if (!saved || !token) {
-      // Not logged in — still show localStorage orders
-      setBookings(local);
-      setLoading(false);
+      router.push('/signin');
       return;
     }
     try {
       const u = JSON.parse(saved);
       setUser(u);
-      fetchBookings(token, u.id);
+      fetchBookings(token, u.id, u.email || '');
     } catch {
-      setBookings(local);
-      setLoading(false);
+      router.push('/signin');
     }
   }, []);
 

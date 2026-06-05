@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, LogIn, MessageCircle, AlertCircle } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
 export default function SignInPage() {
+  const router = useRouter();
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,10 +47,9 @@ export default function SignInPage() {
 
       // Role-based redirect: ONLY admin credentials go to /admin
       if (data.user.role === 'ADMIN' && data.user.email === 'admin@myladoor.com') {
-        window.location.href = '/admin';
+        router.push('/admin');
       } else {
-        // All regular users (even if somehow role is set) go to home
-        window.location.href = '/';
+        router.push('/');
       }
     } catch (err: any) {
       setError('Unable to connect to server. Please check your connection.');
@@ -77,9 +78,9 @@ export default function SignInPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.3 }}
           className="text-center mb-8"
         >
           <h1 className="text-3xl sm:text-4xl font-light text-white">
@@ -90,9 +91,9 @@ export default function SignInPage() {
 
         {/* Form Card */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
           className="glass-dark p-6 sm:p-8 relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent" />
@@ -207,7 +208,7 @@ export default function SignInPage() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.15 }}
           className="text-center text-gray-500 text-sm mt-6"
         >
           Don't have an account?{' '}
