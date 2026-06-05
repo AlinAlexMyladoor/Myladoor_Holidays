@@ -37,6 +37,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.fabhotels.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.traveltoindia.org',
+      },
     ],
   },
   // Proxy all /api/* requests to the Render backend

@@ -119,7 +119,7 @@ export default function AboutPage() {
                   <div className="absolute inset-0 border border-yellow-400/10" />
                 </div>
                 <div className="relative aspect-square overflow-hidden mt-8">
-                  <Image src="https://images.unsplash.com/photo-1490650404312-a2175773bbf5?auto=format&fit=crop&q=80&w=600" alt="journey" fill className="object-cover" />
+                  <Image src="https://www.traveltoindia.org/car_rental_images/bus-rental-india-1-1751527975.webp" alt="journey" fill className="object-cover" />
                   <div className="absolute inset-0 border border-yellow-400/10" />
                 </div>
                 <div className="relative aspect-square overflow-hidden col-span-2">
@@ -286,7 +286,7 @@ export default function AboutPage() {
                 <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-6 -left-6 glass-dark p-4 border border-yellow-400/20"
+                  className="absolute bottom-16 -right-8 glass-dark p-4 border border-yellow-400/20 z-20"
                 >
                   <Award size={20} className="text-yellow-400 mb-1" />
                   <p className="text-white text-xs font-bold">30+ Years Leading</p>
