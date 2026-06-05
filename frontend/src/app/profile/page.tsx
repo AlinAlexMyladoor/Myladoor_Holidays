@@ -60,7 +60,7 @@ export default function ProfilePage() {
     // Notify navbar to refresh right away
     window.dispatchEvent(new Event('myladoor-profile-updated'));
     window.dispatchEvent(new StorageEvent('storage', { key: 'myladoor_user' }));
-    setSuccess('Profile updated! Changes will appear on next login too.');
+    setSuccess('Profile updated!');
     setLoading(false);
 
     // ── Try to sync with backend (non-blocking) ──

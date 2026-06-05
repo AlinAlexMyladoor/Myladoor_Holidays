@@ -79,15 +79,13 @@ export default function AdminPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
 
+  const [notifViewed, setNotifViewed] = useState(false);
+  const unreadNotifCount = notifViewed ? 0 : notifications.length;
+
   const sidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
     { icon: Calendar, label: 'Bookings', id: 'bookings', badge: bookingList.filter(b => b.status === 'pending').length || undefined },
-    { icon: Car, label: 'Fleet', id: 'fleet' },
-    { icon: MessageSquare, label: 'Inquiries', id: 'inquiries', badge: inquiryList.filter(i => !i.read).length || undefined },
     { icon: UserCheck, label: 'Signed Up Users', id: 'signedupusers', badge: signedUpUsers.length || undefined },
-    { icon: Users, label: 'Customers', id: 'customers' },
-    { icon: TrendingUp, label: 'Analytics', id: 'analytics' },
-    { icon: Bell, label: 'Notifications', id: 'notifications', badge: notifications.length || undefined },
     { icon: Settings, label: 'Settings', id: 'settings' },
   ];
 
@@ -150,19 +148,37 @@ export default function AdminPage() {
         })));
       }
 
-      // Create Notifications from bookings and inquiries
+      // Create Notifications from bookings, inquiries, and localStorage orders
       const newNotifications: any[] = [];
       if (Array.isArray(bData)) {
-        bData.filter((b: any) => b.status === 'PENDING').forEach((b: any) => {
-          newNotifications.push({
-            id: `b-${b.id}`,
-            title: 'New Booking Request',
-            desc: `${b.user?.name || 'A guest'} requested ${b.vehicle?.name} for ${new Date(b.pickupDate).toLocaleDateString()}.`,
-            time: new Date(b.createdAt).toLocaleString(),
-            type: 'booking'
-          });
+        bData.forEach((b: any) => {
+          if (b.status === 'PENDING') {
+            newNotifications.push({
+              id: `b-${b.id}`,
+              title: 'New Booking Request',
+              desc: `${b.user?.name || 'A guest'} requested ${b.vehicle?.name || 'a vehicle'} from ${b.from || '?'} to ${b.to || '?'} on ${new Date(b.pickupDate).toLocaleDateString()}. Passengers: ${b.pax || '?'}.`,
+              time: new Date(b.createdAt).toLocaleString(),
+              type: 'booking'
+            });
+          }
         });
       }
+      // Also read localStorage orders (user-submitted via frontend)
+      try {
+        const localOrders = JSON.parse(localStorage.getItem('myladoor_orders') || '[]');
+        localOrders.forEach((o: any) => {
+          const alreadyHave = newNotifications.some(n => n.id === `lo-${o.ref || o.id}`);
+          if (!alreadyHave) {
+            newNotifications.push({
+              id: `lo-${o.ref || o.id}`,
+              title: `Booking: ${o.ref || o.id}`,
+              desc: `${o.name || 'Guest'} booked ${o.vehicleName || o.vehicleType || o.vehicle || 'vehicle'} | ${o.from || o.pickupLocation || '?'} → ${o.to || o.dropLocation || '?'} | ${o.pickupDate || ''} | Pax: ${o.pax || o.passengers || '?'} | Phone: ${o.phone || 'N/A'}`,
+              time: new Date(o.createdAt || o.date || Date.now()).toLocaleString(),
+              type: 'booking'
+            });
+          }
+        });
+      } catch {}
       if (Array.isArray(iData)) {
         iData.filter((i: any) => !i.read).forEach((i: any) => {
           newNotifications.push({
@@ -282,12 +298,9 @@ export default function AdminPage() {
           ))}
         </nav>
 
-        {/* Logout */}
+        {/* Admin info */}
         <div className="p-4 border-t border-yellow-400/10 mt-auto">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-500 hover:text-red-400 transition-colors">
-            <LogOut size={17} />
-            Logout
-          </button>
+          <p className="text-[10px] text-gray-600 tracking-widest uppercase">Logged in as Admin</p>
         </div>
       </aside>
 
@@ -309,11 +322,12 @@ export default function AdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => setActiveTab('notifications')} className="relative p-2 text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => { setActiveTab('notifications'); setNotifViewed(true); }} className="relative p-2 text-gray-400 hover:text-white transition-colors">
               <Bell size={20} />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+              {unreadNotifCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">{unreadNotifCount}</span>}
             </button>
             <div className="w-8 h-8 sm:w-9 sm:h-9 bg-emerald-700 flex items-center justify-center text-white font-bold text-sm">A</div>
+            <button onClick={handleLogout} className="p-2 text-gray-500 hover:text-red-400 transition-colors" title="Logout"><LogOut size={18} /></button>
           </div>
         </header>
 
@@ -326,13 +340,18 @@ export default function AdminPage() {
               <motion.div key="dash" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 {/* Stats */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  {stats.map((s, i) => (
+                  {[
+                    { label: 'Total Bookings', value: bookingList.length.toString(), change: `${bookingList.filter(b => b.status === 'pending').length} pending`, up: true },
+                    { label: 'Confirmed', value: bookingList.filter(b => b.status === 'confirmed').length.toString(), change: 'bookings', up: true },
+                    { label: 'Registered Users', value: signedUpUsers.length.toString(), change: 'on platform', up: true },
+                    { label: 'Cancelled', value: bookingList.filter(b => b.status === 'cancelled').length.toString(), change: 'bookings', up: false },
+                  ].map((s, i) => (
                     <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                       className="bg-[#161b22] border border-yellow-400/10 p-5 hover:border-yellow-400/30 transition-colors"
                     >
                       <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">{s.label}</p>
                       <p className="text-2xl font-black text-white">{s.value}</p>
-                      <p className={`text-xs font-medium mt-1 ${s.up ? 'text-emerald-400' : 'text-red-400'}`}>{s.change} this month</p>
+                      <p className={`text-xs font-medium mt-1 ${s.up ? 'text-emerald-400' : 'text-red-400'}`}>{s.change}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -399,23 +418,25 @@ export default function AdminPage() {
                             <td className="px-6 py-4 text-gray-400 whitespace-nowrap">{b.from} → {b.to}</td>
                             <td className="px-6 py-4 text-gray-400 whitespace-nowrap">{b.date}</td>
                             <td className="px-6 py-4 text-center text-gray-300">{b.pax}</td>
-                            <td className="px-6 py-4">{statusBadge(b.status)}</td>
                             <td className="px-6 py-4">
-                              <div className="flex gap-2">
-                                {b.status === 'pending' && (
-                                  <>
-                                    <button onClick={() => updateBookingStatus(b.realId, 'confirmed')} className="p-1.5 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/40 transition-colors rounded-sm" title="Confirm">
-                                      <Check size={15} />
-                                    </button>
-                                    <button onClick={() => updateBookingStatus(b.realId, 'cancelled')} className="p-1.5 bg-red-500/20 text-red-400 hover:bg-red-500/40 transition-colors rounded-sm" title="Cancel">
-                                      <X size={15} />
-                                    </button>
-                                  </>
-                                )}
-                                <a href={`https://wa.me/${b.phone.replace(/\D/g, '')}?text=Hello ${b.name}, regarding your booking ${b.id}...`} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-green-500/20 text-green-400 hover:bg-green-500/40 transition-colors rounded-sm" title="WhatsApp">
-                                  <Phone size={15} />
-                                </a>
-                              </div>
+                              <select
+                                value={b.status}
+                                onChange={(e) => updateBookingStatus(b.realId, e.target.value)}
+                                className={`text-xs font-bold px-3 py-1.5 rounded-sm border outline-none cursor-pointer ${
+                                  b.status === 'confirmed' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' :
+                                  b.status === 'cancelled' ? 'bg-red-500/15 text-red-400 border-red-500/30' :
+                                  'bg-yellow-400/15 text-yellow-400 border-yellow-400/30'
+                                }`}
+                              >
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="cancelled">Cancelled</option>
+                              </select>
+                            </td>
+                            <td className="px-6 py-4">
+                              <a href={`https://wa.me/${b.phone.replace(/\D/g, '')}?text=Hello ${b.name}, regarding your booking ${b.id}...`} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-green-500/20 text-green-400 hover:bg-green-500/40 transition-colors rounded-sm" title="WhatsApp">
+                                <Phone size={15} />
+                              </a>
                             </td>
                           </tr>
                         ))}
@@ -426,75 +447,7 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* ─── FLEET ─── */}
-            {activeTab === 'fleet' && (
-              <motion.div key="fleet" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {vehicleList.map((v, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                      className="bg-[#161b22] border border-yellow-400/10 p-6 hover:border-yellow-400/30 transition-all"
-                    >
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h4 className="text-white font-semibold">{v.name}</h4>
-                          <p className="text-gray-500 text-xs mt-1">{v.type} • {v.reg}</p>
-                        </div>
-                        {statusBadge(v.status)}
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-400">{v.capacity} Seater</span>
-                        <div className="flex gap-2">
-                          <button className="px-3 py-1 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-xs">Edit</button>
-                          <button className="px-3 py-1 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-colors text-xs">
-                            {v.status === 'maintenance' ? 'Mark Ready' : 'Details'}
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
 
-            {/* ─── INQUIRIES ─── */}
-            {activeTab === 'inquiries' && (
-              <motion.div key="inq" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
-                {inquiryList.map((inq, i) => (
-                  <div key={i} className={`bg-[#161b22] border p-6 flex flex-col sm:flex-row gap-6 items-start ${inq.read ? 'border-white/5' : 'border-yellow-400/30'}`}>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h4 className="text-white font-semibold">{inq.name}</h4>
-                        {!inq.read && <span className="bg-yellow-400/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 tracking-widest">NEW</span>}
-                      </div>
-                      <p className="text-gray-400 text-sm mb-3 leading-relaxed">{inq.message}</p>
-                      <div className="flex items-center gap-4 text-xs text-gray-600">
-                        <span className="flex items-center gap-1"><Phone size={11} />{inq.phone}</span>
-                        <span className="flex items-center gap-1"><Clock size={11} />{inq.time}</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-row sm:flex-col gap-2 shrink-0">
-                      <a
-                        href={`https://wa.me/${inq.phone.replace(/\D/g, '')}?text=Hello ${inq.name}, thank you for your enquiry with Myladoor Holidays!`}
-                        target="_blank" rel="noopener noreferrer"
-                        className="px-4 py-2 bg-green-600 text-white text-xs font-semibold hover:bg-green-500 transition-colors flex items-center gap-2"
-                      >
-                        WhatsApp Reply
-                      </a>
-                      <a href={`tel:${inq.phone}`} className="px-4 py-2 bg-white/5 text-gray-300 text-xs font-semibold hover:bg-white/10 hover:text-white transition-colors flex items-center gap-2">
-                        Call
-                      </a>
-                      {!inq.read && (
-                        <button onClick={() => markInquiryRead(inq.id)} className="px-4 py-2 bg-yellow-400/10 text-yellow-400 text-xs font-semibold hover:bg-yellow-400/20 transition-colors">
-                          Mark as Read
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            )}
-
-            {/* ─── SIGNED UP USERS ─── */}
             {activeTab === 'signedupusers' && (
               <motion.div key="signedupusers" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <div className="bg-[#161b22] border border-yellow-400/10">
@@ -537,88 +490,6 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* ─── CUSTOMERS ─── */}
-            {activeTab === 'customers' && (
-              <motion.div key="customers" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                <div className="bg-[#161b22] border border-yellow-400/10">
-                  <div className="px-4 sm:px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                    <h3 className="text-white font-semibold">Customer Directory</h3>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="text-gray-500 text-xs uppercase tracking-widest border-b border-white/5">
-                          {['ID', 'Name', 'Contact', 'Total Trips', 'Joined', 'Actions'].map(h => (
-                            <th key={h} className="px-4 sm:px-6 py-3 text-left font-medium">{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {customerList.map((c, i) => (
-                          <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <td className="px-4 sm:px-6 py-4 text-yellow-400 font-mono font-bold text-xs">{c.id}</td>
-                            <td className="px-4 sm:px-6 py-4 text-white font-medium">{c.name}</td>
-                            <td className="px-4 sm:px-6 py-4 text-gray-400">
-                              <div className="flex flex-col gap-1 text-xs">
-                                <span>{c.email}</span>
-                                <span>{c.phone}</span>
-                              </div>
-                            </td>
-                            <td className="px-4 sm:px-6 py-4 text-gray-400">{c.totalTrips}</td>
-                            <td className="px-4 sm:px-6 py-4 text-gray-400">{c.joined}</td>
-                            <td className="px-4 sm:px-6 py-4">
-                              <button className="px-3 py-1 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-xs">View</button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* ─── ANALYTICS ─── */}
-            {activeTab === 'analytics' && (
-              <motion.div key="analytics" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-[#161b22] border border-yellow-400/10 p-6">
-                    <h3 className="text-white font-semibold mb-6">Revenue Overview</h3>
-                    <div className="h-48 flex items-end justify-between gap-2 border-b border-white/10 pb-2">
-                      {[40, 70, 45, 90, 65, 80, 100].map((h, i) => (
-                        <div key={i} className="w-full bg-yellow-400/20 hover:bg-yellow-400/50 transition-colors relative group rounded-t-sm" style={{ height: `${h}%` }}>
-                          <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity">₹{h}k</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex justify-between mt-2 text-xs text-gray-500">
-                      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-                    </div>
-                  </div>
-                  <div className="bg-[#161b22] border border-yellow-400/10 p-6">
-                    <h3 className="text-white font-semibold mb-6">Popular Vehicles</h3>
-                    <div className="space-y-4">
-                      {[
-                        { name: 'Innova Premium', percent: 85 },
-                        { name: 'Traveller 17', percent: 60 },
-                        { name: 'Grand Coach 49', percent: 45 },
-                        { name: 'Urbania Luxury', percent: 30 },
-                      ].map((v, i) => (
-                        <div key={i}>
-                          <div className="flex justify-between text-xs mb-1">
-                            <span className="text-gray-300">{v.name}</span>
-                            <span className="text-yellow-400">{v.percent}%</span>
-                          </div>
-                          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-emerald-600 to-yellow-400" style={{ width: `${v.percent}%` }} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
 
             {/* ─── NOTIFICATIONS ─── */}
             {activeTab === 'notifications' && (
