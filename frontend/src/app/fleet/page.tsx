@@ -17,7 +17,7 @@ const allVehicles = [
     capacity: 4,
     capacityLabel: '4 Seater',
     desc: 'Perfect for individuals or small family trips. Economical, reliable, and comfortable for city and short-distance travel.',
-    image: '/images/car-sedan.jpg',
+    image: '/images/compact-sedan.jpg',
     tag: 'ECONOMY',
     category: 'car',
     features: ['AC', 'GPS', 'Music System'],
@@ -29,7 +29,7 @@ const allVehicles = [
     capacity: 7,
     capacityLabel: '7 Seater',
     desc: 'Spacious, premium, and ideal for long-distance family journeys. The most popular vehicle for Kerala tours.',
-    image: '/images/innova-crysta.jpg',
+    image: '/images/innova.jpg',
     tag: 'BESTSELLER',
     category: 'car',
     features: ['AC', 'GPS', 'Luggage Space', 'Push-back Seats'],
@@ -41,7 +41,7 @@ const allVehicles = [
     capacity: 14,
     capacityLabel: '14 Seater',
     desc: 'Comfortable and spacious for small group outings and corporate trips. Deep recliner seats, AC, entertainment system.',
-    image: '/images/force-traveller.jpg',
+    image: '/images/traveller-14.webp',
     tag: 'GROUP',
     category: 'traveller',
     features: ['AC', 'Entertainment', 'USB Charging', 'Curtains'],
@@ -53,7 +53,7 @@ const allVehicles = [
     capacity: 17,
     capacityLabel: '17 Seater',
     desc: 'Enhanced capacity Traveller with plush seating for medium-sized groups. Perfect for pilgrimages and school excursions.',
-    image: '/images/force-traveller.jpg',
+    image: '/images/traveller-17.jpg',
     tag: 'POPULAR',
     category: 'traveller',
     features: ['AC', 'Push-back Seats', 'Luggage Rack'],
@@ -65,7 +65,7 @@ const allVehicles = [
     capacity: 20,
     capacityLabel: '20 Seater',
     desc: 'Extra space for larger corporate trips or extended family gatherings. Executive finish with added comfort features.',
-    image: '/images/force-traveller.jpg',
+    image: '/images/traveller-20.jpg',
     tag: 'CORPORATE',
     category: 'traveller',
     features: ['AC', 'Conference Setup', 'WiFi Ready'],
@@ -77,7 +77,7 @@ const allVehicles = [
     capacity: 12,
     capacityLabel: '12 Seater',
     desc: 'The ultimate luxury travel experience — panoramic glass roof, premium leather seats, ambient lighting. For those who demand the best.',
-    image: '/images/urbania-van.jpg',
+    image: '/images/urbania-luxury.jpg',
     tag: 'LUXURY',
     category: 'urbania',
     features: ['Panoramic Roof', 'Leather Seats', 'Ambient Lights', 'WiFi'],
@@ -89,7 +89,7 @@ const allVehicles = [
     capacity: 26,
     capacityLabel: '26 Seater',
     desc: 'Large group travel made easy — ideal for events, weddings, group tours and outstation travel.',
-    image: '/images/bus.jpg',
+    image: '/images/coach-26.jpg',
     tag: 'EVENTS',
     category: 'bus',
     features: ['AC', 'PA System', 'Under-seat Storage'],
@@ -101,7 +101,7 @@ const allVehicles = [
     capacity: 36,
     capacityLabel: '36 Seater',
     desc: 'Comfortable and reliable mini bus — perfect for local city circuits, outstation tours, and school trips.',
-    image: '/images/grand-coach.jpg',
+    image: '/images/sml-36.jpg',
     tag: 'TOURS',
     category: 'bus',
     features: ['AC', 'PA System', 'Movie Screen'],
@@ -113,7 +113,7 @@ const allVehicles = [
     capacity: 49,
     capacityLabel: '49 Seater',
     desc: 'Full-sized luxury coach for large events, company outings, pilgrimages, and intercity tours. Maximum comfort at scale.',
-    image: '/images/grand-coach.jpg',
+    image: '/images/bus.jpg',
     tag: 'EVENTS',
     category: 'bus',
     features: ['Full AC', 'Recliner Seats', 'PA System', 'TV'],
@@ -149,22 +149,22 @@ const VehicleCard = ({ v, idx }: { v: typeof allVehicles[0]; idx: number }) => (
     animate={{ opacity: 1, scale: 1, y: 0 }}
     exit={{ opacity: 0, scale: 0.95, y: -10 }}
     transition={{ duration: 0.4, delay: idx * 0.05 }}
-    className="h-full"
+    className="h-[480px]"
   >
     <HoverTiltCard>
-      {/* Fixed height card — uniform across all vehicles */}
-      <div className="bg-[#161b22] border border-yellow-400/8 hover:border-yellow-400/30 transition-all duration-500 group card-glow flex flex-col h-full overflow-hidden">
+      {/* Strictly fixed height — every card identical */}
+      <div className="bg-[#161b22] border border-yellow-400/8 hover:border-yellow-400/30 transition-all duration-500 group card-glow flex flex-col h-[480px] overflow-hidden">
 
-        {/* ── Image — fixed height ── */}
-        <div className="relative h-52 shrink-0 overflow-hidden">
+        {/* ── Image — fixed 200px ── */}
+        <div className="relative h-[200px] shrink-0 overflow-hidden">
           <Image
             src={v.image}
             alt={v.name}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-700 grayscale-[20%] group-hover:grayscale-0"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 grayscale-[15%] group-hover:grayscale-0"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#161b22] via-[#161b22]/20 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#161b22] via-[#161b22]/10 to-transparent z-10" />
 
           {/* Tag badge */}
           <span className={`absolute top-3 left-3 z-20 text-[9px] font-black tracking-[0.25em] uppercase px-3 py-1.5 ${tagColors[v.tag] || 'bg-gray-700 text-white'}`}>
@@ -300,7 +300,7 @@ export default function FleetPage() {
           {/* grid-rows-1fr forces all cards equal height per row */}
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {filtered.map((v, idx) => (
               <VehicleCard key={v.id} v={v} idx={idx} />

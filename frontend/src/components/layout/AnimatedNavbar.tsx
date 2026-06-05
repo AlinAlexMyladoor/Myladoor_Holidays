@@ -165,32 +165,35 @@ export const AnimatedNavbar = () => {
                 {/* Thin divider */}
                 <div className="w-[1px] h-7 bg-white/10 mx-1" />
 
-                {/* Account chip */}
+                {/* Premium Account Chip */}
                 <Link
                   href="/profile"
-                  className="group flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-400/40 pl-1.5 pr-4 py-1.5 rounded-full transition-all duration-300"
+                  className="group flex items-center gap-2 bg-gradient-to-r from-[#0d1117] to-[#111827] hover:from-emerald-950/60 hover:to-[#0d1117] border border-yellow-400/20 hover:border-yellow-400/50 px-3 py-1.5 transition-all duration-300 shadow-[0_0_12px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]"
                 >
-                  <div className="relative w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-black text-xs shadow-[0_0_10px_rgba(16,185,129,0.4)] border-2 border-emerald-400/50 shrink-0">
+                  {/* Glowing avatar */}
+                  <div className="relative w-7 h-7 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-black font-black text-xs shadow-[0_0_10px_rgba(212,175,55,0.5)] shrink-0">
                     {initial}
-                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full border-2 border-[#0a0f0d] animate-pulse" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-400 rounded-full border-2 border-[#0a0f0d] animate-pulse" />
                   </div>
                   <div className="flex flex-col items-start leading-none">
-                    <span className="text-white text-[13px] font-semibold max-w-[100px] truncate leading-tight">
+                    <span className="text-white text-[12px] font-bold max-w-[90px] truncate leading-tight">
                       {displayName}
                     </span>
-                    <span className="text-[9px] text-gray-500 group-hover:text-emerald-400 transition-colors flex items-center gap-1 uppercase tracking-wider leading-tight mt-0.5">
-                      <Pencil size={8} /> Edit Profile
+                    <span className="text-[9px] text-yellow-400/60 group-hover:text-yellow-400 transition-colors flex items-center gap-1 leading-tight mt-0.5">
+                      <Pencil size={7} /> Edit Profile
                     </span>
                   </div>
                 </Link>
 
-                {/* Logout — absolute rightmost */}
+                {/* Logout — sleek dark pill */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1.5 text-xs font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/25 rounded-full px-3.5 py-1.5 transition-all duration-200 hover:shadow-[0_0_12px_rgba(239,68,68,0.2)]"
+                  className="group flex items-center gap-1.5 px-3.5 py-1.5 bg-[#0d1117] border border-white/10 hover:border-red-500/40 hover:bg-red-950/30 transition-all duration-300 shadow-sm hover:shadow-[0_0_12px_rgba(239,68,68,0.15)]"
                 >
-                  <LogOut size={12} />
-                  Logout
+                  <LogOut size={13} className="text-gray-500 group-hover:text-red-400 transition-colors" />
+                  <span className="text-xs font-semibold text-gray-500 group-hover:text-red-400 transition-colors tracking-wide">
+                    Logout
+                  </span>
                 </button>
               </>
             )}
