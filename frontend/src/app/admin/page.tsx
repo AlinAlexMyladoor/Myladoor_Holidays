@@ -70,6 +70,7 @@ const statusBadge = (s: string) => {
 
 
 export default function AdminPage() {
+  const [verified, setVerified] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [bookingList, setBookingList] = useState(bookings);
   const [customerList, setCustomerList] = useState(customers);
@@ -220,6 +221,7 @@ export default function AdminPage() {
         window.location.href = '/';
         return;
       }
+      setVerified(true);
     } catch (e) {
       window.location.href = '/signin';
       return;
@@ -265,6 +267,14 @@ export default function AdminPage() {
       console.error('Error marking inquiry as read:', e);
     }
   };
+
+  if (!verified) {
+    return (
+      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-[#0d1117] text-gray-200 pt-0">

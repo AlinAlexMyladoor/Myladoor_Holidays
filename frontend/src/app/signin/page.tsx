@@ -47,9 +47,9 @@ export default function SignInPage() {
 
       // Role-based redirect: ONLY admin credentials go to /admin
       if (data.user.role === 'ADMIN' && data.user.email === 'admin@myladoor.com') {
-        router.push('/admin');
+        window.location.href = '/admin';
       } else {
-        router.push('/');
+        window.location.href = '/';
       }
     } catch (err: any) {
       setError('Unable to connect to server. Please check your connection.');
