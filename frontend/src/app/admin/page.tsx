@@ -79,8 +79,14 @@ export default function AdminPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
 
-  const [notifViewed, setNotifViewed] = useState(false);
-  const unreadNotifCount = notifViewed ? 0 : notifications.length;
+  const [lastViewedCount, setLastViewedCount] = useState(0);
+  const unreadNotifCount = Math.max(0, notifications.length - lastViewedCount);
+
+  useEffect(() => {
+    if (activeTab === 'notifications') {
+      setLastViewedCount(notifications.length);
+    }
+  }, [activeTab, notifications.length]);
 
   const sidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
@@ -322,7 +328,7 @@ export default function AdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => { setActiveTab('notifications'); setNotifViewed(true); }} className="relative p-2 text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => { setActiveTab('notifications'); setLastViewedCount(notifications.length); }} className="relative p-2 text-gray-400 hover:text-white transition-colors">
               <Bell size={20} />
               {unreadNotifCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">{unreadNotifCount}</span>}
             </button>

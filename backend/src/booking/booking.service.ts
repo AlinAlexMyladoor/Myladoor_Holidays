@@ -28,4 +28,15 @@ export class BookingService {
       data: { status },
     });
   }
+
+  async findByUser(userId: string) {
+    return this.prisma.booking.findMany({
+      where: { userId },
+      include: {
+        vehicle: true,
+        user: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

@@ -25,6 +25,10 @@ export const AnimatedNavbar = () => {
   const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
   const pathname = usePathname();
 
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   /* ── Read user from localStorage & keep in sync ── */
   const syncUser = useCallback(() => {
     const saved = localStorage.getItem('myladoor_user');

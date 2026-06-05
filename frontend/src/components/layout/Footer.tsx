@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, MessageCircle, Youtube, ArrowUpRight, Clock } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 /* Live Thrissur Clock (IST = UTC+5:30) */
 const ThrissurClock = () => {
@@ -70,6 +71,11 @@ const SocialIcon = ({ icon: Icon, href, label, color = 'border-white/10 hover:bo
 
 export const Footer = () => {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-[#070b09] border-t border-yellow-400/15 text-gray-400 relative overflow-hidden">

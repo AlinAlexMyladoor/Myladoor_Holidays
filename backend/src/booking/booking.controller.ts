@@ -31,4 +31,9 @@ export class BookingController {
   updateStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.bookingService.updateStatus(id, status);
   }
+
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.bookingService.findByUser(userId);
+  }
 }
