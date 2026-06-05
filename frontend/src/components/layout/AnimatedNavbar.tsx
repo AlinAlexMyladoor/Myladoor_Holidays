@@ -127,7 +127,7 @@ export const AnimatedNavbar = () => {
             ))}
           </nav>
 
-          {/* ── Right Section: Book Now + Auth Controls ── */}
+          {/* ── Right Section: Auth Controls, then Book Now, then Account (rightmost) ── */}
           <div className="hidden lg:flex items-center gap-3">
 
             {/* Sign In / Sign Up (only when logged out) */}
@@ -159,18 +159,15 @@ export const AnimatedNavbar = () => {
               </button>
             </Link>
 
-            {/* Account chip + Logout — rightmost, only when logged in */}
+            {/* Account chip + Logout — RIGHTMOST, only when logged in */}
             {user && (
               <>
-                {/* Thin divider */}
                 <div className="w-[1px] h-7 bg-white/10 mx-1" />
 
-                {/* Premium Account Chip */}
                 <Link
                   href="/profile"
                   className="group flex items-center gap-2 bg-gradient-to-r from-[#0d1117] to-[#111827] hover:from-emerald-950/60 hover:to-[#0d1117] border border-yellow-400/20 hover:border-yellow-400/50 px-3 py-1.5 transition-all duration-300 shadow-[0_0_12px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]"
                 >
-                  {/* Glowing avatar */}
                   <div className="relative w-7 h-7 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-black font-black text-xs shadow-[0_0_10px_rgba(212,175,55,0.5)] shrink-0">
                     {initial}
                     <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-400 rounded-full border-2 border-[#0a0f0d] animate-pulse" />
@@ -185,7 +182,6 @@ export const AnimatedNavbar = () => {
                   </div>
                 </Link>
 
-                {/* Logout — sleek dark pill */}
                 <button
                   onClick={handleLogout}
                   className="group flex items-center gap-1.5 px-3.5 py-1.5 bg-[#0d1117] border border-white/10 hover:border-red-500/40 hover:bg-red-950/30 transition-all duration-300 shadow-sm hover:shadow-[0_0_12px_rgba(239,68,68,0.15)]"

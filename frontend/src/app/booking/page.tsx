@@ -91,41 +91,44 @@ export default function BookingPage() {
   const selectedVehicle = vehicles.find(v => v.id === form.vehicle);
 
   const handleSubmit = async () => {
-    // Save to database first
+    // Build receipt reference
+    const refNum = `MH-${Math.floor(Math.random() * 90000) + 10000}`;
+
+    // Save to database
     try {
       const userStr = localStorage.getItem('myladoor_user');
       const user = userStr ? JSON.parse(userStr) : null;
-      
-      const response = await fetch(`${API_URL}/bookings`, {
+      await fetch(`${API_URL}/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...form,
-          vehicleId: form.vehicle,
-          userId: user?.id || null,
-        }),
+        body: JSON.stringify({ ...form, vehicleId: form.vehicle, userId: user?.id || null }),
       });
-      
-      if (!response.ok) {
-        console.warn('Booking saved to WhatsApp only (DB save failed)');
-      }
     } catch (err) {
       console.error('DB Error:', err);
     }
 
+    // Save to localStorage orders
+    try {
+      const existing = JSON.parse(localStorage.getItem('myladoor_orders') || '[]');
+      existing.unshift({
+        ref: refNum,
+        date: new Date().toISOString(),
+        ...form,
+        vehicleName: selectedVehicle?.name || form.vehicle,
+        status: 'Pending',
+      });
+      localStorage.setItem('myladoor_orders', JSON.stringify(existing));
+    } catch (_) {}
+
+    // Send WhatsApp message
     const msg = encodeURIComponent(
       `*🚐 New Booking Request — Myladoor Holidays*\n\n` +
-      `*Trip Type:* ${form.tripType}\n` +
-      `*From:* ${form.from}\n` +
-      `*To:* ${form.to}\n` +
-      `*Pickup Date:* ${form.pickupDate}\n` +
-      `*Return Date:* ${form.returnDate || 'One Way'}\n` +
-      `*Passengers:* ${form.pax}\n` +
-      `*Vehicle:* ${selectedVehicle?.name || form.vehicle}\n\n` +
-      `*Customer Name:* ${form.name}\n` +
-      `*Phone:* ${form.phone}\n` +
-      `*Email:* ${form.email}\n` +
-      `*Notes:* ${form.notes || 'None'}`
+      `*Ref:* ${refNum}\n*Trip Type:* ${form.tripType}\n` +
+      `*From:* ${form.from}\n*To:* ${form.to}\n` +
+      `*Pickup Date:* ${form.pickupDate}\n*Return Date:* ${form.returnDate || 'One Way'}\n` +
+      `*Passengers:* ${form.pax}\n*Vehicle:* ${selectedVehicle?.name || form.vehicle}\n\n` +
+      `*Customer Name:* ${form.name}\n*Phone:* ${form.phone}\n` +
+      `*Email:* ${form.email}\n*Notes:* ${form.notes || 'None'}`
     );
     window.open(`https://wa.me/918848392990?text=${msg}`, '_blank');
     setShowFireworks(true);
@@ -337,7 +340,7 @@ export default function BookingPage() {
                           onChange={e => set(f.key, e.target.value)}
                           onFocus={() => setFocusedField(f.key)}
                           onBlur={() => setFocusedField(null)}
-                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all"
+                          className="w-full bg-[#1a2030] border border-white/20 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all"
                         />
                       </div>
                     ))}
@@ -361,7 +364,7 @@ export default function BookingPage() {
                           onFocus={() => setFocusedField(f.key)}
                           onBlur={() => setFocusedField(null)}
                           min={f.type === 'date' ? new Date().toISOString().split('T')[0] : undefined}
-                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all [color-scheme:dark]"
+                          className="w-full bg-[#1a2030] border border-white/20 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all [color-scheme:dark]"
                         />
                       </div>
                     ))}
@@ -475,7 +478,7 @@ export default function BookingPage() {
                           onChange={e => set(f.key, e.target.value)}
                           onFocus={() => setFocusedField(f.key)}
                           onBlur={() => setFocusedField(null)}
-                          className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all"
+                          className="w-full bg-[#1a2030] border border-white/15 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-600 transition-all"
                         />
                       </div>
                     ))}
@@ -491,7 +494,7 @@ export default function BookingPage() {
                         onChange={e => set('notes', e.target.value)}
                         onFocus={() => setFocusedField('notes')}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-white/4 border border-white/8 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-500 transition-all resize-none"
+                        className="w-full bg-[#1a2030] border border-white/15 text-white px-4 py-3.5 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(212,175,55,0.12)] placeholder:text-gray-600 transition-all resize-none"
                       />
                     </div>
                   </div>
@@ -635,25 +638,17 @@ export default function BookingPage() {
                   })()}
                 </div>
 
-                <div className="flex justify-between gap-4 flex-wrap">
+                <div className="flex justify-between gap-4 flex-wrap mt-2">
                   <button onClick={() => setStep(3)} className="flex items-center gap-2 px-6 py-4 border border-white/15 text-gray-400 text-sm hover:border-white/30 hover:text-white transition-all">
                     <ArrowLeft size={16} /> Back
                   </button>
-                  <div className="flex gap-3 flex-wrap">
-                    <button
-                      onClick={handleSubmit}
-                      className="flex items-center gap-3 px-10 py-4 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)]"
-                    >
-                      <MessageCircle size={18} />
-                      Confirm via WhatsApp
-                    </button>
-                    <a
-                      href={`tel:+918848392990`}
-                      className="flex items-center gap-2 px-8 py-4 bg-emerald-800 text-white font-bold text-sm hover:bg-emerald-700 transition-all"
-                    >
-                      <Phone size={16} /> Call & Confirm
-                    </a>
-                  </div>
+                  <button
+                    onClick={handleSubmit}
+                    className="flex items-center gap-3 px-12 py-4 bg-yellow-400 text-black font-black uppercase tracking-wider text-sm hover:bg-yellow-300 transition-all shadow-[0_0_30px_rgba(212,175,55,0.5)] scale-105 hover:scale-110"
+                  >
+                    <Check size={18} />
+                    Confirm Booking &amp; Get Receipt
+                  </button>
                 </div>
               </motion.div>
             )}

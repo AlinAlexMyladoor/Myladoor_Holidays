@@ -118,7 +118,7 @@ export default function AboutPage() {
                   <Image src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=600" alt="fleet" fill className="object-cover" />
                   <div className="absolute inset-0 border border-yellow-400/10" />
                 </div>
-                <div className="relative aspect-square overflow-hidden mt-8">
+                <div className="relative aspect-square overflow-hidden">
                   <Image src="https://www.traveltoindia.org/car_rental_images/bus-rental-india-1-1751527975.webp" alt="journey" fill className="object-cover" />
                   <div className="absolute inset-0 border border-yellow-400/10" />
                 </div>
